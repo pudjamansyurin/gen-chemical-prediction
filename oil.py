@@ -31,7 +31,7 @@ def predict(model, features, X_test):
 
     
 # the input parameter
-poly_orde = 13
+poly_orde = 15
 X_name_tests = ['F540-34', 'F540-35']
 X_value_tests = [
     [    15.7,        20, 30, 0, 5, 5, 14.3, 10, 0],
@@ -40,7 +40,7 @@ X_value_tests = [
 
 # columns to process
 X_cols = ['S8','S6','S4','GL 0831','Triester','Priolube/palmester 3970','CV1103','SPAMA52','VM-HV']
-Y_cols = ['KV 40', 'KV 100']
+Y_cols = ['KV 40', 'KV 100', 'VI']
 
 # open files
 df = pd.read_csv("oil.csv")
@@ -55,14 +55,14 @@ for Y_col in Y_cols:
     # generate model
     model, features, rmse, r2score = generateModel(X_train, df_target[Y_col], poly_orde)
 
-    print('{} :'.format(Y_col))
-    print(' - DB Used \t: {:.2f}'.format(len(X_train)))
-    print(' - R2 Score \t: {:.2f}'.format(r2score))
-    print(' - RMSE \t: {:.2f}'.format(rmse))
+    print('{} \t(DB: {}, R2: {}, RMSE: {}) :'.format(Y_col, len(X_train), r2score, rmse))
+    # print(' - DB Used \t: {}'.format(len(X_train)))
+    # print(' - R2 Score \t: {}'.format(r2score))
+    # print(' - RMSE \t: {}'.format(rmse))
 
     for idx, X_name_test in enumerate(X_name_tests):
         predicted = predict(model, features, X_value_tests[idx])
-        print(' -- {} \t: {:.2f}\t'.format(X_name_test, predicted))
+        print(' - {} \t: {:.2f}\t'.format(X_name_test, predicted))
     
 
 
