@@ -32,10 +32,11 @@ def predict(model, features, X_test):
     
 # the input parameter
 poly_orde = 15
-X_name_tests = ['F540-34', 'F540-35']
+X_name_tests = ['F540-11', 'F540-34', 'F540-35']
 X_value_tests = [
-    [    15.7,        20, 30, 0, 5, 5, 14.3, 10, 0],
-    [7.366667,  23.33333, 35, 0, 5, 5, 14.3, 10, 0],
+    [68.70,  0.00,  0, 5, 5, 0,	14.3,  0, 7],
+    [15.70, 20.00, 30, 0, 5, 5, 14.3, 10, 0],
+    [ 7.36, 23.33, 35, 0, 5, 5, 14.3, 10, 0],
 ]
 
 # columns to process
@@ -55,7 +56,7 @@ for Y_col in Y_cols:
     # generate model
     model, features, rmse, r2score = generateModel(X_train, df_target[Y_col], poly_orde)
 
-    print('{} \t(DB: {}, R2: {}, RMSE: {}) :'.format(Y_col, len(X_train), r2score, rmse))
+    print('{}\t(DB: {}, R2: {}, RMSE: {}) :'.format(Y_col, len(X_train), r2score, rmse))
     # print(' - DB Used \t: {}'.format(len(X_train)))
     # print(' - R2 Score \t: {}'.format(r2score))
     # print(' - RMSE \t: {}'.format(rmse))
