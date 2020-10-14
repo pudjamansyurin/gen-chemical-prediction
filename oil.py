@@ -5,7 +5,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score
 
 # prediction
-def predict(X_train,Y_train,X_test,Deg):
+def predict(X_train,Y_train,X_value_tests,Deg):
     poly_features = PolynomialFeatures(degree=Deg)
     # transforms the existing features to higher degree features.
     X_train_poly = poly_features.fit_transform(X_train)
@@ -15,36 +15,19 @@ def predict(X_train,Y_train,X_test,Deg):
     # predicting on training data-set
     Y_train_predicted = poly_model.predict(X_train_poly)
     # predicting on test data-set
-    X_test_poly = poly_features.fit_transform(X_test)
-    Y_test_predict = poly_model.predict(X_test_poly)
-    
+    X_value_tests_poly = poly_features.fit_transform([X_value_tests])
+    Y_test_predict = poly_model.predict(X_value_tests_poly)
     # evaluating the model on training dataset
     rmse_train = np.sqrt(mean_squared_error(Y_train, Y_train_predicted))
     r2_train = r2_score(Y_train, Y_train_predicted)
     
-    # evaluating the model on test dataset
-    # rmse_test = np.sqrt(mean_squared_error(Y_test, Y_test_predict))
-    # r2_test = r2_score(Y_test, Y_test_predict)
-    
-    # print("The model performance for the dataset set")
-    print("-------------------------------------------")
-    print("RMSE of training set\t\t: {}".format(rmse_train))
-    # print("R2 score of training set\t: {}".format(r2_train))
-    # print("\n")    
-    # print("The model performance for the test set")
-    # print("-------------------------------------------")
-    # print("RMSE of test set is {}".format(rmse_test))
-    # print("R2 score of test set is {}".format(r2_test))
-    
-    return Y_test_predict
-
-
-
+    return Y_test_predict[0], rmse_train
 
 
     
 # the input parameter
-X_test = [
+X_name_tests = ['F540-34', 'F540-35']
+X_value_tests = [
     [    15.7,        20, 30, 0, 5, 5, 14.3, 10, 0],
     [7.366667,  23.33333, 35, 0, 5, 5, 14.3, 10, 0],
 ]
@@ -57,19 +40,34 @@ Y_cols = ['KV 40', 'KV 100']
 # open files
 df = pd.read_csv("oil.csv")
 df.fillna(0, inplace=True)
-# print(df['Formula'])
 
-for Y_col in Y_cols:
-    # filter only for filled target
-    has_target = df[Y_col] > 0
-    df_target = df[has_target]
+for idx, X_name_test in enumerate(X_name_tests):
+    print("({}) -------------------------------------------".format(X_name_test))
+    for Y_col in Y_cols:
+        # filter only for filled target
+        has_target = df[Y_col] > 0
+        df_target = df[has_target]
 
-    # decide the column used
-    X_train = df_target[X_cols]
-    # print(df_target)
+        # decide the column used
+        X_train = df_target[X_cols]
+        # print(df_target)
 
-    # predicted value
-    print('Predicted ({})\t\t: {}'.format(Y_col, predict(X_train, df_target[Y_col], X_test, poly_orde)))
+        # predicted value
+        predicted, rmse = predict(X_train, df_target[Y_col], X_value_tests[idx], poly_orde)
+
+        print('{}\t: {}\t({})'.format(Y_col, predicted, rmse))
+
+
+
+
+
+
+
+
+
+
+
+
 
 # import statsmodels.api as sm
 # # adding a constant
