@@ -4,21 +4,21 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score
 
-# prediction
-def generateModel(X_train,Y_train, Deg):
-    poly_features = PolynomialFeatures(degree=Deg)
+# functions
+def genPolyModel(X_train, Y_train, Deg):
+    features = PolynomialFeatures(degree=Deg)
     # transforms the existing features to higher degree features.
-    X_train_poly = poly_features.fit_transform(X_train)
+    X_train_poly = features.fit_transform(X_train)
     # fit the transformed features to Linear Regression
-    poly_model = LinearRegression()
-    poly_model.fit(X_train_poly, Y_train)
+    model = LinearRegression()
+    model.fit(X_train_poly, Y_train)
     # predicting on training data-set
-    Y_train_predicted = poly_model.predict(X_train_poly)
+    Y_train_predicted = model.predict(X_train_poly)
     # evaluating the model on training dataset
     rmse_train = np.sqrt(mean_squared_error(Y_train, Y_train_predicted))
     r2_train = r2_score(Y_train, Y_train_predicted)
 
-    return poly_model, poly_features, rmse_train, r2_train
+    return model, features, rmse_train, r2_train
 
 def predict(model, features, X_test):
     # predicting on test data-set
@@ -28,10 +28,9 @@ def predict(model, features, X_test):
     return Y_test_predicted[0]
 
 
-
-    
+# main program    
 # the input parameter
-poly_orde = 15
+poly_orde = 7
 X_name_tests = ['F540-11', 'F540-34', 'F540-35']
 X_value_tests = [
     [68.70,  0.00,  0, 5, 5, 0,	14.3,  0, 7],
@@ -54,7 +53,7 @@ for Y_col in Y_cols:
     # decide the column used
     X_train = df_target[X_cols]
     # generate model
-    model, features, rmse, r2score = generateModel(X_train, df_target[Y_col], poly_orde)
+    model, features, rmse, r2score = genPolyModel(X_train, df_target[Y_col], poly_orde)
 
     print('{}\t(DB: {}, R2: {}, RMSE: {}) :'.format(Y_col, len(X_train), r2score, rmse))
     # print(' - DB Used \t: {}'.format(len(X_train)))
