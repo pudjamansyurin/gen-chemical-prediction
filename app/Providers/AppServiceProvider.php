@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Database\Schema\Builder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Sanctum::ignoreMigrations();
     }
 
     /**
@@ -23,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (App::environment('production')) {
+            Debugbar::disable();
+
+            /* Fix cpanel mysql issue */
+            Builder::defaultStringLength(191);
+        }
     }
 }
