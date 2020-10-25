@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\ConfirmPasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,23 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Auth::routes();
-
-Route::post('login', [LoginController::class, 'login'])->name('login');
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-Route::prefix('password')->group(function () {
-    Route::post('email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-    Route::post('reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-    // Route::post('confirm', [ConfirmPasswordController::class, 'confirm'])->name('password.confirm');
+Route::get('/', function () {
+    return view('welcome');
 });
 
-// Route::prefix('email')->group(function () {
-//     Route::get('verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-//     Route::post('resend', [VerificationController::class, 'resend'])->name('verification.resend');
-// });
-
-// Route::group(['domain' => env('APP_URL')], function () {
-//     Route::get('email/verify/{id}/{hash}',  [VerificationController::class, 'verify'])->name('verification.address');
-// });
-
-Route::view('/{any}', 'spa')->where('any', '.*');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return Inertia\Inertia::render('Dashboard');
+})->name('dashboard');

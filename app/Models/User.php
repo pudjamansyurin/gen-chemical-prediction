@@ -2,24 +2,21 @@
 
 namespace App\Models;
 
-use App\Traits\Routines\UserRoutine;
-use App\Traits\Scopes\ClientQueryScope;
-use App\Traits\Scopes\ExtendedScope;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Traits\HasRoles;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasRoles, HasFactory, Notifiable;
-    use ClientQueryScope, ExtendedScope;
-    use UserRoutine;
-
-    protected $table = 'users';
-    protected $client_relations = ['roles:id,name'];
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -40,6 +37,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
@@ -52,18 +51,11 @@ class User extends Authenticatable
     ];
 
     /**
-     * Accessors
+     * The accessors to append to the model's array form.
+     *
+     * @var array
      */
-    public function getNameAttribute($value)
-    {
-        return ucwords($value);
-    }
-
-    /**
-     * Mutators
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
+    protected $appends = [
+        'profile_photo_url',
+    ];
 }

@@ -14,18 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('user', 'UserController', ['except' => ['show']]);
-    Route::group(['prefix' => 'profile'], function () {
-        Route::get('', 'ProfileController@show');
-        Route::put('update', 'ProfileController@update');
-    });
-
-    Route::group(['prefix' => 'list'], function () {
-        Route::get('role', 'UserController@roles');
-    });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
