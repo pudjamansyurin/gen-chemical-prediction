@@ -130,11 +130,17 @@ export default {
         return {
             model: "user",
             modelDefault: User,
-            form: cloneDeep({
-                ...User,
-                password: null,
-                password_confirmation: null,
-            }),
+            form: this.$inertia.form(
+                {
+                    ...cloneDeep(User),
+                    password: "",
+                    password_confirmation: "",
+                },
+                {
+                    bag: "updatePassword",
+                }
+            ),
+
             headers: [
                 { text: "Name", value: "name" },
                 { text: "Email", value: "email" },
