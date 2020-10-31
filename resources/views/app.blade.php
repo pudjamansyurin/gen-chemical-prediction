@@ -25,14 +25,14 @@
 </head>
 
 <body class="font-sans antialiased">
+    @inertia
+
     <noscript>
         <strong>
             We're sorry but Action Follow Up v2 doesn't work properly without JavaScript enabled. Please enable it to
             continue.
         </strong>
     </noscript>
-
-    @inertia
 </body>
 
 </html>

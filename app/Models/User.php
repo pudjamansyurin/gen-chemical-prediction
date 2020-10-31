@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\Routines\UserRoutine;
+use App\Traits\Scopes\ClientQueryScope;
+use App\Traits\Scopes\ExtendedScope;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,18 +14,15 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use App\Traits\Routines\UserRoutine;
-use App\Traits\Scopes\ClientQueryScope;
-use App\Traits\Scopes\ExtendedScope;
 
 class User extends Authenticatable // implements MustVerifyEmail
 {
-    use HasRoles;
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles;
     use ClientQueryScope, ExtendedScope;
     use UserRoutine;
 
