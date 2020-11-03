@@ -58,7 +58,11 @@
 
             <v-divider></v-divider>
             <v-card-actions>
-                <v-btn @click="$emit('close')" color="blue darken-1" text>
+                <v-btn
+                    @click="$emit('input', false)"
+                    color="blue darken-1"
+                    text
+                >
                     Cancel
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -85,17 +89,18 @@ export default {
             type: Boolean,
             default: false,
         },
+        creating: {
+            type: Boolean,
+            default: true,
+        },
+        model: {
+            type: String,
+            default: "Item",
+        },
+
         readonly: {
             type: Boolean,
             default: false,
-        },
-        form: {
-            type: Object,
-            default: () => {},
-        },
-        title: {
-            type: String,
-            default: "Item",
         },
         width: {
             type: [String, Number],
@@ -117,11 +122,11 @@ export default {
     },
     computed: {
         formTitle() {
-            let title = this.title.toUpperCase();
+            let title = this.model.toUpperCase();
             let action = "Detail";
 
             if (!this.readonly) {
-                action = this.form.id === -1 ? "New" : "Edit";
+                action = this.creating ? "New" : "Edit";
             }
             return `${action} ${title}`;
         },

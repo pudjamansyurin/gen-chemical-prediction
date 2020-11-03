@@ -1,4 +1,4 @@
-import { map, cloneDeep } from "lodash";
+import { cloneDeep } from "lodash";
 import { mapState, mapActions, mapMutations } from "vuex";
 
 import { /* eHandler, */ ls } from "@/Utils";
@@ -32,7 +32,7 @@ export default {
             }),
             // total: 0,
             selected: [],
-            dialog: false,
+            dialogForm: false,
             dialogDelete: false
         };
     },
@@ -58,7 +58,7 @@ export default {
             return item.authorized ? "green" : "grey";
         },
         close() {
-            this.dialog = false;
+            this.dialogForm = false;
             this.$nextTick(() => this.$refs.form.validator.reset());
         },
         onCreate() {
@@ -69,14 +69,14 @@ export default {
         },
         create: async function() {
             await this.onCreate();
-            this.$nextTick(() => (this.dialog = true));
+            this.$nextTick(() => (this.dialogForm = true));
         },
         edit: async function(item) {
             if (this.selected.length > 0) {
                 return;
             }
             await this.onEdit(item);
-            this.$nextTick(() => (this.dialog = true));
+            this.$nextTick(() => (this.dialogForm = true));
         },
         fetchAll: async function() {
             // await this.GET_MODELS({

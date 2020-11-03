@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
@@ -40,7 +42,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -49,9 +50,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        // $this->authorize('create', User::class);
+
+        // create
+        $user = User::create($request->validated());
+
+        return back();
+        // return response(
+        //     new UserItem($user->loadRelation()),
+        //     Response::HTTP_CREATED
+        // );
     }
 
     /**
@@ -62,7 +72,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        // $this->authorize('viewAny', User::class);
+
+        return new UserItem($user->loadRelation());
     }
 
     /**

@@ -11,7 +11,7 @@
                     @click.stop="TOGGLE_DRAWER"
                 ></v-app-bar-nav-icon>
                 <v-toolbar-title>
-                    <span>{{ theTitle }}</span>
+                    <span>{{ page }}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
             </template>
@@ -119,7 +119,7 @@
                 </v-card>
             </v-menu>
 
-            <template v-slot:extension v-if="crud">
+            <template #extension v-if="crud">
                 <template v-if="selected.length">
                     <v-btn
                         @click="$emit('update:selected', [])"
@@ -200,8 +200,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
-import { debounce, startCase } from "lodash";
-import pluralize from "pluralize";
+import { debounce } from "lodash";
 
 import { ls } from "@/Utils";
 import { CommonMixin, FullscreenMixin } from "@/Mixins";
@@ -216,7 +215,7 @@ import FullscreenConfirmation from "@/Components/FullscreenConfirmation";
 export default {
     mixins: [CommonMixin, FullscreenMixin],
     props: {
-        value: {
+        options: {
             type: Object,
             default: () => {},
         },
@@ -253,9 +252,6 @@ export default {
     },
     computed: {
         ...mapState("app", ["title", "dark", "dense"]),
-        theTitle() {
-            return `${pluralize(startCase(this.page))}`;
-        },
         appBarColor() {
             return this.dark ? "grey darken-3" : "primary";
         },
@@ -287,15 +283,15 @@ export default {
     },
     watch: {
         search: debounce(function (term) {
-            this.$emit("input", {
-                ...this.value,
+            this.$emit("options:update", {
+                ...this.options,
                 page: 1,
                 search: term,
             });
         }, 500),
         tab: function (mine) {
-            this.$emit("input", {
-                ...this.value,
+            this.$emit("options:update", {
+                ...this.options,
                 page: 1,
                 mine,
             });
