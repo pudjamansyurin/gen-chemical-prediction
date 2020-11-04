@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 class UserUpdateRequest extends UserRequest
@@ -28,15 +29,9 @@ class UserUpdateRequest extends UserRequest
     public function rules()
     {
         if (request()->boolean('change_password')) {
-            return array_merge(parent::rules(), [
-                'password' => [
-                    'required',
-                    $this->passwordRule(),
-                    'confirmed',
-                ]
-            ]);
+            return parent::rules();
         }
 
-        return parent::rules();
+        return Arr::except(parent::rules(), 'password');
     }
 }

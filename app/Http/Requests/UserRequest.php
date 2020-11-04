@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
+    use PasswordValidationRules;
+
     protected $errorBag = 'userForm';
 
     /**
@@ -42,14 +45,7 @@ class UserRequest extends FormRequest
                 'required',
                 'exists:roles,id'
             ],
-            // 'password' => [
-            //     // Rule::requiredIf(request()->isMethod('post')),
-            //     // 'required',
-            //     // 'sometimes',
-            //     'min:8',
-            //     'max:25',
-            //     'confirmed'
-            // ]
+            'password' => $this->passwordRules()
         ];
     }
 

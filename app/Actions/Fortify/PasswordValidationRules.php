@@ -16,17 +16,12 @@ trait PasswordValidationRules
         return [
             'required',
             'string',
-            $this->passwordRule(),
+            (new Password)
+                ->length(8)
+                ->requireUppercase()
+                ->requireNumeric()
+                ->requireSpecialCharacter(),
             'confirmed'
         ];
-    }
-
-    protected function passwordRule()
-    {
-        return (new Password)
-            ->length(8)
-            ->requireUppercase()
-            ->requireNumeric()
-            ->requireSpecialCharacter();
     }
 }
