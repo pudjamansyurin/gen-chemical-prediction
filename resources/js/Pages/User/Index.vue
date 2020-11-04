@@ -1,11 +1,11 @@
 <template>
-    <private-layout>
+    <fragment>
         <app-top-bar
             :options.sync="options"
             :selected.sync="selected"
             :page="model"
             @create="onCreate"
-            @delete="dialogDelete = true"
+            @delete="onDelete"
             crud
         ></app-top-bar>
 
@@ -58,7 +58,7 @@
         ></user-delete>
 
         <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
-    </private-layout>
+    </fragment>
 </template>
 
 <script>
@@ -66,8 +66,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import { cloneDeep, pick } from "lodash";
 
 import { User } from "@/Config/models";
-import { table } from "@/Config";
-import { /* eHandler, */ ls } from "@/Utils";
+import { options as tableOptions } from "@/Config/table";
 import {
     CommonMixin,
     // ModelMixin,
@@ -84,8 +83,8 @@ import UserDelete from "./UserDelete";
 
 export default {
     mixins: [CommonMixin, PasswordMixin /* FetchListMixin */],
+    layout: (h, page) => h(PrivateLayout, [page]),
     components: {
-        PrivateLayout,
         AppTopBar,
         TheData,
         UserForm,
@@ -105,10 +104,7 @@ export default {
             selected: [],
             dialogForm: false,
             dialogDelete: false,
-            options: cloneDeep({
-                ...table.options,
-                itemsPerPage: ls.get("perPage") || table.options.itemsPerPage,
-            }),
+            options: cloneDeep(tableOptions),
         };
     },
     computed: {
@@ -127,6 +123,9 @@ export default {
         onEdit({ id }) {
             this.id = id;
             this.dialogForm = true;
+        },
+        onDelete() {
+            this.dialogDelete = true;
         },
         me({ id }) {
             return this.profile.id == id;

@@ -1,6 +1,8 @@
+import { ls } from "@/Utils";
+
 export const options = {
     page: 1,
-    itemsPerPage: 10,
+    itemsPerPage: ls.get("perPage") || 10,
     multiSort: false,
     mustSort: true,
     groupBy: [],
