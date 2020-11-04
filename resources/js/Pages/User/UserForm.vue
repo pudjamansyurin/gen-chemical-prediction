@@ -7,8 +7,6 @@
     >
         <template v-slot="{ disabled }">
             <v-form @submit.prevent="save" :disabled="disabled">
-                <!-- <validation-observer ref="form"> -->
-                <!-- <validation-provider name="name" v-slot="{ errors, valid }"> -->
                 <v-text-field
                     v-model="form.name"
                     :error-messages="form.error('name')"
@@ -20,9 +18,7 @@
                     persistent-hint
                     outlined
                 ></v-text-field>
-                <!-- </validation-provider> -->
 
-                <!-- <validation-provider name="email" v-slot="{ errors, valid }"> -->
                 <v-text-field
                     v-model="form.email"
                     :error-messages="form.error('email')"
@@ -33,23 +29,7 @@
                     persistent-hint
                     outlined
                 ></v-text-field>
-                <!-- </validation-provider> -->
 
-                <!-- <v-text-field
-            v-if="profile"
-            v-model="form.role.name"
-            type="text"
-            label="Role"
-            hint="Your current role"
-            persistent-hint
-            outlined
-            readonly
-        ></v-text-field> -->
-                <!-- <validation-provider
-                v-else
-                name="role_id"
-                v-slot="{ errors, valid }"
-            > -->
                 <v-select
                     v-model="form.role_id"
                     :items="roles"
@@ -63,59 +43,46 @@
                     persistent-hint
                     outlined
                 ></v-select>
-                <!-- </validation-provider> -->
 
-                <!-- <v-btn
-            v-if="!creating || profile"
-            @click="changePassword = !changePassword"
-            color="red"
-            class="my-3"
-            dark
-            small
-            outlined
-        >
-            {{ passwordChangeText }} Password
-        </v-btn> -->
+                <v-checkbox
+                    v-if="!creating"
+                    v-model="form.change_password"
+                    label="Change password"
+                >
+                </v-checkbox>
 
-                <!-- <template v-if="changePassword"> -->
-                <!-- <validation-provider name="password" v-slot="{ errors, valid }"> -->
-                <v-text-field
-                    v-model="form.password"
-                    :type="passwordState.type"
-                    :append-icon="passwordState.icon"
-                    :error-messages="form.error('password')"
-                    :success="!!form.error('password')"
-                    @click:append="showPassword = !showPassword"
-                    label="Password"
-                    hint="Password for this user"
-                    autocomplete="off"
-                    persistent-hint
-                    outlined
-                    counter
-                ></v-text-field>
-                <!-- </validation-provider> -->
+                <template v-if="form.change_password">
+                    <v-text-field
+                        v-model="form.password"
+                        :type="passwordState.type"
+                        :append-icon="passwordState.icon"
+                        :error-messages="form.error('password')"
+                        :success="!!form.error('password')"
+                        @click:append="showPassword = !showPassword"
+                        label="Password"
+                        hint="Password for this user"
+                        autocomplete="off"
+                        persistent-hint
+                        outlined
+                        counter
+                    ></v-text-field>
 
-                <!-- <validation-provider
-                    name="password_confirmation"
-                    v-slot="{ errors, valid }"
-                > -->
-                <v-text-field
-                    v-model="form.password_confirmation"
-                    :type="passwordState.type"
-                    :append-icon="passwordState.icon"
-                    :error-messages="form.error('password_confirmation')"
-                    :success="!!form.error('password_confirmation')"
-                    @click:append="showPassword = !showPassword"
-                    label="Password Confirmation"
-                    hint="Fill again the password"
-                    autocomplete="off"
-                    persistent-hint
-                    outlined
-                    counter
-                ></v-text-field>
-                <!-- </validation-provider> -->
-                <!-- </template> -->
-                <!-- </validation-observer> -->
+                    <v-text-field
+                        v-model="form.password_confirmation"
+                        :type="passwordState.type"
+                        :append-icon="passwordState.icon"
+                        :error-messages="form.error('password_confirmation')"
+                        :success="!!form.error('password_confirmation')"
+                        @click:append="showPassword = !showPassword"
+                        label="Password Confirmation"
+                        hint="Fill again the password"
+                        autocomplete="off"
+                        persistent-hint
+                        outlined
+                        counter
+                    ></v-text-field>
+                </template>
+
                 <v-btn
                     v-show="false"
                     :disabled="form.processing"
@@ -160,10 +127,6 @@ export default {
         //     type: Boolean,
         //     default: false,
         // },
-        // changePass: {
-        //     type: Boolean,
-        //     default: false,
-        // },
     },
     components: {
         TheDialogForm,
@@ -175,6 +138,7 @@ export default {
                 {
                     _method: "PUT",
                     ...cloneDeep(User),
+                    change_password: null,
                     password: "",
                     password_confirmation: "",
                 },
@@ -203,17 +167,6 @@ export default {
                 this.$emit("input", value);
             },
         },
-        // validator() {
-        //     return this.$refs.form;
-        // },
-        // changePassword: {
-        //     get() {
-        //         return this.changePass;
-        //     },
-        //     set(value) {
-        //         this.$emit("update:change-pass", value);
-        //     },
-        // },
     },
     methods: {
         save() {
@@ -236,7 +189,7 @@ export default {
                     }
                 })
                 .catch((e) => {
-                    console.warn(e);
+                    console.error(e);
                 });
         },
         fetch() {
@@ -248,16 +201,25 @@ export default {
         },
         reset() {
             delete this.$page.errorBags["userForm"];
-            assign(this.form, User);
+            assign(this.form, {
+                ...User,
+                change_password: null,
+                password: "",
+                password_confirmation: "",
+            });
         },
     },
     watch: {
         id: {
+            immediate: true,
             handler(id) {
                 this.reset();
 
                 if (!this.creating) {
+                    this.form.change_password = false;
                     this.fetch();
+                } else {
+                    this.form.change_password = true;
                 }
             },
         },

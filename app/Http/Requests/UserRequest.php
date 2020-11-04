@@ -42,13 +42,14 @@ class UserRequest extends FormRequest
                 'required',
                 'exists:roles,id'
             ],
-            'password' => [
-                Rule::requiredIf(request()->isMethod('post')),
-                'sometimes',
-                'min:8',
-                'max:25',
-                'confirmed'
-            ]
+            // 'password' => [
+            //     // Rule::requiredIf(request()->isMethod('post')),
+            //     // 'required',
+            //     // 'sometimes',
+            //     'min:8',
+            //     'max:25',
+            //     'confirmed'
+            // ]
         ];
     }
 

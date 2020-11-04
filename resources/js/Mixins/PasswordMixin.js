@@ -13,24 +13,24 @@ export default {
                 icon: this.showPassword ? "mdi-eye" : "mdi-eye-off",
                 type: this.showPassword ? "text" : "password"
             };
-        },
-        passwordChangeText() {
-            return this.changePassword ? "Keep" : "Change";
         }
-    },
-    methods: {
-        copyWithPassword(item) {
-            return cloneDeep({
-                ...item,
-                password: null,
-                password_confirmation: null
-            });
-        },
-        removeUnchangedPassword() {
-            if (!this.changePassword) {
-                this.$delete(this.form, "password");
-                this.$delete(this.form, "password_confirmation");
-            }
-        }
+        // passwordChangeText() {
+        //     return `${this.changePassword ? "Keep" : "Change"} password`;
+        // }
     }
+    // methods: {
+    //     copyWithPassword(item) {
+    //         return cloneDeep({
+    //             ...item,
+    //             password: null,
+    //             password_confirmation: null
+    //         });
+    //     },
+    //     removeUnchangedPassword() {
+    //         if (!this.changePassword) {
+    //             this.$delete(this.form, "password");
+    //             this.$delete(this.form, "password_confirmation");
+    //         }
+    //     }
+    // }
 };
