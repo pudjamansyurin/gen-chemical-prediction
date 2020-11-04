@@ -50,10 +50,10 @@
                     :dark="dark"
                 >
                     <v-tab-item v-for="item in tabs" :key="item">
-                        <slot :name="item"> </slot>
+                        <slot :name="item" :disabled="disabled"> </slot>
                     </v-tab-item>
                 </v-tabs-items>
-                <slot v-else></slot>
+                <slot v-else :disabled="disabled"></slot>
             </v-card-text>
 
             <v-divider></v-divider>
@@ -68,7 +68,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     v-if="!readonly"
-                    :disabled="!!loading || disabled"
+                    :disabled="disabled"
                     @click="$emit('submit')"
                     color="primary"
                 >

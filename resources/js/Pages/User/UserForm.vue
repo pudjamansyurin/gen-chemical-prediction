@@ -2,39 +2,40 @@
     <the-dialog-form
         v-model="dialog"
         :title="formTitle"
-        :disabled="form.processing"
+        :disabled="!!loading || form.processing"
         @submit="save"
     >
-        <v-form @submit.prevent="save" :disabled="form.processing">
-            <!-- <validation-observer ref="form"> -->
-            <!-- <validation-provider name="name" v-slot="{ errors, valid }"> -->
-            <v-text-field
-                v-model="form.name"
-                :error-messages="form.error('name')"
-                :success="!!form.error('name')"
-                :autofocus="!mobile"
-                label="Name"
-                type="text"
-                hint="This should be unique name"
-                persistent-hint
-                outlined
-            ></v-text-field>
-            <!-- </validation-provider> -->
+        <template v-slot="{ disabled }">
+            <v-form @submit.prevent="save" :disabled="disabled">
+                <!-- <validation-observer ref="form"> -->
+                <!-- <validation-provider name="name" v-slot="{ errors, valid }"> -->
+                <v-text-field
+                    v-model="form.name"
+                    :error-messages="form.error('name')"
+                    :success="!!form.error('name')"
+                    :autofocus="!mobile"
+                    label="Name"
+                    type="text"
+                    hint="This should be unique name"
+                    persistent-hint
+                    outlined
+                ></v-text-field>
+                <!-- </validation-provider> -->
 
-            <!-- <validation-provider name="email" v-slot="{ errors, valid }"> -->
-            <v-text-field
-                v-model="form.email"
-                :error-messages="form.error('email')"
-                :success="!!form.error('email')"
-                label="E-mail"
-                type="email"
-                hint="This email is for recovery"
-                persistent-hint
-                outlined
-            ></v-text-field>
-            <!-- </validation-provider> -->
+                <!-- <validation-provider name="email" v-slot="{ errors, valid }"> -->
+                <v-text-field
+                    v-model="form.email"
+                    :error-messages="form.error('email')"
+                    :success="!!form.error('email')"
+                    label="E-mail"
+                    type="email"
+                    hint="This email is for recovery"
+                    persistent-hint
+                    outlined
+                ></v-text-field>
+                <!-- </validation-provider> -->
 
-            <!-- <v-text-field
+                <!-- <v-text-field
             v-if="profile"
             v-model="form.role.name"
             type="text"
@@ -44,27 +45,27 @@
             outlined
             readonly
         ></v-text-field> -->
-            <!-- <validation-provider
+                <!-- <validation-provider
                 v-else
                 name="role_id"
                 v-slot="{ errors, valid }"
             > -->
-            <v-select
-                v-model="form.role_id"
-                :items="roles"
-                :error-messages="form.error('role_id')"
-                :success="!!form.error('role_id')"
-                item-text="name"
-                item-value="id"
-                label="Role"
-                hint="Role for this user"
-                chips
-                persistent-hint
-                outlined
-            ></v-select>
-            <!-- </validation-provider> -->
+                <v-select
+                    v-model="form.role_id"
+                    :items="roles"
+                    :error-messages="form.error('role_id')"
+                    :success="!!form.error('role_id')"
+                    item-text="name"
+                    item-value="id"
+                    label="Role"
+                    hint="Role for this user"
+                    chips
+                    persistent-hint
+                    outlined
+                ></v-select>
+                <!-- </validation-provider> -->
 
-            <!-- <v-btn
+                <!-- <v-btn
             v-if="!creating || profile"
             @click="changePassword = !changePassword"
             color="red"
@@ -76,51 +77,52 @@
             {{ passwordChangeText }} Password
         </v-btn> -->
 
-            <!-- <template v-if="changePassword"> -->
-            <!-- <validation-provider name="password" v-slot="{ errors, valid }"> -->
-            <v-text-field
-                v-model="form.password"
-                :type="passwordState.type"
-                :append-icon="passwordState.icon"
-                :error-messages="form.error('password')"
-                :success="!!form.error('password')"
-                @click:append="showPassword = !showPassword"
-                label="Password"
-                hint="Password for this user"
-                autocomplete="off"
-                persistent-hint
-                outlined
-                counter
-            ></v-text-field>
-            <!-- </validation-provider> -->
+                <!-- <template v-if="changePassword"> -->
+                <!-- <validation-provider name="password" v-slot="{ errors, valid }"> -->
+                <v-text-field
+                    v-model="form.password"
+                    :type="passwordState.type"
+                    :append-icon="passwordState.icon"
+                    :error-messages="form.error('password')"
+                    :success="!!form.error('password')"
+                    @click:append="showPassword = !showPassword"
+                    label="Password"
+                    hint="Password for this user"
+                    autocomplete="off"
+                    persistent-hint
+                    outlined
+                    counter
+                ></v-text-field>
+                <!-- </validation-provider> -->
 
-            <!-- <validation-provider
+                <!-- <validation-provider
                     name="password_confirmation"
                     v-slot="{ errors, valid }"
                 > -->
-            <v-text-field
-                v-model="form.password_confirmation"
-                :type="passwordState.type"
-                :append-icon="passwordState.icon"
-                :error-messages="form.error('password_confirmation')"
-                :success="!!form.error('password_confirmation')"
-                @click:append="showPassword = !showPassword"
-                label="Password Confirmation"
-                hint="Fill again the password"
-                autocomplete="off"
-                persistent-hint
-                outlined
-                counter
-            ></v-text-field>
-            <!-- </validation-provider> -->
-            <!-- </template> -->
-            <!-- </validation-observer> -->
-            <v-btn
-                v-show="false"
-                :disabled="form.processing"
-                type="submit"
-            ></v-btn>
-        </v-form>
+                <v-text-field
+                    v-model="form.password_confirmation"
+                    :type="passwordState.type"
+                    :append-icon="passwordState.icon"
+                    :error-messages="form.error('password_confirmation')"
+                    :success="!!form.error('password_confirmation')"
+                    @click:append="showPassword = !showPassword"
+                    label="Password Confirmation"
+                    hint="Fill again the password"
+                    autocomplete="off"
+                    persistent-hint
+                    outlined
+                    counter
+                ></v-text-field>
+                <!-- </validation-provider> -->
+                <!-- </template> -->
+                <!-- </validation-observer> -->
+                <v-btn
+                    v-show="false"
+                    :disabled="form.processing"
+                    type="submit"
+                ></v-btn>
+            </v-form>
+        </template>
     </the-dialog-form>
 </template>
 
@@ -171,6 +173,7 @@ export default {
             model: "user",
             form: this.$inertia.form(
                 {
+                    _method: "PUT",
                     ...cloneDeep(User),
                     password: "",
                     password_confirmation: "",
@@ -222,8 +225,9 @@ export default {
                 url = route("user.update", { id: this.id });
             }
 
+            this.form._method = method;
             this.form
-                .submit(method, url, {
+                .post(url, {
                     preserveScroll: true,
                 })
                 .then((response) => {
