@@ -41,13 +41,13 @@
             </v-card-title>
             <v-divider></v-divider>
 
-            <v-card-text class="pt-2" :style="cardTextHeight">
+            <v-card-text class="py-5" :style="cardTextHeight">
                 <v-tabs-items
                     v-if="tabs.length"
                     :value="tab"
                     @input="$emit('update:tab', $event)"
-                    touchless
                     :dark="dark"
+                    touchless
                 >
                     <v-tab-item v-for="item in tabs" :key="item">
                         <slot :name="item" :disabled="disabled"> </slot>

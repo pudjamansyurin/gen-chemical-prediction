@@ -2,7 +2,7 @@
     <the-dialog-form
         v-model="dialog"
         :title="formTitle"
-        :disabled="!!loading || form.processing"
+        :disabled="formDisabled"
         @submit="save"
     >
         <template v-slot="{ disabled }">
@@ -85,7 +85,7 @@
 
                 <v-btn
                     v-show="false"
-                    :disabled="form.processing"
+                    :disabled="disabled"
                     type="submit"
                 ></v-btn>
             </v-form>
@@ -138,12 +138,10 @@ export default {
                 {
                     _method: "PUT",
                     ...cloneDeep(User),
-                    change_password: null,
-                    password: "",
-                    password_confirmation: "",
                 },
                 {
                     bag: "userForm",
+                    resetOnSuccess: false,
                 }
             ),
         };
@@ -152,11 +150,14 @@ export default {
         creating() {
             return this.id === -1;
         },
+        formDisabled() {
+            return !!this.loading || this.form.processing;
+        },
         formTitle() {
             if (this.readonly) return;
 
-            let title = this.model.toUpperCase();
             let action = this.creating ? "New" : "Edit";
+            let title = this.model.toUpperCase();
             return `${action} ${title}`;
         },
         dialog: {
@@ -169,7 +170,7 @@ export default {
         },
     },
     methods: {
-        save() {
+        decideMethod() {
             let method = "post";
             let url = route("user.store");
 
@@ -178,18 +179,18 @@ export default {
                 url = route("user.update", { id: this.id });
             }
 
+            return { url, method };
+        },
+        save() {
+            let { url, method } = this.decideMethod();
+
             this.form._method = method;
             this.form
                 .post(url, {
-                    preserveScroll: true,
+                    // preserveScroll: true,
                 })
                 .then((response) => {
-                    if (!this.form.hasErrors()) {
-                        this.dialog = false;
-                    }
-                })
-                .catch((e) => {
-                    console.error(e);
+                    if (!this.form.hasErrors()) this.dialog = false;
                 });
         },
         fetch() {
@@ -201,26 +202,16 @@ export default {
         },
         reset() {
             delete this.$page.errorBags["userForm"];
-            assign(this.form, {
-                ...User,
-                change_password: null,
-                password: "",
-                password_confirmation: "",
-            });
+            assign(this.form, User);
         },
     },
     watch: {
-        id: {
+        creating: {
             immediate: true,
-            handler(id) {
+            handler(state) {
                 this.reset();
-
-                if (!this.creating) {
-                    this.form.change_password = false;
-                    this.fetch();
-                } else {
-                    this.form.change_password = true;
-                }
+                if (!state) this.fetch();
+                this.form.change_password = state;
             },
         },
     },

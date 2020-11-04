@@ -7,7 +7,10 @@ export const User = {
     id: -1,
     name: "",
     email: "",
-    role_id: -1
+    role_id: -1,
+    password: "",
+    password_confirmation: "",
+    change_password: null
     // role: Role
 };
 
