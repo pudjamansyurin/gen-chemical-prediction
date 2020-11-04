@@ -1,12 +1,11 @@
 <template>
     <the-dialog-form
-        :value="true"
-        @input="$emit('close')"
-        :model="model"
-        :creating="creating"
+        v-model="dialog"
+        :title="formTitle"
+        :disabled="form.processing"
         @submit="save"
     >
-        <v-form @submit.prevent="save">
+        <v-form @submit.prevent="save" :disabled="form.processing">
             <!-- <validation-observer ref="form"> -->
             <!-- <validation-provider name="name" v-slot="{ errors, valid }"> -->
             <v-text-field
@@ -116,14 +115,18 @@
             <!-- </validation-provider> -->
             <!-- </template> -->
             <!-- </validation-observer> -->
-            <v-btn v-show="false" type="submit"></v-btn>
+            <v-btn
+                v-show="false"
+                :disabled="form.processing"
+                type="submit"
+            ></v-btn>
         </v-form>
     </the-dialog-form>
 </template>
 
 <script>
 import { CommonMixin, PasswordMixin } from "@/Mixins";
-import { cloneDeep } from "lodash";
+import { cloneDeep, keys, pick, assign } from "lodash";
 
 import { User } from "@/Config/models";
 import TheDialogForm from "@/Components/TheDialogForm";
@@ -131,9 +134,17 @@ import TheDialogForm from "@/Components/TheDialogForm";
 export default {
     mixins: [CommonMixin, PasswordMixin],
     props: {
+        value: {
+            type: Boolean,
+            default: false,
+        },
         id: {
             type: Number,
             default: -1,
+        },
+        readonly: {
+            type: Boolean,
+            default: false,
         },
         roles: {
             type: Array,
@@ -157,12 +168,10 @@ export default {
     },
     data() {
         return {
+            model: "user",
             form: this.$inertia.form(
                 {
-                    id: -1,
-                    name: "",
-                    email: "",
-                    role_id: -1,
+                    ...cloneDeep(User),
                     password: "",
                     password_confirmation: "",
                 },
@@ -170,13 +179,26 @@ export default {
                     bag: "userForm",
                 }
             ),
-
-            model: "user",
         };
     },
     computed: {
         creating() {
-            return this.id == -1;
+            return this.id === -1;
+        },
+        formTitle() {
+            if (this.readonly) return;
+
+            let title = this.model.toUpperCase();
+            let action = this.creating ? "New" : "Edit";
+            return `${action} ${title}`;
+        },
+        dialog: {
+            get() {
+                return this.value;
+            },
+            set(value) {
+                this.$emit("input", value);
+            },
         },
         // validator() {
         //     return this.$refs.form;
@@ -192,27 +214,49 @@ export default {
     },
     methods: {
         save() {
+            let method = "post";
+            let url = route("user.store");
+
+            if (!this.creating) {
+                method = "put";
+                url = route("user.update", { id: this.id });
+            }
+
             this.form
-                .post(route("user.store"), {
+                .submit(method, url, {
                     preserveScroll: true,
                 })
-                .then(() => {});
+                .then((response) => {
+                    if (!this.form.hasErrors()) {
+                        this.dialog = false;
+                    }
+                })
+                .catch((e) => {
+                    console.warn(e);
+                });
         },
         fetch() {
             this.$http
                 .get(route("user.show", { id: this.id }).url())
                 .then(({ data }) => {
-                    this.form.id = data.id;
-                    this.form.name = data.name;
-                    this.form.email = data.email;
-                    this.form.role_id = data.role_id;
+                    assign(this.form, pick(data, keys(User)));
                 });
         },
+        reset() {
+            delete this.$page.errorBags["userForm"];
+            assign(this.form, User);
+        },
     },
-    mounted() {
-        if (!this.creating) {
-            this.fetch();
-        }
+    watch: {
+        id: {
+            handler(id) {
+                this.reset();
+
+                if (!this.creating) {
+                    this.fetch();
+                }
+            },
+        },
     },
 };
 </script>

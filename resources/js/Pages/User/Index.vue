@@ -64,12 +64,7 @@
             </template>
         </the-dialog-delete> -->
 
-        <user-form
-            v-if="dialogForm"
-            @close="dialogForm = false"
-            :id="id"
-            :roles="roles"
-        ></user-form>
+        <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
     </private-layout>
 </template>
 

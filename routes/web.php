@@ -22,7 +22,13 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
-    Route::get('/user', [UserController::class, 'index'])->name('user.index');
-    Route::post('/user', [UserController::class, 'store'])->name('user.store');
-    Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
+    // Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    // Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
+    // Route::post('/user', [UserController::class, 'store'])->name('user.store');
+    // Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
+
+    Route::resource('user', UserController::class, [
+        // 'except' => [],
+        // 'only' => []
+    ]);
 });

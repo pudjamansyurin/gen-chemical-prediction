@@ -7,8 +7,8 @@ export const User = {
     id: -1,
     name: "",
     email: "",
-    role_id: -1,
-    role: Role
+    role_id: -1
+    // role: Role
 };
 
 // export const Pack = {

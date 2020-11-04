@@ -12,7 +12,7 @@
             <v-card-title>
                 <v-row no-gutters>
                     <v-col cols="12" sm="5">
-                        <span class="headline">{{ formTitle }}</span>
+                        <span class="headline">{{ title }}</span>
 
                         <v-btn
                             v-if="!mobile"
@@ -68,7 +68,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     v-if="!readonly"
-                    :disabled="!!loading"
+                    :disabled="!!loading || disabled"
                     @click="$emit('submit')"
                     color="primary"
                 >
@@ -89,19 +89,19 @@ export default {
             type: Boolean,
             default: false,
         },
-        creating: {
-            type: Boolean,
-            default: true,
-        },
-        model: {
+        title: {
             type: String,
-            default: "Item",
+            default: "Detail Item",
         },
-
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
         readonly: {
             type: Boolean,
             default: false,
         },
+
         width: {
             type: [String, Number],
             default: 600,
@@ -121,21 +121,11 @@ export default {
         };
     },
     computed: {
-        formTitle() {
-            let title = this.model.toUpperCase();
-            let action = "Detail";
-
-            if (!this.readonly) {
-                action = this.creating ? "New" : "Edit";
-            }
-            return `${action} ${title}`;
-        },
         cardTextHeight() {
             if (!this.mobile && !this.fullscreen) return "max-height: 500px;";
-            return;
         },
         fullscreenIcon() {
-            return this.fullscreen ? "mdi-fullscreen-exit" : "mdi-fullscreen";
+            return `mdi-fullscreen${this.fullscreen ? "-exit" : ""}`;
         },
     },
 };

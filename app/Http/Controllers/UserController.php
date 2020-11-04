@@ -57,7 +57,7 @@ class UserController extends Controller
         // create
         $user = User::create($request->validated());
 
-        return back();
+        return back()->with('status', 'New user added.');
         // return response(
         //     new UserItem($user->loadRelation()),
         //     Response::HTTP_CREATED
@@ -95,9 +95,18 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        // $this->authorize('update', $user);
+
+        // update
+        $user->update($request->validated());
+
+        return back()->with('status', 'User updated.');
+        // return response(
+        //     new UserItem($user->loadRelation()),
+        //     Response::HTTP_OK
+        // );
     }
 
     /**
