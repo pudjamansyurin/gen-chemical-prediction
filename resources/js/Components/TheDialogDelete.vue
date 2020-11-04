@@ -8,7 +8,7 @@
         persistent
         scrollable
     >
-        <v-card :loading="!!loading">
+        <v-card :loading="!!disabled">
             <v-card-title> Confirmation </v-card-title>
             <v-divider></v-divider>
 
@@ -24,12 +24,12 @@
 
             <v-divider></v-divider>
             <v-card-actions>
-                <v-btn color="darken-1" @click="$emit('close')" text>
+                <v-btn color="darken-1" @click="$emit('input', false)" text>
                     Cancel
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
-                    :disabled="!!loading"
+                    :disabled="disabled"
                     @click="$emit('delete')"
                     color="red"
                 >
@@ -60,14 +60,16 @@ export default {
             type: String,
             default: "",
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         question() {
             const { length: single } = this.selected;
 
-            if (single) {
-                return `this ${this.model}?`;
-            }
+            if (single) return `this ${this.model}?`;
             return `these ${length} ${pluralize(this.model)}?`;
         },
         cardTextHeight() {

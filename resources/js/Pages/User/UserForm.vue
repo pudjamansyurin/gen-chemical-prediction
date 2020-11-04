@@ -186,9 +186,7 @@ export default {
 
             this.form._method = method;
             this.form
-                .post(url, {
-                    // preserveScroll: true,
-                })
+                .post(url /* { preserveScroll: true } */)
                 .then((response) => {
                     if (!this.form.hasErrors()) this.dialog = false;
                 });

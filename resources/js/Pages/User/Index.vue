@@ -15,12 +15,12 @@
             :headers="headers"
             :model="model"
             :total="total"
-            :items="data"
+            :items="items"
         >
             <template v-slot:card="{ item }">
-                <!-- <v-btn
+                <v-btn
                     :color="chip(item)"
-                    :outlined="!item.selected"
+                    outlined
                     absolute
                     top
                     right
@@ -30,19 +30,19 @@
                     {{ me(item) ? "Profile" : item.role.name }}
                 </v-btn>
 
-                <v-card-text @click="!me(item) && edit(item)">
+                <v-card-text @click="!me(item) && onEdit(item)">
                     <div class="overline">
                         {{ item.name }}
                     </div>
                     <div class="subtitle-2 font-weight-bold">
                         {{ item.email }}
                     </div>
-                </v-card-text> -->
+                </v-card-text>
             </template>
 
             <template v-slot:[`item.name`]="{ item }">
                 <v-chip
-                    @click="!me(item) && onEdit(item.id)"
+                    @click="!me(item) && onEdit(item)"
                     :color="chip(item)"
                     :small="dense"
                     dark
@@ -52,17 +52,11 @@
             </template>
         </the-data>
 
-        <!-- <the-dialog-delete
+        <user-delete
             v-model="dialogDelete"
-            :selected="selected"
+            :selected.sync="selected"
             :model="model"
-            @delete="remove"
-            @close="dialogDelete = false"
-        >
-            <template v-slot="{ item }">
-                {{ item.name }}
-            </template>
-        </the-dialog-delete> -->
+        ></user-delete>
 
         <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
     </private-layout>
@@ -70,7 +64,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
-import { cloneDeep } from "lodash";
+import { cloneDeep, pick } from "lodash";
 
 import { User } from "@/Config/models";
 import { table } from "@/Config";
@@ -85,21 +79,20 @@ import { SET_PROFILE } from "@/Store/app/mutation-types";
 
 import PrivateLayout from "@/Layouts/PrivateLayout";
 import AppTopBar from "@/Components/AppTopBar";
-import UserForm from "./UserForm";
 import TheData from "@/Components/TheData";
-import TheDialogDelete from "@/Components/TheDialogDelete";
+import UserForm from "./UserForm";
+import UserDelete from "./UserDelete";
 
 export default {
     mixins: [CommonMixin, PasswordMixin /* FetchListMixin */],
     components: {
         PrivateLayout,
         AppTopBar,
-        UserForm,
-
         TheData,
-        TheDialogDelete,
+        UserForm,
+        UserDelete,
     },
-    props: ["user", "data", "total", "roles"],
+    props: ["user", "items", "total", "roles"],
     data() {
         return {
             model: "user",
@@ -125,7 +118,6 @@ export default {
     computed: {
         ...mapState("app", ["profile"]),
         // ...mapState("model", ["users"]),
-
         fieldDisabled() {
             // return !this.creating && !this.form.authorized;
             return false;
@@ -138,7 +130,7 @@ export default {
             this.id = -1;
             this.dialogForm = true;
         },
-        onEdit(id) {
+        onEdit({ id }) {
             // this.change(item || this.selected[0]);
             this.id = id;
             this.dialogForm = true;
@@ -163,7 +155,6 @@ export default {
         // close() {},
         // create() {},
         // edit() {},
-        // remove() {},
         // save() {},
     },
     mounted() {

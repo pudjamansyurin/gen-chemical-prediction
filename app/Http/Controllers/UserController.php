@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteSomeRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserItem;
@@ -27,7 +28,7 @@ class UserController extends Controller
 
         // Response
         return Inertia::render('User/Index', [
-            'data' => UserItem::collection($users),
+            'items' => UserItem::collection($users),
             'total' => $total,
             'roles' => Role::all()
         ]);
@@ -115,8 +116,19 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(DeleteSomeRequest $request, $user)
     {
-        //
+        $usersId = $request->ids;
+        // $this->authorize('delete', [User::class, $usersId]);
+
+        // check
+        // if ($response = User::rejectWhenHas($usersId, [])) {
+        //     return $response;
+        // }
+
+        // delete
+        User::destroy($usersId);
+
+        return back()->with('status', 'User deleted.');
     }
 }

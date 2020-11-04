@@ -283,14 +283,14 @@ export default {
     },
     watch: {
         search: debounce(function (term) {
-            this.$emit("options:update", {
+            this.$emit("update:options", {
                 ...this.options,
                 page: 1,
                 search: term,
             });
         }, 500),
         tab: function (mine) {
-            this.$emit("options:update", {
+            this.$emit("update:options", {
                 ...this.options,
                 page: 1,
                 mine,
