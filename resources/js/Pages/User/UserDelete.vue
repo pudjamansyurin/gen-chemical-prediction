@@ -23,10 +23,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        model: {
-            type: String,
-            default: "",
-        },
         selected: {
             type: Array,
             default: () => [],
@@ -37,6 +33,7 @@ export default {
     },
     data() {
         return {
+            model: "user",
             form: this.$inertia.form({
                 _method: "DELETE",
                 ids: [],

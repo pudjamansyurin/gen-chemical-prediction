@@ -55,7 +55,6 @@
         <user-delete
             v-model="dialogDelete"
             :selected.sync="selected"
-            :model="model"
         ></user-delete>
 
         <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
@@ -96,14 +95,13 @@ export default {
     data() {
         return {
             model: "user",
-            modelDefault: User,
             headers: [
                 { text: "Name", value: "name" },
                 { text: "Email", value: "email" },
                 { text: "Role", value: "role.name", sortable: false },
             ],
-            changePassword: false,
 
+            id: -1,
             selected: [],
             dialogForm: false,
             dialogDelete: false,
@@ -111,13 +109,10 @@ export default {
                 ...table.options,
                 itemsPerPage: ls.get("perPage") || table.options.itemsPerPage,
             }),
-
-            id: -1,
         };
     },
     computed: {
         ...mapState("app", ["profile"]),
-        // ...mapState("model", ["users"]),
         fieldDisabled() {
             // return !this.creating && !this.form.authorized;
             return false;
@@ -126,12 +121,10 @@ export default {
     methods: {
         ...mapMutations("app", [SET_PROFILE]),
         onCreate() {
-            // this.change(this.modelDefault);
             this.id = -1;
             this.dialogForm = true;
         },
         onEdit({ id }) {
-            // this.change(item || this.selected[0]);
             this.id = id;
             this.dialogForm = true;
         },
@@ -141,21 +134,6 @@ export default {
         chip(item) {
             return this.me(item) ? "primary" : "green";
         },
-
-        // change(item) {
-        //     this.changePassword = item.id === -1;
-        //     // this.form = this.copyWithPassword(item);
-        // },
-        // onSave() {
-        //     this.removeUnchangedPassword();
-        // },
-        // toProfile() {
-        //     // this.$router.push({ name: "profile" });
-        // },
-        // close() {},
-        // create() {},
-        // edit() {},
-        // save() {},
     },
     mounted() {
         this.SET_PROFILE(this.user);
