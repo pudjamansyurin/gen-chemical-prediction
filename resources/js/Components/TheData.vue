@@ -32,7 +32,7 @@
                 :value="value"
                 @input="$emit('input', $event)"
                 :options="options"
-                @update:options="fetch($event)"
+                @update:options="update($event)"
                 :items="items"
             >
                 <template v-slot="{ item }">
@@ -45,7 +45,7 @@
                 :value="value"
                 @input="$emit('input', $event)"
                 :options="options"
-                @update:options="fetch($event)"
+                @update:options="update($event)"
                 :items="items"
                 :headers="headers"
                 :total="total"
@@ -101,7 +101,7 @@ export default {
         TheDataTable,
     },
     methods: {
-        fetch(options) {
+        update(options) {
             if (!isEqual(this.options, options)) {
                 this.$emit("update:options", options);
             }

@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
 
     Route::resource('user', UserController::class, [
-        // 'except' => [],
+        'except' => ['create', 'edit'],
         // 'only' => []
     ]);
 });

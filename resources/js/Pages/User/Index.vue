@@ -63,7 +63,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
-import { cloneDeep, pick } from "lodash";
+import { cloneDeep, pick, omit } from "lodash";
 
 import { User } from "@/Config/models";
 import { options as tableOptions } from "@/Config/table";
@@ -83,7 +83,7 @@ import UserDelete from "./UserDelete";
 
 export default {
     mixins: [CommonMixin, PasswordMixin /* FetchListMixin */],
-    layout: (h, page) => h(PrivateLayout, [page]),
+    layout: PrivateLayout,
     components: {
         AppTopBar,
         TheData,
@@ -136,6 +136,18 @@ export default {
     },
     mounted() {
         this.SET_PROFILE(this.user);
+    },
+    watch: {
+        options: {
+            handler(value) {
+                this.START_LOADING();
+                this.$inertia.replace(route(route().current()), {
+                    data: omit(value, ["mustSort", "multiSort"]),
+                    only: ["items", "total"],
+                    onFinish: () => this.STOP_LOADING(),
+                });
+            },
+        },
     },
 };
 </script>
