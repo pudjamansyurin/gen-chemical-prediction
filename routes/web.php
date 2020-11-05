@@ -27,8 +27,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::post('/user', [UserController::class, 'store'])->name('user.store');
     // Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
 
-    Route::resource('user', UserController::class, [
-        'except' => ['create', 'edit'],
-        // 'only' => []
-    ]);
+    // Route::resource('user', UserController::class, [
+    //     'except' => ['create', 'edit'],
+    //     // 'only' => []
+    // ]);
+
+    Route::apiResource('user', UserController::class);
 });

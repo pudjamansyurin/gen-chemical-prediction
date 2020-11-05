@@ -51,12 +51,12 @@ export default {
         $page: {
             immediate: true,
             handler(val) {
-                console.log(val);
+                console.warn("Inertia", val);
             },
         },
         "$page.profile": {
+            immediate: true,
             handler: function (user) {
-                console.warn(user);
                 if (user) this.SET_PROFILE(user);
                 else this.CLEAR_PROFILE();
             },
