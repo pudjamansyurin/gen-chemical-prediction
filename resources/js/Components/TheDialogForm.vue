@@ -19,7 +19,7 @@
                             @click="fullscreen = !fullscreen"
                             icon
                         >
-                            <v-icon>{{ fullscreenIcon }}</v-icon>
+                            <v-icon>{{ iconFullscreen }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col v-if="tabs.length" cols="12" sm="7">
@@ -120,7 +120,7 @@ export default {
         cardTextHeight() {
             if (!this.mobile && !this.fullscreen) return "max-height: 500px;";
         },
-        fullscreenIcon() {
+        iconFullscreen() {
             return `mdi-fullscreen${this.fullscreen ? "-exit" : ""}`;
         },
     },

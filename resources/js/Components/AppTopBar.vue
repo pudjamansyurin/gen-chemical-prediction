@@ -20,10 +20,12 @@
                 <v-text-field
                     v-if="searchBox || !mobile"
                     v-model="search"
+                    @click:append="setSearch(false)"
                     :append-icon="searchBoxIcon"
                     :autofocus="mobile"
-                    @click:append="setSearch(false)"
                     :dark="dark"
+                    :disabled="isLoading"
+                    :loading="isLoading"
                     label="Search"
                     dense
                     flat
@@ -65,9 +67,9 @@
                         <v-divider></v-divider>
 
                         <template v-if="!webview">
-                            <v-list-item @click="toggleFs">
+                            <v-list-item @click="toggleFullscreen">
                                 <v-list-item-icon>
-                                    <v-icon>{{ fullscreenIcon }}</v-icon>
+                                    <v-icon>{{ iconFullscreen }}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     <v-list-item-title>

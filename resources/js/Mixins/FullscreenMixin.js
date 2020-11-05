@@ -11,19 +11,19 @@ export default {
     },
     computed: {
         ...mapState("app", ["fullscreen"]),
-        fullscreenIcon() {
+        iconFullscreen() {
             return this.fullscreen ? "mdi-fullscreen-exit" : "mdi-fullscreen";
         }
     },
     methods: {
         ...mapMutations("app", [TOGGLE_FULLSCREEN]),
-        toggleFs() {
+        toggleFullscreen() {
             this.$fullscreen.toggle(document.body, {
                 callback: this.TOGGLE_FULLSCREEN()
             });
         },
-        confirmFs(state) {
-            if (state) this.toggleFs();
+        confirmFullscreen(state) {
+            if (state) this.toggleFullscreen();
 
             ls.set("confirmedFullscreen", true);
 

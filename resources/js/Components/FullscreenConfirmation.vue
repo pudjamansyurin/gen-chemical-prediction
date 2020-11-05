@@ -12,10 +12,16 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="confirmFs(false)">
+                <v-btn
+                    color="green darken-1"
+                    text
+                    @click="confirmFullscreen(false)"
+                >
                     No
                 </v-btn>
-                <v-btn color="green" dark @click="confirmFs(true)"> Yes </v-btn>
+                <v-btn color="green" dark @click="confirmFullscreen(true)">
+                    Yes
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

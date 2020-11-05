@@ -16,14 +16,12 @@ export const ls = {
     remove: item => window.localStorage.removeItem(item)
 };
 
-export const castId = value => {
-    let id = Number(value);
-
-    return Number.isInteger(id) ? id : -1;
-};
-
 export const logger = (message, type = "log") => {
     console[type](message);
+};
+
+export const bool = string => {
+    return string === "true";
 };
 
 // export const eHandler = e => {

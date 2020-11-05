@@ -112,7 +112,7 @@ export default {
             selected: [],
             dialogForm: false,
             dialogDelete: false,
-            options: cloneDeep(tableOptions),
+            options: cloneDeep(omit(tableOptions, "mine")),
         };
     },
     computed: {
@@ -149,7 +149,12 @@ export default {
         options: {
             handler: debounce(function (value) {
                 this.$inertia.replace(route(route().current()), {
-                    data: omit(value, ["mustSort", "multiSort"]),
+                    data: omit(value, [
+                        "groupBy",
+                        "groupDesc",
+                        "mustSort",
+                        "multiSort",
+                    ]),
                     only: ["items", "total"],
                     onStart: (visit) => this.START_LOADING(),
                     onFinish: () => this.STOP_LOADING(),

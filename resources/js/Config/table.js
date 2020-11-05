@@ -1,14 +1,19 @@
-import { ls } from "@/Utils";
+import { ls, bool } from "@/Utils";
+import qs from "qs";
+
+let query = qs.parse(window.location.search, {
+    ignoreQueryPrefix: true
+});
 
 export const options = {
-    page: 1,
-    itemsPerPage: ls.get("perPage") || 10,
-    multiSort: false,
-    mustSort: true,
+    page: Number(query.page) || 1,
+    itemsPerPage: Number(query.itemsPerPage) || ls.get("perPage") || 10,
+    sortBy: [query.sortBy ? query.sortBy[0] : "updated_at"],
+    sortDesc: [query.sortDesc ? bool(query.sortDesc[0]) : true],
     groupBy: [],
     groupDesc: [],
-    sortBy: ["updated_at"],
-    sortDesc: [true],
-    search: "",
-    mine: false
+    multiSort: false,
+    mustSort: true,
+    search: query.search || "",
+    mine: bool(query.mine) || false
 };
