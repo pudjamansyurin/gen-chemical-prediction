@@ -198,12 +198,12 @@ export default {
         },
     },
     watch: {
-        creating: {
+        id: {
             immediate: true,
-            handler(state) {
+            handler(id) {
                 this.reset();
-                if (!state) this.fetch();
-                this.form.change_password = state;
+                if (!this.creating) this.fetch();
+                this.form.change_password = this.creating;
             },
         },
     },
