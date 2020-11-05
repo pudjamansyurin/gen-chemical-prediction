@@ -112,7 +112,7 @@ export default {
             selected: [],
             dialogForm: false,
             dialogDelete: false,
-            options: cloneDeep(omit(tableOptions, "mine")),
+            options: cloneDeep(tableOptions),
         };
     },
     computed: {
@@ -154,6 +154,7 @@ export default {
                         "groupDesc",
                         "mustSort",
                         "multiSort",
+                        "mine",
                     ]),
                     only: ["items", "total"],
                     onStart: (visit) => this.START_LOADING(),

@@ -20,11 +20,10 @@
                 <v-text-field
                     v-if="searchBox || !mobile"
                     v-model="search"
-                    @click:append="setSearch(false)"
+                    @click:append="setSearchBox(false)"
                     :append-icon="searchBoxIcon"
                     :autofocus="mobile"
                     :dark="dark"
-                    :disabled="isLoading"
                     :loading="isLoading"
                     label="Search"
                     dense
@@ -38,7 +37,7 @@
             <template v-if="crud">
                 <v-btn
                     v-if="!searchBox && mobile"
-                    @click="setSearch(true)"
+                    @click="setSearchBox(true)"
                     icon
                 >
                     <v-icon>mdi-magnify</v-icon>
@@ -204,7 +203,7 @@
 import { mapState, mapMutations, mapActions } from "vuex";
 import { debounce } from "lodash";
 
-import { ls } from "@/Utils";
+import { ls, bool } from "@/Utils";
 import { CommonMixin, FullscreenMixin } from "@/Mixins";
 import {
     TOGGLE_DRAWER,
@@ -248,8 +247,6 @@ export default {
     data() {
         return {
             searchBox: false,
-            search: "",
-            tab: 0,
         };
     },
     computed: {
@@ -261,7 +258,7 @@ export default {
             return this.dark ? "grey darken-3" : "primary";
         },
         searchBoxIcon() {
-            return this.mobile || this.search
+            return this.mobile || this.options.search
                 ? "mdi-magnify-close"
                 : "mdi-magnify";
         },
@@ -271,11 +268,27 @@ export default {
         denseIcon() {
             return this.dense ? "mdi-table" : "mdi-table-large";
         },
+        search: {
+            get() {
+                return this.options.search;
+            },
+            set(value) {
+                this.updateOptions({ search: value });
+            },
+        },
+        tab: {
+            get() {
+                return Number(this.options.mine);
+            },
+            set(value) {
+                this.updateOptions({ mine: bool(value) });
+            },
+        },
     },
     methods: {
         ...mapMutations("app", [TOGGLE_DENSE, TOGGLE_DRAWER, TOGGLE_DARK]),
         // ...mapActions("app", [LOGOUT]),
-        setSearch(state) {
+        setSearchBox(state) {
             if (!state) this.search = "";
             this.searchBox = state;
         },
@@ -290,14 +303,6 @@ export default {
             // this.LOGOUT()
             //     .then(() => this.$router.push({ name: "login" }))
             //     .catch((e) => eHandler(e));
-        },
-    },
-    watch: {
-        search: function (term) {
-            this.updateOptions({ search: term });
-        },
-        tab: function (index) {
-            this.updateOptions({ mine: index === 1 });
         },
     },
 };
