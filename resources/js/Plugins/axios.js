@@ -7,9 +7,9 @@ import { ns, logger } from "@/Utils";
 import {
     START_LOADING,
     STOP_LOADING,
-    SET_MESSAGE,
+    SET_MESSAGE
     // CLEAR_ERROR,
-    CLEAR_MESSAGE
+    // CLEAR_MESSAGE
 } from "@/Store/app/mutation-types";
 
 // Create axios instance
@@ -36,7 +36,7 @@ instance.interceptors.request.use(
 
         store.commit(ns("app", START_LOADING));
         // store.commit(ns("app", CLEAR_ERROR));
-        store.commit(ns("app", CLEAR_MESSAGE));
+        // store.commit(ns("app", CLEAR_MESSAGE));
 
         return config;
     },

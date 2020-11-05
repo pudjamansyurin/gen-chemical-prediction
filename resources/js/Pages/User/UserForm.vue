@@ -25,7 +25,7 @@
                     outlined
                 ></v-text-field>
 
-                <v-select
+                <v-autocomplete
                     v-model="form.role_id"
                     :items="roles"
                     :error-messages="form.error('role_id')"
@@ -37,7 +37,7 @@
                     chips
                     persistent-hint
                     outlined
-                ></v-select>
+                ></v-autocomplete>
 
                 <v-checkbox
                     v-if="!creating"

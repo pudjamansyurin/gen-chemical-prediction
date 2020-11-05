@@ -150,7 +150,7 @@ export default {
                         "multiSort",
                         "mine",
                     ]),
-                    only: ["items", "total"],
+                    only: ["flash", "items", "total"],
                     onStart: (visit) => this.START_LOADING(),
                     onFinish: () => this.STOP_LOADING(),
                 });

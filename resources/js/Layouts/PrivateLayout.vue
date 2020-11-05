@@ -24,7 +24,8 @@ import { CommonMixin } from "@/Mixins";
 import {
     SET_SIZE,
     SET_PROFILE,
-    CLEAR_PROFILE,
+    // CLEAR_PROFILE,
+    SET_MESSAGE,
 } from "@/Store/app/mutation-types";
 
 export default {
@@ -36,7 +37,12 @@ export default {
         TheSnackBar,
     },
     methods: {
-        ...mapMutations("app", [SET_SIZE, SET_PROFILE, CLEAR_PROFILE]),
+        ...mapMutations("app", [
+            SET_SIZE,
+            SET_PROFILE,
+            // CLEAR_PROFILE,
+            SET_MESSAGE,
+        ]),
         onResize() {
             this.SET_SIZE({
                 width: window.innerWidth,
@@ -44,23 +50,26 @@ export default {
             });
         },
     },
-    mounted() {
-        this.onResize();
-    },
     watch: {
         $page: {
             immediate: true,
-            handler(val) {
-                console.warn("Inertia", val);
+            handler(page) {
+                console.warn("Inertia", page);
+
+                if (page.flash)
+                    this.SET_MESSAGE({ type: "info", text: page.flash });
             },
         },
         "$page.profile": {
             immediate: true,
             handler: function (user) {
                 if (user) this.SET_PROFILE(user);
-                else this.CLEAR_PROFILE();
+                // else this.CLEAR_PROFILE();
             },
         },
+    },
+    mounted() {
+        this.onResize();
     },
 };
 </script>

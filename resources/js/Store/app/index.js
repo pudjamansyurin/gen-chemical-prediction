@@ -14,7 +14,7 @@ const state = {
     fullscreen: false,
     dense: ls.get("dense") || false,
     dark: ls.get("dark") || false,
-    perPage: ls.get("perPage") || options.itemsPerPage,
+    // perPage: ls.get("perPage") || options.itemsPerPage,
     profile: /* ls.get("profile") || */ cloneDeep(User),
     message: {
         text: "",

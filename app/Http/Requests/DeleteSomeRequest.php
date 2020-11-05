@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteSomeRequest extends FormRequest
 {
+    protected $errorBag = 'defaultDelete';
+
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -9,6 +9,7 @@ use App\Http\Resources\UserItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
@@ -51,7 +52,7 @@ class UserController extends Controller
         $user = User::create($request->validated());
 
 
-        return back()->with('status', 'New user added.');
+        return back()->with('flash', 'New user added.');
         // return response(
         //     new UserItem($user->loadRelation()),
         //     Response::HTTP_CREATED
@@ -84,7 +85,7 @@ class UserController extends Controller
         // update
         $user->update($request->validated());
 
-        return back()->with('status', 'User updated.');
+        return back()->with('flash', 'User updated.');
 
         // return response(
         //     new UserItem($user->loadRelation()),
@@ -111,6 +112,6 @@ class UserController extends Controller
         // delete
         User::destroy($usersId);
 
-        return back()->with('status', 'User deleted.');
+        return back()->with('flash', 'User deleted.');
     }
 }
