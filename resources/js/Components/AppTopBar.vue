@@ -11,7 +11,12 @@
                     @click.stop="TOGGLE_DRAWER"
                 ></v-app-bar-nav-icon>
                 <v-toolbar-title>
-                    <span>{{ pageTitle }}</span>
+                    <inertia-link
+                        :href="route(route().current())"
+                        class="white--text text-decoration-none"
+                    >
+                        {{ pageTitle }}
+                    </inertia-link>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
             </template>
@@ -300,6 +305,9 @@ export default {
             });
         },
         logout() {
+            this.$http.post(route("logout").url()).then((response) => {
+                window.location = "/";
+            });
             // this.LOGOUT()
             //     .then(() => this.$router.push({ name: "login" }))
             //     .catch((e) => eHandler(e));
