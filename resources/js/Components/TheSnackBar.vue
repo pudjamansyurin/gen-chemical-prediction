@@ -1,8 +1,8 @@
 <template>
     <v-snackbar
-        :value="snackbar"
-        :timeout="timeout"
+        :value="message.text"
         :color="message.type"
+        :timeout="timeout"
         top
         right
     >
@@ -20,15 +20,14 @@ import { mapState } from "vuex";
 export default {
     data() {
         return {
-            text: "",
             timeout: 2000,
         };
     },
     computed: {
         ...mapState("app", ["message"]),
-        snackbar() {
-            return this.message.text; // && this.$route.name != "error" ;
-        },
+        // snackbar() {
+        //     return this.message.text; // && this.$route.name != "error" ;
+        // },
     },
 };
 </script>

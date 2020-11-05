@@ -29,11 +29,11 @@ export default {
     },
     [mutations.SET_PROFILE](state, data) {
         state.profile = data;
-        ls.set("profile", data);
+        // ls.set("profile", data);
     },
     [mutations.CLEAR_PROFILE](state) {
         state.profile = cloneDeep(User);
-        ls.remove("profile");
+        // ls.remove("profile");
     },
     [mutations.SET_PER_PAGE](state, count) {
         state.perPage = count;

@@ -21,7 +21,11 @@ import AppBottomNav from "@/Components/AppBottomNav";
 import AppLeftDrawer from "@/Components/AppLeftDrawer";
 
 import { CommonMixin } from "@/Mixins";
-import { SET_SIZE } from "@/Store/app/mutation-types";
+import {
+    SET_SIZE,
+    SET_PROFILE,
+    CLEAR_PROFILE,
+} from "@/Store/app/mutation-types";
 
 export default {
     mixins: [CommonMixin],
@@ -32,7 +36,7 @@ export default {
         TheSnackBar,
     },
     methods: {
-        ...mapMutations("app", [SET_SIZE]),
+        ...mapMutations("app", [SET_SIZE, SET_PROFILE, CLEAR_PROFILE]),
         onResize() {
             this.SET_SIZE({
                 width: window.innerWidth,
@@ -42,6 +46,21 @@ export default {
     },
     mounted() {
         this.onResize();
+    },
+    watch: {
+        $page: {
+            immediate: true,
+            handler(val) {
+                console.log(val);
+            },
+        },
+        "$page.profile": {
+            handler: function (user) {
+                console.warn(user);
+                if (user) this.SET_PROFILE(user);
+                else this.CLEAR_PROFILE();
+            },
+        },
     },
 };
 </script>

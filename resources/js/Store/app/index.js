@@ -14,17 +14,17 @@ const state = {
     fullscreen: false,
     dense: ls.get("dense") || false,
     dark: ls.get("dark") || false,
-    profile: ls.get("profile") || cloneDeep(User),
     perPage: ls.get("perPage") || options.itemsPerPage,
-    // remember: ls.get("remember") || false,
-    size: {
-        width: 0,
-        height: 0
-    },
+    profile: /* ls.get("profile") || */ cloneDeep(User),
     message: {
         text: "",
         type: "info"
+    },
+    size: {
+        width: 0,
+        height: 0
     }
+    // remember: ls.get("remember") || false,
     // error: {
     //     code: null,
     //     text: ""

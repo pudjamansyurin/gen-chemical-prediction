@@ -10,8 +10,8 @@ export const User = {
     role_id: -1,
     password: "",
     password_confirmation: "",
-    change_password: null
-    // role: Role
+    change_password: null,
+    role: Role
 };
 
 // export const Pack = {

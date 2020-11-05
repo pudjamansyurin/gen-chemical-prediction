@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\UserItem;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,9 +43,12 @@ class HandleInertiaRequests extends Middleware
             // 'appName' => config('app.name'),
 
             // Lazily
-            'user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email')
-                : null,
+            'profile' => function () use ($request) {
+                if ($user = $request->user()) {
+                    return new UserItem($user->loadRelation());
+                }
+                return null;
+            }
         ]);
     }
 }

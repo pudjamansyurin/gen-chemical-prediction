@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState } from "vuex";
 import { cloneDeep, pick, omit, debounce } from "lodash";
 
 import { User } from "@/Config/models";
@@ -80,7 +80,6 @@ import {
     PasswordMixin,
     // FetchListMixin,
 } from "@/Mixins";
-import { SET_PROFILE } from "@/Store/app/mutation-types";
 
 import PrivateLayout from "@/Layouts/PrivateLayout";
 import AppTopBar from "@/Components/AppTopBar";
@@ -97,7 +96,7 @@ export default {
         UserForm,
         UserDelete,
     },
-    props: ["user", "items", "total", "roles"],
+    props: ["items", "total", "roles"],
     data() {
         return {
             model: "user",
@@ -123,7 +122,6 @@ export default {
         },
     },
     methods: {
-        ...mapMutations("app", [SET_PROFILE]),
         onCreate() {
             this.id = -1;
             this.dialogForm = true;
@@ -136,14 +134,11 @@ export default {
             this.dialogDelete = true;
         },
         me({ id }) {
-            return this.profile.id == id;
+            return this.profile.id === id;
         },
         chip(item) {
             return this.me(item) ? "primary" : "green";
         },
-    },
-    mounted() {
-        this.SET_PROFILE(this.user);
     },
     watch: {
         options: {
