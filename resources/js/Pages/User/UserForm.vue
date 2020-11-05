@@ -187,11 +187,10 @@ export default {
             });
         },
         fetch() {
-            this.$http
-                .get(route("user.show", { id: this.id }).url())
-                .then(({ data }) => {
-                    assign(this.form, pick(data, keys(User)));
-                });
+            let url = route("user.show", { id: this.id }).url();
+            this.$http.get(url).then(({ data }) => {
+                assign(this.form, pick(data, keys(User)));
+            });
         },
         reset() {
             delete this.$page.errorBags["userForm"];

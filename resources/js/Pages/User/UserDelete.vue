@@ -12,7 +12,11 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 import { CommonMixin } from "@/Mixins";
+import { SET_MESSAGE } from "@/Store/app/mutation-types";
+
 import TheDialogDelete from "@/Components/TheDialogDelete";
 
 export default {
@@ -33,10 +37,15 @@ export default {
     data() {
         return {
             model: "user",
-            form: this.$inertia.form({
-                _method: "DELETE",
-                ids: [],
-            }),
+            form: this.$inertia.form(
+                {
+                    _method: "DELETE",
+                    ids: [],
+                },
+                {
+                    bag: "defaultDelete",
+                }
+            ),
         };
     },
     computed: {
@@ -50,16 +59,23 @@ export default {
         },
     },
     methods: {
+        ...mapMutations("app", [SET_MESSAGE]),
         remove() {
+            let url = route("user.destroy", { id: -1 });
             this.form.ids = this.selected.map(({ id }) => id);
 
-            this.form.post(route("user.destroy", { id: -1 }), {
+            this.form.post(url, {
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) {
                         this.$emit("update:selected", []);
                         this.dialog = false;
+                    } else {
+                        this.SET_MESSAGE({
+                            type: "error",
+                            text: this.form.error("ids"),
+                        });
                     }
                 },
             });
