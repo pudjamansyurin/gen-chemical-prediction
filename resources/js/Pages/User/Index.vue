@@ -70,7 +70,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
-import { cloneDeep, pick, omit } from "lodash";
+import { cloneDeep, pick, omit, debounce } from "lodash";
 
 import { User } from "@/Config/models";
 import { options as tableOptions } from "@/Config/table";
@@ -147,14 +147,14 @@ export default {
     },
     watch: {
         options: {
-            handler(value) {
+            handler: debounce(function (value) {
                 this.$inertia.replace(route(route().current()), {
                     data: omit(value, ["mustSort", "multiSort"]),
                     only: ["items", "total"],
                     onStart: (visit) => this.START_LOADING(),
                     onFinish: () => this.STOP_LOADING(),
                 });
-            },
+            }, 500),
         },
     },
 };

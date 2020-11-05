@@ -1,11 +1,14 @@
 <template>
     <v-app v-resize="onResize">
         <app-left-drawer></app-left-drawer>
+        <app-bottom-nav v-if="mobile"></app-bottom-nav>
+
         <app-container>
             <slot></slot>
         </app-container>
-        <app-bottom-nav v-if="mobile"></app-bottom-nav>
+
         <the-snack-bar></the-snack-bar>
+        <!-- <portal-target name="modal"> </portal-target> -->
     </v-app>
 </template>
 

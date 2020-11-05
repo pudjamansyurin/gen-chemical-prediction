@@ -50,6 +50,7 @@ class UserController extends Controller
         // create
         $user = User::create($request->validated());
 
+
         return back()->with('status', 'New user added.');
         // return response(
         //     new UserItem($user->loadRelation()),

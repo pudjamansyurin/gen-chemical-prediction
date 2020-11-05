@@ -185,9 +185,6 @@ export default {
                     if (!this.form.hasErrors()) this.dialog = false;
                 },
             });
-            // .then((response) => {
-            //     if (!this.form.hasErrors()) this.dialog = false;
-            // });
         },
         fetch() {
             this.$http

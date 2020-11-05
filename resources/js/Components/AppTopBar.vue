@@ -11,7 +11,7 @@
                     @click.stop="TOGGLE_DRAWER"
                 ></v-app-bar-nav-icon>
                 <v-toolbar-title>
-                    <span>{{ page }}</span>
+                    <span>{{ pageTitle }}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
             </template>
@@ -252,6 +252,9 @@ export default {
     },
     computed: {
         ...mapState("app", ["title", "dark", "dense"]),
+        pageTitle() {
+            return this.page.toUpperCase();
+        },
         appBarColor() {
             return this.dark ? "grey darken-3" : "primary";
         },
@@ -272,8 +275,14 @@ export default {
         // ...mapActions("app", [LOGOUT]),
         setSearch(state) {
             if (!state) this.search = "";
-
             this.searchBox = state;
+        },
+        updateOptions(params) {
+            this.$emit("update:options", {
+                ...this.options,
+                ...params,
+                page: 1,
+            });
         },
         logout() {
             // this.LOGOUT()
@@ -282,19 +291,11 @@ export default {
         },
     },
     watch: {
-        search: debounce(function (term) {
-            this.$emit("update:options", {
-                ...this.options,
-                page: 1,
-                search: term,
-            });
-        }, 500),
-        tab: function (mine) {
-            this.$emit("update:options", {
-                ...this.options,
-                page: 1,
-                mine,
-            });
+        search: function (term) {
+            this.updateOptions({ search: term });
+        },
+        tab: function (index) {
+            this.updateOptions({ mine: index === 1 });
         },
     },
 };
