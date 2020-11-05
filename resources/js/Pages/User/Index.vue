@@ -116,10 +116,9 @@ export default {
     },
     computed: {
         ...mapState("app", ["profile"]),
-        fieldDisabled() {
-            // return !this.creating && !this.form.authorized;
-            return false;
-        },
+        // fieldDisabled() {
+        //     return !this.creating && !this.form.authorized;
+        // },
     },
     methods: {
         onCreate() {
