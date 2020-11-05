@@ -7,7 +7,7 @@
         :headers="headers"
         :items="items"
         :server-items-length="total"
-        :loading="!!loading"
+        :loading="isLoading"
         :dense="dense"
         :dark="dark"
         :page="1"

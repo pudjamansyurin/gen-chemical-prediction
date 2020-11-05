@@ -1,15 +1,15 @@
 <template>
     <fragment>
-        <!-- loading desktop -->
+        <!-- loader desktop -->
         <v-skeleton-loader
-            v-show="items.length == 0 && !!loading && !mobile"
+            v-show="items.length == 0 && isLoading && !mobile"
             :dark="dark"
             type="table"
         >
         </v-skeleton-loader>
-        <!-- loading mobile  -->
+        <!-- loader mobile  -->
         <v-skeleton-loader
-            v-show="items.length == 0 && !!loading && mobile"
+            v-show="items.length == 0 && isLoading && mobile"
             v-for="n in 10"
             :key="n"
             :dark="dark"
@@ -18,7 +18,7 @@
         ></v-skeleton-loader>
         <!-- no data -->
         <v-alert
-            v-show="items.length == 0 && !!!loading"
+            v-show="items.length == 0 && !isLoading"
             :dark="dark"
             type="info"
             border="top"

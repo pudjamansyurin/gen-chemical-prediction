@@ -1,11 +1,12 @@
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 import isWebview from "is-ua-webview";
 
 import { START_LOADING, STOP_LOADING } from "@/Store/app/mutation-types";
 
 export default {
     computed: {
-        ...mapState("app", ["loading", "dark", "dense"]),
+        ...mapState("app", ["dark", "dense"]),
+        ...mapGetters("app", ["isLoading"]),
         mobile() {
             return this.$vuetify.breakpoint.smAndDown;
         },

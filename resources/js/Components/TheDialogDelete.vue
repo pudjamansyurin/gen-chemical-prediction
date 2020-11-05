@@ -8,7 +8,7 @@
         persistent
         scrollable
     >
-        <v-card :loading="!!disabled">
+        <v-card :loading="isLoading">
             <v-card-title> Confirmation </v-card-title>
             <v-divider></v-divider>
 
@@ -29,7 +29,7 @@
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
-                    :disabled="disabled"
+                    :disabled="isLoading"
                     @click="$emit('delete')"
                     color="red"
                 >
@@ -59,10 +59,6 @@ export default {
         model: {
             type: String,
             default: "",
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
     },
     computed: {

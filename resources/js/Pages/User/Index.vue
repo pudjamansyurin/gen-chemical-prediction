@@ -32,6 +32,9 @@
 
                 <v-card-text @click="!me(item) && onEdit(item)">
                     <div class="overline">
+                        {{ item.updated_at | moment("from") }}
+                    </div>
+                    <div class="overline">
                         {{ item.name }}
                     </div>
                     <div class="subtitle-2 font-weight-bold">
@@ -49,6 +52,10 @@
                 >
                     {{ item.name }}
                 </v-chip>
+            </template>
+
+            <template v-slot:[`item.updated_at`]="{ item }">
+                {{ item.updated_at | moment("from") }}
             </template>
         </the-data>
 
@@ -98,6 +105,7 @@ export default {
                 { text: "Name", value: "name" },
                 { text: "Email", value: "email" },
                 { text: "Role", value: "role.name", sortable: false },
+                { text: "UpdatedAt", value: "updated_at" },
             ],
 
             id: -1,
@@ -140,10 +148,10 @@ export default {
     watch: {
         options: {
             handler(value) {
-                this.START_LOADING();
                 this.$inertia.replace(route(route().current()), {
                     data: omit(value, ["mustSort", "multiSort"]),
                     only: ["items", "total"],
+                    onStart: (visit) => this.START_LOADING(),
                     onFinish: () => this.STOP_LOADING(),
                 });
             },

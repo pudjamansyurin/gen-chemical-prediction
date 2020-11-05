@@ -8,7 +8,7 @@
         persistent
         scrollable
     >
-        <v-card :loading="disabled">
+        <v-card :loading="isLoading">
             <v-card-title>
                 <v-row no-gutters>
                     <v-col cols="12" sm="5">
@@ -50,10 +50,10 @@
                     touchless
                 >
                     <v-tab-item v-for="item in tabs" :key="item">
-                        <slot :name="item" :disabled="disabled"> </slot>
+                        <slot :name="item" :disabled="isLoading"> </slot>
                     </v-tab-item>
                 </v-tabs-items>
-                <slot v-else :disabled="disabled"></slot>
+                <slot v-else :disabled="isLoading"></slot>
             </v-card-text>
 
             <v-divider></v-divider>
@@ -68,7 +68,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     v-if="!readonly"
-                    :disabled="disabled"
+                    :disabled="isLoading"
                     @click="$emit('submit')"
                     color="primary"
                 >
@@ -92,10 +92,6 @@ export default {
         title: {
             type: String,
             default: "Detail Item",
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
         readonly: {
             type: Boolean,

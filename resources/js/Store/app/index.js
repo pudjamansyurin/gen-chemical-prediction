@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 
-// import getters from "./getters";
+import getters from "./getters";
 // import actions from "./actions";
 import mutations from "./mutations";
 import { ls } from "@/Utils";
@@ -34,7 +34,7 @@ const state = {
 export default {
     namespaced: true,
     state,
-    // getters,
+    getters,
     // actions,
     mutations
 };

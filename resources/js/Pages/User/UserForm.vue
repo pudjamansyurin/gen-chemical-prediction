@@ -1,10 +1,5 @@
 <template>
-    <the-dialog-form
-        v-model="dialog"
-        :title="formTitle"
-        :disabled="formDisabled"
-        @submit="save"
-    >
+    <the-dialog-form v-model="dialog" :title="formTitle" @submit="save">
         <template v-slot="{ disabled }">
             <v-form @submit.prevent="save" :disabled="disabled">
                 <v-text-field
@@ -150,9 +145,6 @@ export default {
         creating() {
             return this.id === -1;
         },
-        formDisabled() {
-            return !!this.loading || this.form.processing;
-        },
         formTitle() {
             if (this.readonly) return;
 
@@ -170,7 +162,7 @@ export default {
         },
     },
     methods: {
-        decideMethod() {
+        makeMethod() {
             let method = "post";
             let url = route("user.store");
 
@@ -182,14 +174,20 @@ export default {
             return { url, method };
         },
         save() {
-            let { url, method } = this.decideMethod();
+            let { url, method } = this.makeMethod();
 
             this.form._method = method;
-            this.form
-                .post(url /* { preserveScroll: true } */)
-                .then((response) => {
+            this.form.post(url, {
+                preserveScroll: true,
+                onStart: (visit) => this.START_LOADING(),
+                onFinish: () => this.STOP_LOADING(),
+                onSuccess: (page) => {
                     if (!this.form.hasErrors()) this.dialog = false;
-                });
+                },
+            });
+            // .then((response) => {
+            //     if (!this.form.hasErrors()) this.dialog = false;
+            // });
         },
         fetch() {
             this.$http

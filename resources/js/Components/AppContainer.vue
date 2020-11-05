@@ -2,8 +2,8 @@
     <v-main :class="dark ? 'black' : 'grey lighten-3'">
         <v-container fluid>
             <slot></slot>
-            <!-- loading overlay -->
-            <v-overlay v-if="mobile" :value="loading" absolute>
+            <!-- loader overlay -->
+            <v-overlay v-if="mobile" :value="isLoading" absolute>
                 <v-progress-circular indeterminate size="64" color="white">
                 </v-progress-circular>
             </v-overlay>

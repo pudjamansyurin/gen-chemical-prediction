@@ -3,7 +3,6 @@
         v-model="dialog"
         :selected="selected"
         :model="model"
-        :disabled="formDisabled"
         @delete="remove"
     >
         <template v-slot="{ item }">
@@ -41,9 +40,6 @@ export default {
         };
     },
     computed: {
-        formDisabled() {
-            return !!this.loading || this.form.processing;
-        },
         dialog: {
             get() {
                 return this.value;
@@ -57,14 +53,18 @@ export default {
         remove() {
             this.form.ids = this.selected.map(({ id }) => id);
 
-            this.form
-                .post(route("user.destroy", { id: -1 }))
-                .then((response) => {
+            this.form.post(route("user.destroy", { id: -1 }), {
+                onStart: (visit) => this.START_LOADING(),
+                onFinish: () => this.STOP_LOADING(),
+                onSuccess: (page) => {
                     if (!this.form.hasErrors()) {
                         this.$emit("update:selected", []);
                         this.dialog = false;
                     }
-                });
+                },
+            });
+            // .then((response) => {
+            // });
         },
     },
 };
