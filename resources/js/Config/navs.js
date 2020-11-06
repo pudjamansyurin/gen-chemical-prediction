@@ -6,7 +6,12 @@ export const menu = [
         icon: "mdi-currency-usd",
         bottomNav: true
     },
-    { text: "User", to: "user", icon: "mdi-account-group" }
+    {
+        text: "User",
+        to: "user.index",
+        icon: "mdi-account-group",
+        bottomNav: true
+    }
     // {
     //     text: "Formula",
     //     to: "formula",

@@ -7,9 +7,8 @@
             app
         >
             <template v-if="!searchBox || !mobile">
-                <v-app-bar-nav-icon
-                    @click.stop="TOGGLE_DRAWER"
-                ></v-app-bar-nav-icon>
+                <v-app-bar-nav-icon @click.stop="TOGGLE_DRAWER">
+                </v-app-bar-nav-icon>
                 <v-toolbar-title>
                     <inertia-link
                         :href="route(route().current())"

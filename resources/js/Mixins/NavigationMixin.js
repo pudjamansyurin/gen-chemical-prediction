@@ -41,6 +41,13 @@ export default {
         }
     },
     methods: {
+        goto(to) {
+            this.$inertia.visit(route(to));
+        },
+        active(to) {
+            return route().current() === to;
+        }
+
         // authPage(name) {
         //     let page = this.$router.resolve({ name });
         //     let role = get(this.profile, "role.name");

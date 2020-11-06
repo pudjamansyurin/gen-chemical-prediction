@@ -11,9 +11,6 @@ export default {
         state.loading -= 1;
     },
 
-    [mutations.TOGGLE_DRAWER](state) {
-        state.drawer = !state.drawer;
-    },
     [mutations.TOGGLE_FULLSCREEN](state) {
         state.fullscreen = !state.fullscreen;
     },
@@ -24,6 +21,9 @@ export default {
     [mutations.TOGGLE_DARK](state) {
         state.dark = !state.dark;
         ls.set("dark", state.dark);
+    },
+    [mutations.TOGGLE_DRAWER](state) {
+        state.drawer = !state.drawer;
     },
 
     [mutations.SET_DRAWER](state, open) {

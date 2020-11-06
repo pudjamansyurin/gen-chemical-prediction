@@ -9,9 +9,9 @@ import { options } from "@/Config/table";
 
 const state = {
     title: "CIWI Formula",
-    drawer: null,
     loading: 0,
     fullscreen: false,
+    drawer: null,
     dense: ls.get("dense") || false,
     dark: ls.get("dark") || false,
     // perPage: ls.get("perPage") || options.itemsPerPage,

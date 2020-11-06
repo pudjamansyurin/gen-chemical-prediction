@@ -7,13 +7,16 @@
         app
     >
         <v-list>
-            <v-list-item v-if="profile.id > -1" :dark="dark" link two-line>
+            <v-list-item
+                v-if="profile.id > -1"
+                :dark="dark"
+                @click="goto('my-profile.show')"
+                :input-value="active('my-profile.show')"
+                color="red"
+                link
+                two-line
+            >
                 <!-- :to="{ name: 'profile' }" -->
-
-                <!-- <v-list-item-avatar>
-                    <v-img src="/img/unknown.png" alt="Profile"></v-img>
-                </v-list-item-avatar> -->
-
                 <v-list-item-action>
                     <v-tooltip v-if="mini" nudge-right="12" right>
                         <template v-slot:activator="{ on, attrs }">
@@ -104,10 +107,11 @@
                     v-else
                     :key="index"
                     :dark="dark"
+                    @click="goto(item.to)"
+                    :input-value="active(item.to)"
                     color="primary"
                     link
                 >
-                    <!-- :to="item.to" -->
                     <v-list-item-action>
                         <v-tooltip v-if="mini" nudge-right="12" right>
                             <template v-slot:activator="{ on, attrs }">

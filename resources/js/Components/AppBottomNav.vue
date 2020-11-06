@@ -1,6 +1,11 @@
 <template>
     <v-bottom-navigation :dark="dark" color="primary" app>
-        <v-btn v-for="(item, index) in items" :key="index" :value="item.to">
+        <v-btn
+            v-for="(item, index) in items"
+            :key="index"
+            @click="goto(item.to)"
+            :input-value="active(item.to)"
+        >
             <span>{{ item.text }}</span>
             <v-icon>{{ item.icon }}</v-icon>
         </v-btn>
