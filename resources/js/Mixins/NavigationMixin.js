@@ -57,6 +57,11 @@ export default {
         },
         activeProfile() {
             return this.active(this.profile_url);
+        },
+        logout() {
+            this.$http.post(route("logout").url()).then(response => {
+                window.location = "/";
+            });
         }
 
         // authPage(name) {

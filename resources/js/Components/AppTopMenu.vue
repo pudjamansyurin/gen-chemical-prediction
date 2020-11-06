@@ -49,28 +49,6 @@
                     </v-list-item>
                     <v-divider></v-divider>
                 </template>
-
-                <v-list-item
-                    @click="gotoProfile()"
-                    :input-value="activeProfile()"
-                >
-                    <v-list-item-icon>
-                        <v-icon>mdi-face-profile</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Profile</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-
-                <v-list-item @click="logout()">
-                    <v-list-item-icon>
-                        <v-icon>mdi-logout</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title>Logout</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
             </v-list>
         </v-card>
     </v-menu>
@@ -80,10 +58,10 @@
 import { mapMutations } from "vuex";
 
 import { TOGGLE_DENSE, TOGGLE_DARK } from "@/Store/app/mutation-types";
-import { CommonMixin, NavigationMixin, FullscreenMixin } from "@/Mixins";
+import { CommonMixin, FullscreenMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, NavigationMixin, FullscreenMixin],
+    mixins: [CommonMixin, FullscreenMixin],
     computed: {
         darkIcon() {
             return `mdi-brightness${this.dark ? "-1" : "-3"}`;
@@ -94,11 +72,6 @@ export default {
     },
     methods: {
         ...mapMutations("app", [TOGGLE_DENSE, TOGGLE_DARK]),
-        logout() {
-            this.$http.post(route("logout").url()).then((response) => {
-                window.location = "/";
-            });
-        },
     },
 };
 </script>
