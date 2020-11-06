@@ -139,7 +139,7 @@ import { CommonMixin } from "@/Mixins";
 import { TOGGLE_DRAWER } from "@/Store/app/mutation-types";
 
 import AppTopMenu from "@/Components/AppTopMenu";
-import FullscreenConfirmation from "@/Components/FullscreenConfirmation";
+import FullscreenConfirmation from "@/Components/Extra/FullscreenConfirmation";
 
 export default {
     mixins: [CommonMixin],
@@ -220,6 +220,11 @@ export default {
                 page: 1,
             });
         },
+    },
+    mounted() {
+        if (this.options.search) {
+            this.setSearchBox(true);
+        }
     },
 };
 </script>

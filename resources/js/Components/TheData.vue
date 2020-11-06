@@ -1,38 +1,19 @@
 <template>
     <fragment>
-        <!-- loader desktop -->
-        <v-skeleton-loader
-            v-show="items.length == 0 && isLoading && !mobile"
-            :dark="dark"
-            type="table"
-        >
-        </v-skeleton-loader>
-        <!-- loader mobile  -->
-        <v-skeleton-loader
-            v-show="items.length == 0 && isLoading && mobile"
-            v-for="n in 10"
-            :key="n"
-            :dark="dark"
-            type="article"
-            class="my-3"
-        ></v-skeleton-loader>
-        <!-- no data -->
-        <v-alert
-            v-show="items.length == 0 && !isLoading"
-            :dark="dark"
-            type="info"
-            border="top"
-        >
-            <span>Oops, no {{ model }} data.</span>
-        </v-alert>
+        <!-- <the-skeleton-loader v-if="items.length == 0 && isLoading">
+        </the-skeleton-loader> -->
+
+        <no-content v-if="items.length == 0 && !isLoading" :model="model">
+        </no-content>
+
         <!-- has data -->
-        <div v-show="items.length > 0">
+        <div v-if="items.length > 0">
             <the-data-card
                 v-if="mobile"
                 :value="value"
                 @input="$emit('input', $event)"
                 :options="options"
-                @update:options="update($event)"
+                @update:options="updateOptions"
                 :items="items"
             >
                 <template v-slot="{ item }">
@@ -45,7 +26,7 @@
                 :value="value"
                 @input="$emit('input', $event)"
                 :options="options"
-                @update:options="update($event)"
+                @update:options="updateOptions"
                 :items="items"
                 :headers="headers"
                 :total="total"
@@ -67,6 +48,8 @@ import { CommonMixin } from "@/Mixins";
 
 import TheDataCard from "@/Components/TheDataCard";
 import TheDataTable from "@/Components/TheDataTable";
+import TheSkeletonLoader from "@/Components/TheSkeletonLoader";
+import NoContent from "@/Components/Extra/NoContent";
 
 export default {
     mixins: [CommonMixin],
@@ -97,11 +80,13 @@ export default {
         },
     },
     components: {
+        TheSkeletonLoader,
+        NoContent,
         TheDataCard,
         TheDataTable,
     },
     methods: {
-        update(options) {
+        updateOptions(options) {
             if (!isEqual(this.options, options)) {
                 this.$emit("update:options", options);
             }

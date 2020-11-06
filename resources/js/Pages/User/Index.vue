@@ -59,10 +59,8 @@
             </template>
         </the-data>
 
-        <user-delete
-            v-model="dialogDelete"
-            :selected.sync="selected"
-        ></user-delete>
+        <user-delete v-model="dialogDelete" :selected.sync="selected">
+        </user-delete>
 
         <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
     </fragment>
@@ -126,7 +124,7 @@ export default {
             this.dialogForm = true;
         },
         onEdit({ id }) {
-            if (this.selected.length > 0) {
+            if (this.selected.length === 0) {
                 this.id = id;
                 this.dialogForm = true;
             }
