@@ -1,9 +1,9 @@
 <template>
     <fragment>
         <app-top-bar
+            :page="model"
             :options.sync="options"
             :selected.sync="selected"
-            :page="model"
             @create="onCreate"
             @delete="onDelete"
             crud
@@ -22,10 +22,10 @@
                     :color="chip(item)"
                     outlined
                     absolute
-                    top
                     right
                     small
                     tile
+                    top
                 >
                     {{ me(item) ? "Profile" : item.role.name }}
                 </v-btn>
@@ -39,6 +39,9 @@
                     </div>
                     <div class="subtitle-2 font-weight-bold">
                         {{ item.email }}
+                        <v-icon v-if="item.verified" color="green">
+                            mdi-check-decagram
+                        </v-icon>
                     </div>
                 </v-card-text>
             </template>
@@ -52,6 +55,13 @@
                 >
                     {{ item.name }}
                 </v-chip>
+            </template>
+
+            <template v-slot:[`item.email`]="{ item }">
+                {{ item.email }}
+                <v-icon v-if="item.verified" color="green">
+                    mdi-check-decagram
+                </v-icon>
             </template>
 
             <template v-slot:[`item.updated_at`]="{ item }">
