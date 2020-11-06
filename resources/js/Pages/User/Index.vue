@@ -126,6 +126,8 @@ export default {
             this.dialogForm = true;
         },
         onEdit({ id }) {
+            if (this.selected.length > 0) return;
+
             this.id = id;
             this.dialogForm = true;
         },

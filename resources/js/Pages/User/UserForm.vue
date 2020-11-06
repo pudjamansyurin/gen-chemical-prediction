@@ -162,7 +162,17 @@ export default {
         },
     },
     methods: {
-        makeMethod() {
+        fetch() {
+            let url = route("user.show", { id: this.id }).url();
+            this.$http.get(url).then(({ data }) => {
+                assign(this.form, pick(data, keys(User)));
+            });
+        },
+        reset() {
+            delete this.$page.errorBags["userForm"];
+            assign(this.form, User);
+        },
+        method() {
             let method = "post";
             let url = route("user.store");
 
@@ -174,27 +184,17 @@ export default {
             return { url, method };
         },
         save() {
-            let { url, method } = this.makeMethod();
+            let { url, method } = this.method();
 
             this.form._method = method;
             this.form.post(url, {
-                preserveScroll: true,
+                // preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) this.dialog = false;
                 },
             });
-        },
-        fetch() {
-            let url = route("user.show", { id: this.id }).url();
-            this.$http.get(url).then(({ data }) => {
-                assign(this.form, pick(data, keys(User)));
-            });
-        },
-        reset() {
-            delete this.$page.errorBags["userForm"];
-            assign(this.form, User);
         },
     },
     watch: {

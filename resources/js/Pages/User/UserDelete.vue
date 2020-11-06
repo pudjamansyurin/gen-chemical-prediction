@@ -65,13 +65,14 @@ export default {
             this.form.ids = this.selected.map(({ id }) => id);
 
             this.form.post(url, {
+                // preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) {
                         this.$emit("update:selected", []);
                         this.dialog = false;
-                    } else {
+                    } else if (this.form.error("ids")) {
                         this.SET_MESSAGE({
                             type: "error",
                             text: this.form.error("ids"),

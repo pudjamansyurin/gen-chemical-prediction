@@ -49,81 +49,7 @@
                 </v-btn>
             </template>
 
-            <v-menu :nudge-width="150" offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" icon>
-                        <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                </template>
-
-                <v-card :dark="dark">
-                    <v-list class="py-0" dense>
-                        <v-list-item @click="TOGGLE_DARK">
-                            <v-list-item-icon>
-                                <v-icon>{{ darkIcon }}</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ dark ? "Lighter" : "Darker" }}
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-divider></v-divider>
-
-                        <template v-if="!webview">
-                            <v-list-item @click="toggleFullscreen">
-                                <v-list-item-icon>
-                                    <v-icon>{{ iconFullscreen }}</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>
-                                        {{
-                                            fullscreen
-                                                ? "Normal-screen"
-                                                : "Full-screen"
-                                        }}
-                                    </v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                        </template>
-
-                        <template v-if="!mobile">
-                            <v-list-item @click="TOGGLE_DENSE">
-                                <v-list-item-icon>
-                                    <v-icon>{{ denseIcon }}</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>
-                                        {{ dense ? "Bigger" : "Smaller" }}
-                                    </v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                        </template>
-
-                        <!-- <v-list-item :to="{ name: 'profile' }"> -->
-                        <v-list-item>
-                            <v-list-item-icon>
-                                <v-icon>mdi-face-profile</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>Profile</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-divider></v-divider>
-
-                        <v-list-item @click="logout()">
-                            <v-list-item-icon>
-                                <v-icon>mdi-logout</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>Logout</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-card>
-            </v-menu>
+            <app-top-menu></app-top-menu>
 
             <template #extension v-if="crud">
                 <template v-if="selected.length">
@@ -209,17 +135,14 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import { debounce } from "lodash";
 
 import { ls, bool } from "@/Utils";
-import { CommonMixin, FullscreenMixin } from "@/Mixins";
-import {
-    TOGGLE_DRAWER,
-    TOGGLE_DENSE,
-    TOGGLE_DARK,
-} from "@/Store/app/mutation-types";
-// import { LOGOUT } from "@/Store/app/action-types";
+import { CommonMixin } from "@/Mixins";
+import { TOGGLE_DRAWER } from "@/Store/app/mutation-types";
+
+import AppTopMenu from "@/Components/AppTopMenu";
 import FullscreenConfirmation from "@/Components/FullscreenConfirmation";
 
 export default {
-    mixins: [CommonMixin, FullscreenMixin],
+    mixins: [CommonMixin],
     props: {
         options: {
             type: Object,
@@ -248,6 +171,7 @@ export default {
     },
     components: {
         FullscreenConfirmation,
+        AppTopMenu,
     },
     data() {
         return {
@@ -263,15 +187,8 @@ export default {
             return this.dark ? "grey darken-3" : "primary";
         },
         searchBoxIcon() {
-            return this.mobile || this.options.search
-                ? "mdi-magnify-close"
-                : "mdi-magnify";
-        },
-        darkIcon() {
-            return this.dark ? "mdi-brightness-1" : "mdi-brightness-3";
-        },
-        denseIcon() {
-            return this.dense ? "mdi-table" : "mdi-table-large";
+            let opened = this.mobile || this.options.search;
+            return `mdi-magnify${opened ? "-close" : ""}`;
         },
         search: {
             get() {
@@ -291,8 +208,7 @@ export default {
         },
     },
     methods: {
-        ...mapMutations("app", [TOGGLE_DENSE, TOGGLE_DRAWER, TOGGLE_DARK]),
-        // ...mapActions("app", [LOGOUT]),
+        ...mapMutations("app", [TOGGLE_DRAWER]),
         setSearchBox(state) {
             if (!state) this.search = "";
             this.searchBox = state;
@@ -303,14 +219,6 @@ export default {
                 ...params,
                 page: 1,
             });
-        },
-        logout() {
-            this.$http.post(route("logout").url()).then((response) => {
-                window.location = "/";
-            });
-            // this.LOGOUT()
-            //     .then(() => this.$router.push({ name: "login" }))
-            //     .catch((e) => eHandler(e));
         },
     },
 };
