@@ -86,9 +86,9 @@ export default {
         TheDataTable,
     },
     methods: {
-        updateOptions(options) {
-            if (!isEqual(this.options, options)) {
-                this.$emit("update:options", options);
+        updateOptions(value) {
+            if (!isEqual(this.options, value)) {
+                this.$emit("update:options", value);
             }
         },
     },

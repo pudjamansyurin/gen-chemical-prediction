@@ -1,7 +1,7 @@
 <template>
-    <private-layout>
+    <fragment>
         <app-top-bar page="Dashboard"></app-top-bar>
-    </private-layout>
+    </fragment>
 </template>
 
 <script>
@@ -12,8 +12,8 @@ import AppTopBar from "@/Components/AppTopBar";
 
 export default {
     mixins: [CommonMixin],
+    layout: PrivateLayout,
     components: {
-        PrivateLayout,
         AppTopBar,
     },
 };

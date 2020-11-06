@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,15 +23,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
-    // Route::get('/user', [UserController::class, 'index'])->name('user.index');
-    // Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
-    // Route::post('/user', [UserController::class, 'store'])->name('user.store');
-    // Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
-
-    // Route::resource('user', UserController::class, [
-    //     'except' => ['create', 'edit'],
-    //     // 'only' => []
-    // ]);
-
     Route::apiResource('user', UserController::class);
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('my-profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('my-profile.update');
 });

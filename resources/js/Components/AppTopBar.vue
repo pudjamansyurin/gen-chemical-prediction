@@ -158,7 +158,9 @@ export default {
         },
         options: {
             type: Object,
-            default: () => {},
+            default: () => {
+                return { search: "", mine: false };
+            },
         },
         crud: {
             type: Boolean,
