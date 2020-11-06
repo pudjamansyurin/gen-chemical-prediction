@@ -24,6 +24,10 @@ class ProfileRequest extends UserRequest
      */
     public function rules()
     {
-        return Arr::except(parent::rules(), 'role_id');
+        if (request()->boolean('change_password')) {
+            return Arr::except(parent::rules(), 'role_id');
+        }
+
+        return Arr::except(parent::rules(), ['role_id', 'password']);
     }
 }

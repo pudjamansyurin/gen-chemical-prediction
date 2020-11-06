@@ -65,8 +65,8 @@
                             :error-messages="form.error('password')"
                             :success="!!form.error('password')"
                             @click:append="showPassword = !showPassword"
-                            label="Password"
-                            hint="Password for this user"
+                            label="New Password"
+                            hint="New password for this user"
                             autocomplete="off"
                             persistent-hint
                             outlined
@@ -82,8 +82,8 @@
                             "
                             :success="!!form.error('password_confirmation')"
                             @click:append="showPassword = !showPassword"
-                            label="Password Confirmation"
-                            hint="Fill again the password"
+                            label="New Password Confirmation"
+                            hint="Fill again the new password"
                             autocomplete="off"
                             persistent-hint
                             outlined
@@ -135,7 +135,11 @@ export default {
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
-                    // if (!this.form.hasErrors()) this.dialog = false;
+                    if (!this.form.hasErrors()) {
+                        this.form.change_password = false;
+                        this.form.password = "";
+                        this.form.password_confirmation = "";
+                    }
                 },
             });
         },
