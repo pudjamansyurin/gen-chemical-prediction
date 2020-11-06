@@ -4,7 +4,6 @@ export default {
     data() {
         return {
             showPassword: false
-            // changePassword: false
         };
     },
     computed: {
@@ -14,23 +13,5 @@ export default {
                 type: this.showPassword ? "text" : "password"
             };
         }
-        // passwordChangeText() {
-        //     return `${this.changePassword ? "Keep" : "Change"} password`;
-        // }
     }
-    // methods: {
-    //     copyWithPassword(item) {
-    //         return cloneDeep({
-    //             ...item,
-    //             password: null,
-    //             password_confirmation: null
-    //         });
-    //     },
-    //     removeUnchangedPassword() {
-    //         if (!this.changePassword) {
-    //             this.$delete(this.form, "password");
-    //             this.$delete(this.form, "password_confirmation");
-    //         }
-    //     }
-    // }
 };

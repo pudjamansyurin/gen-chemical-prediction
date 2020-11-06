@@ -22,7 +22,7 @@
                             <v-icon>{{ iconFullscreen }}</v-icon>
                         </v-btn>
                     </v-col>
-                    <v-col v-if="tabs.length" cols="12" sm="7">
+                    <v-col v-if="tabs.length > 0" cols="12" sm="7">
                         <v-tabs
                             :value="tab"
                             @change="$emit('update:tab', $event)"
@@ -43,7 +43,7 @@
 
             <v-card-text class="py-5" :style="cardTextHeight">
                 <v-tabs-items
-                    v-if="tabs.length"
+                    v-if="tabs.length > 0"
                     :value="tab"
                     @input="$emit('update:tab', $event)"
                     :dark="dark"

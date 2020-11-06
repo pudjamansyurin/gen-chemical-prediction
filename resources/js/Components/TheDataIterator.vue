@@ -25,7 +25,7 @@
                 </v-list>
             </v-card>
             <v-card class="mt-1">
-                <v-card-title> </v-card-title>
+                <v-card-title></v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
                     <slot name="footer"></slot>

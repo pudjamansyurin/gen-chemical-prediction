@@ -1,36 +1,24 @@
 <template>
-    <fragment>
-        <v-row align="center" justify="center" dense>
-            <!-- <v-virtual-scroll
-                :bench="1"
-                :items="items"
-                :height="size.height - 190"
-                item-height="130"
+    <v-row align="center" justify="center" dense>
+        <v-col v-for="item in items" :key="item.id" cols="12">
+            <v-card
+                v-longclick="() => toggleSelect(item)"
+                @click="selected.length > 0 && toggleSelect(item)"
+                :key="item.id"
+                :dark="dark"
+                tile
             >
-                <template v-slot="{ item }">
-                    <v-col cols="12"> -->
-            <v-col v-for="item in items" :key="item.id" cols="12">
-                <v-card
-                    v-longclick="() => toggleSelect(item)"
-                    @click="selected.length > 0 && toggleSelect(item)"
-                    :key="item.id"
+                <v-progress-linear
+                    v-if="selectedIndex(item) > -1"
+                    :value="100"
                     :dark="dark"
-                    tile
-                >
-                    <v-progress-linear
-                        v-if="selectedIndex(item) > -1"
-                        :value="100"
-                        :dark="dark"
-                        color="primary"
-                    ></v-progress-linear>
+                    color="primary"
+                ></v-progress-linear>
 
-                    <slot :item="item"></slot>
-                </v-card>
-            </v-col>
-            <!-- </template>
-            </v-virtual-scroll> -->
-        </v-row>
-    </fragment>
+                <slot :item="item"></slot>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -68,13 +56,11 @@ export default {
     },
     methods: {
         selectedIndex(item) {
-            // find in selected
             return this.selected.findIndex(({ id }) => id === item.id);
         },
         toggleSelect(item) {
             if (!item.authorized) return;
 
-            // manage selected item
             let index = this.selectedIndex(item);
             if (index > -1) {
                 this.selected.splice(index, 1);

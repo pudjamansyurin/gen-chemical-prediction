@@ -2,7 +2,7 @@
     <fragment>
         <v-app-bar
             :color="appBarColor"
-            :collapse-on-scroll="!(selected.length || searchBox || !mobile)"
+            :collapse-on-scroll="!(selected.length > 0 || searchBox || !mobile)"
             dark
             app
         >
@@ -51,81 +51,38 @@
             <app-top-menu></app-top-menu>
 
             <template #extension v-if="crud">
-                <template v-if="selected.length">
-                    <v-btn
-                        @click="$emit('update:selected', [])"
-                        fab
-                        text
-                        outlined
-                        small
-                        dark
-                    >
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-divider
-                        :dark="!!selected.length"
-                        class="mx-2"
-                        inset
-                        vertical
-                    ></v-divider>
-                </template>
-
-                <template>
-                    <v-toolbar-title v-if="selected.length">
-                        {{ selected.length }} selected
-                    </v-toolbar-title>
-                    <v-tabs v-else v-model="tab" align-with-title>
+                <template v-if="selected.length === 0">
+                    <v-tabs v-model="tab" align-with-title>
                         <v-tab>Recent</v-tab>
                         <v-tab v-if="mineTab">Mine</v-tab>
                     </v-tabs>
-                </template>
-
-                <v-spacer></v-spacer>
-
-                <template v-if="!selected.length">
-                    <v-btn
-                        @click="$emit('create')"
-                        :fab="mobile"
-                        text
-                        outlined
-                        small
-                        dark
-                    >
+                    <v-spacer></v-spacer>
+                    <v-btn @click="$emit('create')" color="green" rounded small>
                         <v-icon>mdi-plus</v-icon>
                         <template v-if="!mobile">Create</template>
                     </v-btn>
                 </template>
                 <template v-else>
-                    <!-- <v-btn
-                        v-if="selected.length == 1"
-                        @click="$emit('edit')"
-                        :fab="mobile"
-                        class="mr-2"
-                        text
-                        outlined
-                        small
-                        dark
-                    >
-                        <v-icon>mdi-pencil</v-icon>
-                        <template v-if="!mobile">Edit</template>
-                    </v-btn> -->
                     <v-btn
-                        @click="$emit('delete')"
-                        :fab="mobile"
-                        text
-                        outlined
+                        @click="$emit('update:selected', [])"
+                        class="mr-3"
+                        color="primary"
+                        rounded
                         small
-                        dark
                     >
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>
+                        {{ selected.length }} selected
+                    </v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="$emit('delete')" color="red" rounded small>
                         <v-icon>mdi-delete</v-icon>
                         <template v-if="!mobile">Delete</template>
                     </v-btn>
                 </template>
             </template>
         </v-app-bar>
-
-        <!-- fullscreen confirmation -->
-        <fullscreen-confirmation></fullscreen-confirmation>
     </fragment>
 </template>
 
@@ -138,7 +95,6 @@ import { CommonMixin } from "@/Mixins";
 import { TOGGLE_DRAWER } from "@/Store/app/mutation-types";
 
 import AppTopMenu from "@/Components/AppTopMenu";
-import FullscreenConfirmation from "@/Components/Extra/FullscreenConfirmation";
 
 export default {
     mixins: [CommonMixin],
@@ -171,7 +127,6 @@ export default {
         },
     },
     components: {
-        FullscreenConfirmation,
         AppTopMenu,
     },
     data() {
@@ -211,7 +166,7 @@ export default {
     methods: {
         ...mapMutations("app", [TOGGLE_DRAWER]),
         setSearchBox(state) {
-            if (!state) this.search = "";
+            if (!state && this.search) this.search = "";
             this.searchBox = state;
         },
         updateOptions(params) {

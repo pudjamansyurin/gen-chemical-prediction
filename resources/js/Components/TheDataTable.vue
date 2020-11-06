@@ -10,8 +10,6 @@
         :loading="isLoading"
         :dense="dense"
         :dark="dark"
-        :page="1"
-        :items-per-page="10"
         :footer-props="{
             itemsPerPageText: 'Rows',
         }"

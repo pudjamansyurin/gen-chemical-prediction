@@ -8,6 +8,7 @@
         </app-container>
 
         <the-snack-bar></the-snack-bar>
+        <fullscreen-confirmation></fullscreen-confirmation>
         <!-- <portal-target name="modal"> </portal-target> -->
     </v-app>
 </template>
@@ -19,6 +20,7 @@ import TheSnackBar from "@/Components/TheSnackBar";
 import AppContainer from "@/Components/AppContainer";
 import AppBottomNav from "@/Components/AppBottomNav";
 import AppLeftDrawer from "@/Components/AppLeftDrawer";
+import FullscreenConfirmation from "@/Components/Extra/FullscreenConfirmation";
 
 import { CommonMixin } from "@/Mixins";
 import {
@@ -35,6 +37,7 @@ export default {
         AppBottomNav,
         AppLeftDrawer,
         TheSnackBar,
+        FullscreenConfirmation,
     },
     methods: {
         ...mapMutations("app", [
