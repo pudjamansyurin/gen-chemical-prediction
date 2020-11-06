@@ -3,6 +3,11 @@ import { mapState } from "vuex";
 import { menu } from "@/Config/navs";
 
 export default {
+    data() {
+        return {
+            profile_url: "my-profile.show"
+        };
+    },
     computed: {
         ...mapState("app", ["profile"]),
         navs() {
@@ -46,6 +51,12 @@ export default {
         },
         active(to) {
             return route().current() === to;
+        },
+        gotoProfile() {
+            this.goto(this.profile_url);
+        },
+        activeProfile() {
+            return this.active(this.profile_url);
         }
 
         // authPage(name) {

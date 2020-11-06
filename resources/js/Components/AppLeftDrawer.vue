@@ -10,8 +10,8 @@
             <v-list-item
                 v-if="profile.id > -1"
                 :dark="dark"
-                @click="goto('my-profile.show')"
-                :input-value="active('my-profile.show')"
+                @click="gotoProfile()"
+                :input-value="activeProfile()"
                 color="red"
                 link
                 two-line

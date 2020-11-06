@@ -50,7 +50,10 @@
                     <v-divider></v-divider>
                 </template>
 
-                <v-list-item>
+                <v-list-item
+                    @click="gotoProfile()"
+                    :input-value="activeProfile()"
+                >
                     <v-list-item-icon>
                         <v-icon>mdi-face-profile</v-icon>
                     </v-list-item-icon>
@@ -77,10 +80,10 @@
 import { mapMutations } from "vuex";
 
 import { TOGGLE_DENSE, TOGGLE_DARK } from "@/Store/app/mutation-types";
-import { CommonMixin, FullscreenMixin } from "@/Mixins";
+import { CommonMixin, NavigationMixin, FullscreenMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, FullscreenMixin],
+    mixins: [CommonMixin, NavigationMixin, FullscreenMixin],
     computed: {
         darkIcon() {
             return `mdi-brightness${this.dark ? "-1" : "-3"}`;
