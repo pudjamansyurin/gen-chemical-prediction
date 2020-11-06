@@ -15,6 +15,7 @@
             :headers="headers"
             :total="total"
             :items="items"
+            @edit="onEdit"
         >
         </user-list>
 
@@ -73,7 +74,7 @@ export default {
             this.id = -1;
             this.dialogForm = true;
         },
-        onEdit({ id }) {
+        onEdit(id) {
             if (this.selected.length === 0) {
                 this.id = id;
                 this.dialogForm = true;

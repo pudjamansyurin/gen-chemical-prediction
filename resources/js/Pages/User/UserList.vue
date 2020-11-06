@@ -14,7 +14,7 @@
                 {{ me(item) ? "Profile" : item.role.name }}
             </v-btn>
 
-            <v-card-text @click="!me(item) && onEdit(item)">
+            <v-card-text @click="!me(item) && edit(item)">
                 <div class="overline">
                     {{ item.updated_at | moment("from") }}
                 </div>
@@ -32,7 +32,7 @@
 
         <template v-slot:[`item.name`]="{ item }">
             <v-chip
-                @click="!me(item) && onEdit(item)"
+                @click="!me(item) && edit(item)"
                 :color="chip(item)"
                 :small="dense"
                 dark
@@ -98,6 +98,9 @@ export default {
         },
         chip(item) {
             return this.me(item) ? "primary" : "green";
+        },
+        edit(item) {
+            this.$emit("edit", item.id);
         },
     },
     watch: {

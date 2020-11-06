@@ -29,17 +29,19 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        $user = $this->user ?: auth()->user();
+
         return [
             'name' => [
                 'required',
                 'min:3',
                 'max:25',
-                Rule::unique('users', 'name')->ignore($this->user)
+                Rule::unique('users', 'name')->ignore($user)
             ],
             'email'   => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($this->user)
+                Rule::unique('users', 'email')->ignore($user)
             ],
             'role_id' => [
                 'required',

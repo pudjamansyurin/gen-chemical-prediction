@@ -4,24 +4,24 @@
 
         <v-row align="center" justify="center" dense>
             <v-col cols="12">
-                <v-card>Profile Information</v-card>
+                <update-profile-form :user="profile"></update-profile-form>
             </v-col>
         </v-row>
     </fragment>
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
 import PrivateLayout from "@/Layouts/PrivateLayout";
 import AppTopBar from "@/Components/AppTopBar";
+import UpdateProfileForm from "./UpdateProfileForm";
 
 export default {
-    mixins: [CommonMixin],
     layout: PrivateLayout,
     components: {
         AppTopBar,
+        UpdateProfileForm,
     },
+    props: ["profile"],
 };
 </script>
 
