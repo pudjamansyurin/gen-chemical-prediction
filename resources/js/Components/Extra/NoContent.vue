@@ -1,6 +1,6 @@
 <template>
     <v-alert :dark="dark" type="info" border="top">
-        <span>Oops, no {{ model }} data.</span>
+        <span>{{ text }}</span>
     </v-alert>
 </template>
 
@@ -13,6 +13,16 @@ export default {
         model: {
             type: String,
             defautl: "",
+        },
+        search: {
+            type: String,
+            defautl: "",
+        },
+    },
+    computed: {
+        text() {
+            if (this.search) return `No item related to "${this.search}"`;
+            return `Oops, no ${this.model} data`;
         },
     },
 };

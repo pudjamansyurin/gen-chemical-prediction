@@ -13,7 +13,8 @@
                     :value="100"
                     :dark="dark"
                     color="primary"
-                ></v-progress-linear>
+                >
+                </v-progress-linear>
 
                 <slot :item="item"></slot>
             </v-card>

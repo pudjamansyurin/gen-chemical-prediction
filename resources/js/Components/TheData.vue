@@ -3,15 +3,19 @@
         <!-- <the-skeleton-loader v-if="items.length == 0 && isLoading">
         </the-skeleton-loader> -->
 
-        <no-content v-if="items.length == 0 && !isLoading" :model="model">
+        <no-content
+            v-if="items.length == 0 && !isLoading"
+            :model="model"
+            :search="options.search"
+        >
         </no-content>
 
         <!-- has data -->
         <div v-if="items.length > 0">
             <the-data-card
                 v-if="mobile"
-                :value="value"
-                @input="$emit('input', $event)"
+                :value="selected"
+                @input="$emit('update:selected', $event)"
                 :options="options"
                 @update:options="updateOptions"
                 :items="items"
@@ -23,8 +27,8 @@
 
             <the-data-table
                 v-else
-                :value="value"
-                @input="$emit('input', $event)"
+                :value="selected"
+                @input="$emit('update:selected', $event)"
                 :options="options"
                 @update:options="updateOptions"
                 :items="items"
@@ -54,7 +58,7 @@ import NoContent from "@/Components/Extra/NoContent";
 export default {
     mixins: [CommonMixin],
     props: {
-        value: {
+        selected: {
             type: Array,
             default: () => [],
         },

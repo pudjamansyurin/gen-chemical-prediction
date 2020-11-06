@@ -5,7 +5,7 @@ import { START_LOADING, STOP_LOADING } from "@/Store/app/mutation-types";
 
 export default {
     computed: {
-        ...mapState("app", ["dark", "dense"]),
+        ...mapState("app", ["profile", "dark", "dense"]),
         ...mapGetters("app", ["isLoading"]),
         mobile() {
             return this.$vuetify.breakpoint.smAndDown;

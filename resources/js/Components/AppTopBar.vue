@@ -101,7 +101,9 @@ export default {
     props: {
         options: {
             type: Object,
-            default: () => {},
+            default: () => {
+                return { search: "", mine: false };
+            },
         },
         page: {
             type: String,
@@ -110,16 +112,6 @@ export default {
         selected: {
             type: Array,
             default: () => [],
-        },
-        options: {
-            type: Object,
-            default: () => {
-                return { search: "", mine: false };
-            },
-        },
-        crud: {
-            type: Boolean,
-            default: false,
         },
         mineTab: {
             type: Boolean,
@@ -136,6 +128,9 @@ export default {
     },
     computed: {
         ...mapState("app", ["title", "dark", "dense"]),
+        crud() {
+            return !!this.options.page;
+        },
         pageTitle() {
             return this.page.toUpperCase();
         },

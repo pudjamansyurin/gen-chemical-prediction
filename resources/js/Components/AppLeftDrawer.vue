@@ -6,12 +6,12 @@
         :dark="dark"
         app
     >
-        <v-list>
+        <v-list class="py-0">
             <v-list-item
                 v-if="profile.id > -1"
-                :dark="dark"
-                @click="mini && gotoProfile()"
+                @click="gotoProfile()"
                 :input-value="activeProfile()"
+                :dark="dark"
                 color="green"
                 link
                 two-line
@@ -37,7 +37,7 @@
                     </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                    <v-menu :nudge-width="150" offset-y left>
+                    <v-menu :nudge-width="150" offset-y bottom left>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" icon>
                                 <v-icon>mdi-menu-down</v-icon>
@@ -45,7 +45,7 @@
                         </template>
 
                         <v-list class="py-0" dense>
-                            <v-list-item
+                            <!-- <v-list-item
                                 @click="gotoProfile()"
                                 :input-value="activeProfile()"
                             >
@@ -58,7 +58,7 @@
                                     </v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-divider></v-divider>
+                            <v-divider></v-divider> -->
 
                             <v-list-item @click="logout()">
                                 <v-list-item-icon>
@@ -176,7 +176,7 @@ import { CommonMixin, NavigationMixin } from "@/Mixins";
 export default {
     mixins: [CommonMixin, NavigationMixin],
     computed: {
-        ...mapState("app", ["drawer", "profile"]),
+        ...mapState("app", ["drawer"]),
         mini() {
             return !this.drawer && this.$vuetify.breakpoint.lgAndUp;
         },

@@ -1,0 +1,125 @@
+<template>
+    <the-data
+        :selected="selected"
+        @update:selected="$emit('update:selected', $event)"
+        :options="options"
+        @update:options="$emit('update:options', $event)"
+        :model="model"
+        :headers="headers"
+        :total="total"
+        :items="items"
+    >
+        <template v-slot:card="{ item }">
+            <v-btn :color="chip(item)" outlined absolute right small tile top>
+                {{ me(item) ? "Profile" : item.role.name }}
+            </v-btn>
+
+            <v-card-text @click="!me(item) && onEdit(item)">
+                <div class="overline">
+                    {{ item.updated_at | moment("from") }}
+                </div>
+                <div class="overline">
+                    {{ item.name }}
+                </div>
+                <div class="subtitle-2 font-weight-bold">
+                    {{ item.email }}
+                    <v-icon v-if="item.verified" color="green">
+                        mdi-check-decagram
+                    </v-icon>
+                </div>
+            </v-card-text>
+        </template>
+
+        <template v-slot:[`item.name`]="{ item }">
+            <v-chip
+                @click="!me(item) && onEdit(item)"
+                :color="chip(item)"
+                :small="dense"
+                dark
+            >
+                {{ item.name }}
+            </v-chip>
+        </template>
+
+        <template v-slot:[`item.email`]="{ item }">
+            {{ item.email }}
+            <v-icon v-if="item.verified" color="green">
+                mdi-check-decagram
+            </v-icon>
+        </template>
+
+        <template v-slot:[`item.updated_at`]="{ item }">
+            {{ item.updated_at | moment("from") }}
+        </template>
+    </the-data>
+</template>
+
+<script>
+import { omit, debounce } from "lodash";
+
+import { CommonMixin, PasswordMixin } from "@/Mixins";
+
+import TheData from "@/Components/TheData";
+
+export default {
+    mixins: [CommonMixin, PasswordMixin],
+    props: {
+        selected: {
+            type: Array,
+            default: () => [],
+        },
+        headers: {
+            type: Array,
+            default: () => [],
+        },
+        options: {
+            type: Object,
+            default: () => {},
+        },
+        items: {
+            type: Array,
+            default: () => [],
+        },
+        total: {
+            type: Number,
+            default: 0,
+        },
+        model: {
+            type: String,
+            defautl: "",
+        },
+    },
+    components: {
+        TheData,
+    },
+    methods: {
+        me({ id }) {
+            return this.profile.id === id;
+        },
+        chip(item) {
+            return this.me(item) ? "primary" : "green";
+        },
+    },
+    watch: {
+        options: {
+            handler: debounce(function (value) {
+                this.$inertia.replace(route(route().current()), {
+                    data: omit(value, [
+                        "groupBy",
+                        "groupDesc",
+                        "mustSort",
+                        "multiSort",
+                        "mine",
+                    ]),
+                    only: ["flash", "items", "total"],
+                    onStart: (visit) => this.START_LOADING(),
+                    onFinish: () => this.STOP_LOADING(),
+                });
+            }, 500),
+        },
+    },
+};
+</script>
+
+<style>
+</style>
