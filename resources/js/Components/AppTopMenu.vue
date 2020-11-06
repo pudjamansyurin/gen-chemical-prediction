@@ -50,7 +50,6 @@
                     <v-divider></v-divider>
                 </template>
 
-                <!-- <v-list-item :to="{ name: 'profile' }"> -->
                 <v-list-item>
                     <v-list-item-icon>
                         <v-icon>mdi-face-profile</v-icon>

@@ -2,11 +2,8 @@
     <v-main :class="dark ? 'black' : 'grey lighten-3'">
         <v-container fluid>
             <slot></slot>
-            <!-- loader overlay -->
-            <v-overlay v-if="mobile" :value="isLoading" absolute>
-                <v-progress-circular indeterminate size="64" color="white">
-                </v-progress-circular>
-            </v-overlay>
+
+            <app-overlay-indicator></app-overlay-indicator>
         </v-container>
     </v-main>
 </template>
@@ -14,8 +11,13 @@
 <script>
 import { CommonMixin } from "@/Mixins";
 
+import AppOverlayIndicator from "@/Components/AppOverlayIndicator";
+
 export default {
     mixins: [CommonMixin],
+    components: {
+        AppOverlayIndicator,
+    },
 };
 </script>
 
