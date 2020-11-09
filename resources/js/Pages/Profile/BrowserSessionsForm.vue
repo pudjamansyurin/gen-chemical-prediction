@@ -1,16 +1,16 @@
 <template>
     <fragment>
-        <v-card :dark="dark" class="mb-5">
-            <v-card-text>
-                <v-row>
-                    <v-col cols="12" sm="4" md="6">
-                        <div class="text-h6">Browser Sessions</div>
-                        <div class="text-caption">
-                            Manage and logout your active sessions on other
-                            browsers and devices.
-                        </div>
-                    </v-col>
-                    <v-col cols="12" sm="8" md="6">
+        <v-row>
+            <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
+                <div class="text-h6">Browser Sessions</div>
+                <div class="text-caption">
+                    Manage and logout your active sessions on other browsers and
+                    devices.
+                </div>
+            </v-col>
+            <v-col cols="12" sm="8">
+                <v-card :dark="dark">
+                    <v-card-text>
                         <!-- Other Browser Sessions -->
                         <v-list two-line>
                             <template v-for="(session, index) in sessions">
@@ -53,21 +53,29 @@
                                 ></v-divider>
                             </template>
                         </v-list>
-                    </v-col>
-                </v-row>
-
-                <div class="text-right">
-                    <v-btn
-                        :disabled="isLoading || sessions.length < 2"
-                        @click="confirmLogout"
-                        :dark="dark"
-                        color="red"
-                    >
-                        Logout Other Sessions
-                    </v-btn>
-                </div>
-            </v-card-text>
-        </v-card>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <div>
+                            <span
+                                v-if="form.recentlySuccessful"
+                                class="font-italic green--text mr-3"
+                            >
+                                Loged out.
+                            </span>
+                            <v-btn
+                                :disabled="isLoading || sessions.length == 1"
+                                @click="confirmLogout"
+                                :dark="sessions.length > 1 || dark"
+                                color="red"
+                            >
+                                Logout Other Sessions
+                            </v-btn>
+                        </div>
+                    </v-card-actions>
+                </v-card>
+            </v-col>
+        </v-row>
 
         <the-dialog-confirmation
             v-model="confirmingLogout"

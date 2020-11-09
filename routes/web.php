@@ -24,7 +24,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
     Route::apiResource('user', UserController::class);
-
-    Route::get('/profile', [ProfileController::class, 'show'])->name('my-profile.show');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('my-profile.update');
 });

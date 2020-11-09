@@ -1,16 +1,15 @@
 <template>
-    <v-card :dark="dark" class="mb-5">
-        <v-card-text>
+    <v-row>
+        <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
+            <div class="text-h6">Profile Information</div>
+            <div class="text-caption">
+                Update your account's profile information and email address.
+            </div>
+        </v-col>
+        <v-col cols="12" sm="8">
             <v-form @submit.prevent="updateProfile" :disabled="isLoading">
-                <v-row>
-                    <v-col cols="12" sm="4" md="6">
-                        <div class="text-h6">Profile Information</div>
-                        <div class="text-caption">
-                            Update your account's profile information and email
-                            address.
-                        </div>
-                    </v-col>
-                    <v-col cols="12" sm="8" md="6">
+                <v-card :dark="dark">
+                    <v-card-text>
                         <v-text-field
                             v-model="form.name"
                             :error-messages="form.error('name')"
@@ -41,88 +40,50 @@
                             persistent-hint
                             outlined
                         ></v-text-field>
-
-                        <v-checkbox
-                            v-model="form.change_password"
-                            label="Change password"
-                        >
-                        </v-checkbox>
-                    </v-col>
-                </v-row>
-                <v-row v-if="form.change_password">
-                    <v-col cols="12" sm="4" md="6">
-                        <div class="text-h6">Update Password</div>
-                        <div class="text-caption">
-                            Ensure your account is using a long, random password
-                            to stay secure.
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <div>
+                            <span
+                                v-if="form.recentlySuccessful"
+                                class="font-italic green--text mr-3"
+                            >
+                                Saved.
+                            </span>
+                            <v-btn
+                                :disabled="isLoading"
+                                type="submit"
+                                color="primary"
+                            >
+                                Save
+                            </v-btn>
                         </div>
-                    </v-col>
-                    <v-col cols="12" sm="8" md="6">
-                        <v-text-field
-                            v-model="form.password"
-                            :type="passwordState.type"
-                            :append-icon="passwordState.icon"
-                            :error-messages="form.error('password')"
-                            :success="!!form.error('password')"
-                            @click:append="showPassword = !showPassword"
-                            label="New Password"
-                            hint="New password for this user"
-                            autocomplete="off"
-                            persistent-hint
-                            outlined
-                            counter
-                        ></v-text-field>
-
-                        <v-text-field
-                            v-model="form.password_confirmation"
-                            :type="passwordState.type"
-                            :append-icon="passwordState.icon"
-                            :error-messages="
-                                form.error('password_confirmation')
-                            "
-                            :success="!!form.error('password_confirmation')"
-                            @click:append="showPassword = !showPassword"
-                            label="New Password Confirmation"
-                            hint="Fill again the new password"
-                            autocomplete="off"
-                            persistent-hint
-                            outlined
-                            counter
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
-
-                <div class="text-right">
-                    <v-btn :disabled="isLoading" type="submit" color="primary">
-                        Save
-                    </v-btn>
-                </div>
+                    </v-card-actions>
+                </v-card>
             </v-form>
-        </v-card-text>
-    </v-card>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
 import { cloneDeep } from "lodash";
 
-import { CommonMixin, PasswordMixin } from "@/Mixins";
-import { User } from "@/Config/models";
+import { CommonMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, PasswordMixin],
+    mixins: [CommonMixin],
     props: ["user"],
     data() {
         return {
             form: this.$inertia.form(
                 {
                     _method: "PUT",
-                    ...cloneDeep(User),
                     name: this.user.name,
                     email: this.user.email,
                     role: this.user.role,
                 },
                 {
-                    bag: "userForm",
+                    bag: "updateProfileInformation",
                     resetOnSuccess: false,
                 }
             ),
@@ -130,17 +91,10 @@ export default {
     },
     methods: {
         updateProfile() {
-            this.form.post(route("my-profile.update"), {
+            this.form.post(route("user-profile-information.update"), {
                 preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
-                onSuccess: (page) => {
-                    if (!this.form.hasErrors()) {
-                        this.form.change_password = false;
-                        this.form.password = "";
-                        this.form.password_confirmation = "";
-                    }
-                },
             });
         },
     },

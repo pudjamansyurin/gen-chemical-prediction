@@ -5,7 +5,7 @@ import { menu } from "@/Config/navs";
 export default {
     data() {
         return {
-            profile_url: "my-profile.show"
+            profile_url: "profile.show"
         };
     },
     computed: {

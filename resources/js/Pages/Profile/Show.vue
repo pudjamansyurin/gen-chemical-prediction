@@ -5,6 +5,7 @@
         <v-row align="center" justify="center" dense>
             <v-col cols="12">
                 <update-profile-form :user="profile"></update-profile-form>
+                <update-password-form></update-password-form>
                 <browser-sessions-form
                     :sessions="sessions"
                 ></browser-sessions-form>
@@ -17,6 +18,7 @@
 import PrivateLayout from "@/Layouts/PrivateLayout";
 import AppTopBar from "@/Components/AppTopBar";
 import UpdateProfileForm from "./UpdateProfileForm";
+import UpdatePasswordForm from "./UpdatePasswordForm";
 import BrowserSessionsForm from "./BrowserSessionsForm";
 
 export default {
@@ -24,6 +26,7 @@ export default {
     components: {
         AppTopBar,
         UpdateProfileForm,
+        UpdatePasswordForm,
         BrowserSessionsForm,
     },
     props: ["profile", "sessions"],
