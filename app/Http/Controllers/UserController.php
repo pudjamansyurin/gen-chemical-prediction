@@ -9,6 +9,7 @@ use App\Http\Resources\UserItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
@@ -49,7 +50,9 @@ class UserController extends Controller
         // $this->authorize('create', User::class);
 
         // create
-        $user = User::create($request->validated());
+        $user = User::create(
+            $this->transformPassword($request->validated())
+        );
 
 
         return back()->with('flash', 'New user added.');
@@ -83,7 +86,10 @@ class UserController extends Controller
     {
         // $this->authorize('update', $user);
         // update
-        $user->update($request->validated());
+
+        $user->update(
+            $this->transformPassword($request->validated())
+        );
 
         return back()->with('flash', 'User updated.');
 
@@ -113,5 +119,16 @@ class UserController extends Controller
         User::destroy($usersId);
 
         return back()->with('flash', 'User deleted.');
+    }
+
+    /**
+     * Private functions
+     */
+    private function transformPassword($input)
+    {
+        if (array_key_exists('password', $input))
+            $input['password'] = Hash::make($input['password']);
+
+        return $input;
     }
 }

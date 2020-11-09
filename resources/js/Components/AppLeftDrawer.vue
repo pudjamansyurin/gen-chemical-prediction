@@ -37,41 +37,21 @@
                     </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                    <v-menu :nudge-width="150" offset-y bottom left>
+                    <v-tooltip left>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" icon>
-                                <v-icon>mdi-menu-down</v-icon>
+                            <v-btn
+                                @click.stop="logout()"
+                                v-bind="attrs"
+                                v-on="on"
+                                icon
+                            >
+                                <v-icon @click.stop="logout()"
+                                    >mdi-logout-variant</v-icon
+                                >
                             </v-btn>
                         </template>
-
-                        <v-list class="py-0" dense>
-                            <!-- <v-list-item
-                                @click="gotoProfile()"
-                                :input-value="activeProfile()"
-                            >
-                                <v-list-item-icon>
-                                    <v-icon>mdi-face-profile</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>
-                                        Profile
-                                    </v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-divider></v-divider> -->
-
-                            <v-list-item @click="logout()">
-                                <v-list-item-icon>
-                                    <v-icon>mdi-logout</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>
-                                        Logout
-                                    </v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+                        Logout
+                    </v-tooltip>
                 </v-list-item-action>
             </v-list-item>
             <v-divider></v-divider>

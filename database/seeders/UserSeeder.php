@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
@@ -35,7 +36,7 @@ class UserSeeder extends Seeder
                 return User::create([
                     'name' => $user['name'],
                     'email' => $user['email'],
-                    'password' => $user['password']
+                    'password' => Hash::make($user['password'])
                 ]);
             });
 

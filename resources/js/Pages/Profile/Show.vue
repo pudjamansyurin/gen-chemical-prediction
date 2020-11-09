@@ -2,15 +2,9 @@
     <fragment>
         <app-top-bar page="Profile"></app-top-bar>
 
-        <v-row align="center" justify="center" dense>
-            <v-col cols="12">
-                <update-profile-form :user="profile"></update-profile-form>
-                <update-password-form></update-password-form>
-                <browser-sessions-form
-                    :sessions="sessions"
-                ></browser-sessions-form>
-            </v-col>
-        </v-row>
+        <update-profile-form :user="profile"></update-profile-form>
+        <update-password-form></update-password-form>
+        <browser-sessions-form :sessions="sessions"></browser-sessions-form>
     </fragment>
 </template>
 

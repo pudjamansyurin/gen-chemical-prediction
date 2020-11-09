@@ -49,6 +49,15 @@
                     </v-list-item>
                     <v-divider></v-divider>
                 </template>
+
+                <v-list-item @click="logout()">
+                    <v-list-item-icon>
+                        <v-icon>mdi-logout</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title> Logout </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-card>
     </v-menu>
@@ -58,10 +67,10 @@
 import { mapMutations } from "vuex";
 
 import { TOGGLE_DENSE, TOGGLE_DARK } from "@/Store/app/mutation-types";
-import { CommonMixin, FullscreenMixin } from "@/Mixins";
+import { CommonMixin, NavigationMixin, FullscreenMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, FullscreenMixin],
+    mixins: [CommonMixin, NavigationMixin, FullscreenMixin],
     computed: {
         darkIcon() {
             return `mdi-brightness${this.dark ? "-1" : "-3"}`;

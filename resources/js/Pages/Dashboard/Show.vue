@@ -1,6 +1,8 @@
 <template>
     <fragment>
         <app-top-bar page="Dashboard"></app-top-bar>
+
+        <div>Nothing yet.</div>
     </fragment>
 </template>
 
