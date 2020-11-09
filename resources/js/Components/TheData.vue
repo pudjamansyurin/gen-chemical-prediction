@@ -12,21 +12,8 @@
 
         <!-- has data -->
         <div v-if="items.length > 0">
-            <the-data-card
-                v-if="mobile"
-                :value="selected"
-                @input="$emit('update:selected', $event)"
-                :options="options"
-                @update:options="updateOptions"
-                :items="items"
-            >
-                <template v-slot="{ item }">
-                    <slot name="card" :item="item"></slot>
-                </template>
-            </the-data-card>
-
             <the-data-table
-                v-else
+                v-if="!mobile"
                 :value="selected"
                 @input="$emit('update:selected', $event)"
                 :options="options"
@@ -42,6 +29,19 @@
                     <slot :name="`item.${header.value}`" :item="item"></slot>
                 </template>
             </the-data-table>
+
+            <the-data-card
+                v-else
+                :value="selected"
+                @input="$emit('update:selected', $event)"
+                :options="options"
+                @update:options="updateOptions"
+                :items="items"
+            >
+                <template v-slot="{ item }">
+                    <slot name="card" :item="item"></slot>
+                </template>
+            </the-data-card>
         </div>
     </fragment>
 </template>

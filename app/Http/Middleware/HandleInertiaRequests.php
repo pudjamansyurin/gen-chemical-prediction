@@ -45,8 +45,8 @@ class HandleInertiaRequests extends Middleware
 
             // 'appName' => config('app.name'),
 
-            'flash' => function () {
-                return Session::get('flash');
+            'status' => function () {
+                return Session::get('status');
             },
 
             'profile' => function () use ($request) {

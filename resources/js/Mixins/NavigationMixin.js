@@ -59,7 +59,7 @@ export default {
             return this.active(this.profile_url);
         },
         logout() {
-            this.$http.post(route("logout").url()).then(response => {
+            this.$axios.post(route("logout").url()).then(response => {
                 window.location = "/";
             });
         }

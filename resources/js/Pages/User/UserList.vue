@@ -9,6 +9,26 @@
         :total="total"
         :items="items"
     >
+        <template v-slot:[`item.name`]="{ item }">
+            <v-chip
+                @click="!me(item) && edit(item)"
+                :color="chip(item)"
+                :small="dense"
+                dark
+            >
+                {{ item.name }}
+            </v-chip>
+        </template>
+        <template v-slot:[`item.email`]="{ item }">
+            {{ item.email }}
+            <v-icon v-if="item.verified" color="green">
+                mdi-check-decagram
+            </v-icon>
+        </template>
+        <template v-slot:[`item.updated_at`]="{ item }">
+            {{ item.updated_at | moment("from") }}
+        </template>
+
         <template #card="{ item }">
             <v-btn :color="chip(item)" outlined absolute right small tile top>
                 {{ me(item) ? "Profile" : item.role.name }}
@@ -28,28 +48,6 @@
                     </v-icon>
                 </div>
             </v-card-text>
-        </template>
-
-        <template v-slot:[`item.name`]="{ item }">
-            <v-chip
-                @click="!me(item) && edit(item)"
-                :color="chip(item)"
-                :small="dense"
-                dark
-            >
-                {{ item.name }}
-            </v-chip>
-        </template>
-
-        <template v-slot:[`item.email`]="{ item }">
-            {{ item.email }}
-            <v-icon v-if="item.verified" color="green">
-                mdi-check-decagram
-            </v-icon>
-        </template>
-
-        <template v-slot:[`item.updated_at`]="{ item }">
-            {{ item.updated_at | moment("from") }}
         </template>
     </the-data>
 </template>
@@ -114,7 +112,7 @@ export default {
                         "multiSort",
                         "mine",
                     ]),
-                    only: ["flash", "items", "total"],
+                    only: ["status", "items", "total"],
                     onStart: (visit) => this.START_LOADING(),
                     onFinish: () => this.STOP_LOADING(),
                 });

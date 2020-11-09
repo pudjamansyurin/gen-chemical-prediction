@@ -9,7 +9,7 @@
                 </div>
             </v-col>
             <v-col cols="12" sm="8">
-                <v-card :dark="dark">
+                <v-card :loading="form.processing" :dark="dark">
                     <v-card-text>
                         <browser-sessions-list
                             :sessions="sessions"

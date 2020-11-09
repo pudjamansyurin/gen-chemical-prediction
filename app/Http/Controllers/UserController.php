@@ -55,7 +55,7 @@ class UserController extends Controller
         );
 
 
-        return back()->with('flash', 'New user added.');
+        return back()->with('status', 'New user added.');
         // return response(
         //     new UserItem($user->loadRelation()),
         //     Response::HTTP_CREATED
@@ -91,7 +91,7 @@ class UserController extends Controller
             $this->transformPassword($request->validated())
         );
 
-        return back()->with('flash', 'User updated.');
+        return back()->with('status', 'User updated.');
 
         // return response(
         //     new UserItem($user->loadRelation()),
@@ -118,7 +118,7 @@ class UserController extends Controller
         // delete
         User::destroy($usersId);
 
-        return back()->with('flash', 'User deleted.');
+        return back()->with('status', 'User deleted.');
     }
 
     /**

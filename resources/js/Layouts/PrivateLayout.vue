@@ -59,8 +59,8 @@ export default {
             handler(page) {
                 console.warn("Inertia", page);
 
-                if (page.flash)
-                    this.SET_MESSAGE({ type: "info", text: page.flash });
+                if (page.status)
+                    this.SET_MESSAGE({ type: "info", text: page.status });
             },
         },
         "$page.profile": {

@@ -1,14 +1,25 @@
 <template>
     <v-row>
         <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
-            <div class="text-h6">Profile Information</div>
+            <div class="text-h6">
+                Profile Information
+                <v-chip
+                    v-if="!user.verified"
+                    @click="verifyEmail"
+                    :disabled="verifier.processing"
+                    color="primary"
+                    small
+                >
+                    {{ verifier.processing ? "Verifying..." : "Verify Email" }}
+                </v-chip>
+            </div>
             <div class="text-caption">
                 Update your account's profile information and email address.
             </div>
         </v-col>
         <v-col cols="12" sm="8">
             <v-form @submit.prevent="updateProfile" :disabled="form.processing">
-                <v-card :dark="dark">
+                <v-card :loading="form.processing" :dark="dark">
                     <v-card-text>
                         <v-text-field
                             v-model="form.name"
@@ -25,6 +36,9 @@
                             v-model="form.email"
                             :error-messages="form.error('email')"
                             :success="!!form.error('email')"
+                            :append-icon="
+                                user.verified ? 'mdi-check-decagram' : ''
+                            "
                             label="E-mail"
                             type="email"
                             hint="Your recovery email"
@@ -87,12 +101,19 @@ export default {
                     resetOnSuccess: false,
                 }
             ),
+            verifier: this.$inertia.form(),
         };
     },
     methods: {
         updateProfile() {
             this.form.post(route("user-profile-information.update"), {
                 preserveScroll: true,
+                onStart: (visit) => this.START_LOADING(),
+                onFinish: () => this.STOP_LOADING(),
+            });
+        },
+        verifyEmail() {
+            this.verifier.post(route("verification.send"), {
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
             });

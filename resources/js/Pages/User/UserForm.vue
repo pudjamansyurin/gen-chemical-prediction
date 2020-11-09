@@ -164,7 +164,7 @@ export default {
     methods: {
         fetch() {
             this.fetching = true;
-            this.$http
+            this.$axios
                 .get(route("user.show", { id: this.id }).url())
                 .then(({ data }) => {
                     assign(this.form, pick(data, keys(User)));

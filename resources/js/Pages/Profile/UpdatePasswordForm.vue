@@ -19,7 +19,7 @@
                 @submit.prevent="updatePassword"
                 :disabled="form.processing"
             >
-                <v-card :dark="dark">
+                <v-card :loading="form.processing" :dark="dark">
                     <v-card-text>
                         <v-text-field
                             v-model="form.current_password"
