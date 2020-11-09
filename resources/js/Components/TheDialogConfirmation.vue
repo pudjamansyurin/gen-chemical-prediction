@@ -8,7 +8,7 @@
         persistent
         scrollable
     >
-        <v-card :loading="isLoading">
+        <v-card :loading="disabled">
             <v-card-title>
                 <slot name="title"></slot>
             </v-card-title>
@@ -25,7 +25,7 @@
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
-                    :disabled="isLoading"
+                    :disabled="disabled"
                     @click="$emit('confirmed')"
                     color="red"
                 >
@@ -43,6 +43,10 @@ export default {
     mixins: [CommonMixin],
     props: {
         value: {
+            type: Boolean,
+            default: false,
+        },
+        disabled: {
             type: Boolean,
             default: false,
         },

@@ -1,23 +1,27 @@
 <template>
-    <the-dialog-delete
+    <the-dialog-confirmation
         v-model="dialog"
-        :selected="selected"
-        :model="model"
-        @delete="remove"
+        :disabled="form.processing"
+        @confirmed="remove"
     >
-        <template v-slot="{ item }">
-            {{ item.name }}
+        <template #title>Delete confirmation</template>
+        <template #content>
+            <p>Are you sure to delete?</p>
+            <v-chip v-for="item in selected" :key="item.id" class="ma-1">
+                {{ item.name }}
+            </v-chip>
         </template>
-    </the-dialog-delete>
+    </the-dialog-confirmation>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
+// import pluralize from "pluralize";
 
 import { CommonMixin } from "@/Mixins";
 import { SET_MESSAGE } from "@/Store/app/mutation-types";
 
-import TheDialogDelete from "@/Components/TheDialogDelete";
+import TheDialogConfirmation from "@/Components/TheDialogConfirmation";
 
 export default {
     mixins: [CommonMixin],
@@ -32,7 +36,7 @@ export default {
         },
     },
     components: {
-        TheDialogDelete,
+        TheDialogConfirmation,
     },
     data() {
         return {
@@ -57,14 +61,18 @@ export default {
                 this.$emit("input", value);
             },
         },
+        // question() {
+        //     const { length: single } = this.selected;
+        //     if (single) return `this ${this.model}?`;
+        //     return `these ${length} ${pluralize(this.model)}?`;
+        // },
     },
     methods: {
         ...mapMutations("app", [SET_MESSAGE]),
         remove() {
-            let url = route("user.destroy", { id: -1 });
-            this.form.ids = this.selected.map(({ id }) => id);
+            // this.form.ids = this.selected.map(({ id }) => id);
 
-            this.form.post(url, {
+            this.form.post(route("user.destroy", { id: -1 }), {
                 preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
