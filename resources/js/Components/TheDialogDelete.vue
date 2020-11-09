@@ -1,43 +1,17 @@
 <template>
-    <v-dialog
+    <the-dialog-confirmation
         :value="value"
         @input="$emit('input', $event)"
-        :fullscreen="mobile"
-        :dark="dark"
-        max-width="400"
-        persistent
-        scrollable
+        @confirmed="$emit('delete')"
     >
-        <v-card :loading="isLoading">
-            <v-card-title> Confirmation </v-card-title>
-            <v-divider></v-divider>
-
-            <v-card-text class="pt-2" :style="cardTextHeight">
-                Are you sure to delete {{ question }}
-                <br />
-                <!-- <v-chip-group column small active-class="primary--text"> -->
-                <v-chip v-for="item in selected" class="ma-1" :key="item.id">
-                    <slot :item="item"></slot>
-                </v-chip>
-                <!-- </v-chip-group> -->
-            </v-card-text>
-
-            <v-divider></v-divider>
-            <v-card-actions>
-                <v-btn color="darken-1" @click="$emit('input', false)" text>
-                    Cancel
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                    :disabled="isLoading"
-                    @click="$emit('delete')"
-                    color="red"
-                >
-                    <span class="white--text">Yes, sure</span>
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+        <template #title>Delete confirmation</template>
+        <template #content>
+            <p>Are you sure to delete {{ question }}</p>
+            <v-chip v-for="item in selected" :key="item.id" class="ma-1">
+                <slot :item="item"></slot>
+            </v-chip>
+        </template>
+    </the-dialog-confirmation>
 </template>
 
 <script>
@@ -45,8 +19,13 @@ import pluralize from "pluralize";
 
 import { CommonMixin } from "@/Mixins";
 
+import TheDialogConfirmation from "@/Components/TheDialogConfirmation";
+
 export default {
     mixins: [CommonMixin],
+    components: {
+        TheDialogConfirmation,
+    },
     props: {
         value: {
             type: Boolean,
@@ -67,9 +46,6 @@ export default {
 
             if (single) return `this ${this.model}?`;
             return `these ${length} ${pluralize(this.model)}?`;
-        },
-        cardTextHeight() {
-            return !this.mobile ? "max-height: 300px;" : "";
         },
     },
 };

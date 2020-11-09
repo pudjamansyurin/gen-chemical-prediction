@@ -1,8 +1,8 @@
 <template>
     <fragment>
         <v-app-bar
-            :color="appBarColor"
             :collapse-on-scroll="!(selected.length > 0 || searchBox || !mobile)"
+            color="primary"
             dark
             app
         >
@@ -133,9 +133,6 @@ export default {
         },
         pageTitle() {
             return this.page.toUpperCase();
-        },
-        appBarColor() {
-            return this.dark ? "grey darken-3" : "primary";
         },
         searchBoxIcon() {
             let opened = this.mobile || this.options.search;

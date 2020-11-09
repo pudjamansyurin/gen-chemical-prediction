@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card :dark="dark" class="mb-5">
         <v-card-text>
             <v-form @submit.prevent="updateProfile" :disabled="isLoading">
                 <v-row>
@@ -131,7 +131,7 @@ export default {
     methods: {
         updateProfile() {
             this.form.post(route("my-profile.update"), {
-                // preserveScroll: true,
+                preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {

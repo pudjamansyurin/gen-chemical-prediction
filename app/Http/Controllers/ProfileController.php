@@ -8,8 +8,9 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
+use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
 
-class ProfileController extends Controller
+class ProfileController extends UserProfileController
 {
 
     /**
@@ -18,7 +19,9 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         // Response
-        return Inertia::render('Profile/Show', []);
+        return Inertia::render('Profile/Show', [
+            'sessions' => $this->sessions($request)->all(),
+        ]);
     }
 
     /**

@@ -65,7 +65,7 @@ export default {
             this.form.ids = this.selected.map(({ id }) => id);
 
             this.form.post(url, {
-                // preserveScroll: true,
+                preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
