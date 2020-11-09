@@ -1,6 +1,6 @@
 <template>
     <v-data-iterator :items="items" item-key="id" hide-default-footer>
-        <template v-slot:default="{ items }">
+        <template v-slot="{ items }">
             <v-card v-for="(item, index) in items" :key="item.id" class="mb-1">
                 <v-card-title>
                     <h4>{{ item.name }}</h4>

@@ -1,6 +1,6 @@
 <template>
     <v-menu :nudge-width="150" offset-y>
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" icon>
                 <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>

@@ -9,7 +9,7 @@
         :total="total"
         :items="items"
     >
-        <template v-slot:card="{ item }">
+        <template #card="{ item }">
             <v-btn :color="chip(item)" outlined absolute right small tile top>
                 {{ me(item) ? "Profile" : item.role.name }}
             </v-btn>

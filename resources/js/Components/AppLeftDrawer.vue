@@ -18,7 +18,7 @@
             >
                 <v-list-item-action>
                     <v-tooltip v-if="mini" nudge-right="12" right>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">
                                 mdi-face-profile
                             </v-icon>
@@ -38,7 +38,7 @@
                 </v-list-item-content>
                 <v-list-item-action>
                     <v-tooltip left>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 @click.stop="logout()"
                                 v-bind="attrs"
@@ -71,10 +71,10 @@
                     v-model="item.model"
                     color="primary"
                 >
-                    <template v-slot:activator>
+                    <template #activator>
                         <v-list-item-action>
                             <v-tooltip v-if="mini" nudge-right="12" right>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <v-icon v-bind="attrs" v-on="on">
                                         {{ item.icon }}
                                     </v-icon>
@@ -99,7 +99,7 @@
                     >
                         <v-list-item-action>
                             <v-tooltip v-if="mini" nudge-right="12" right>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <v-icon v-bind="attrs" v-on="on">
                                         {{ child.icon }}
                                     </v-icon>
@@ -127,7 +127,7 @@
                 >
                     <v-list-item-action>
                         <v-tooltip v-if="mini" nudge-right="12" right>
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-icon v-bind="attrs" v-on="on">
                                     {{ item.icon }}
                                 </v-icon>

@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import pluralize from "pluralize";
 import { mapState } from "vuex";
 
 import { CommonMixin } from "@/Mixins";

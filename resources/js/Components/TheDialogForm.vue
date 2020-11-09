@@ -50,10 +50,10 @@
                     touchless
                 >
                     <v-tab-item v-for="item in tabs" :key="item">
-                        <slot :name="item" :disabled="isLoading"> </slot>
+                        <slot :name="item"> </slot>
                     </v-tab-item>
                 </v-tabs-items>
-                <slot v-else :disabled="isLoading"></slot>
+                <slot v-else></slot>
             </v-card-text>
 
             <v-divider></v-divider>
@@ -68,7 +68,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     v-if="!readonly"
-                    :disabled="isLoading"
+                    :disabled="disabled"
                     @click="$emit('submit')"
                     color="primary"
                 >
@@ -92,6 +92,10 @@ export default {
         title: {
             type: String,
             default: "Detail Item",
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
         readonly: {
             type: Boolean,

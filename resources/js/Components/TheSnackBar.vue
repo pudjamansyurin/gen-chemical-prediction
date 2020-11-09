@@ -9,7 +9,7 @@
         <v-icon>mdi-bell</v-icon>
         <i>{{ message.text }}</i>
 
-        <template v-slot:action="{ attrs }">
+        <template #action="{ attrs }">
             <v-btn @click="snackbar = false" v-bind="attrs" icon dark>
                 <v-icon>mdi-close-circle</v-icon>
             </v-btn>

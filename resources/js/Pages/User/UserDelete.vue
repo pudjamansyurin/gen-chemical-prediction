@@ -6,6 +6,9 @@
     >
         <template #title>Delete confirmation</template>
         <template #content>
+            <v-alert v-if="!!form.error('ids')" type="warning" dense left>
+                {{ form.error("ids") }}
+            </v-alert>
             <p>Are you sure to delete?</p>
             <v-chip v-for="item in selected" :key="item.id" class="ma-1">
                 {{ item.name }}
@@ -70,7 +73,7 @@ export default {
     methods: {
         ...mapMutations("app", [SET_MESSAGE]),
         remove() {
-            // this.form.ids = this.selected.map(({ id }) => id);
+            this.form.ids = this.selected.map(({ id }) => id);
 
             this.form.post(route("user.destroy", { id: -1 }), {
                 preserveScroll: true,
@@ -80,11 +83,6 @@ export default {
                     if (!this.form.hasErrors()) {
                         this.$emit("update:selected", []);
                         this.dialog = false;
-                    } else if (this.form.error("ids")) {
-                        this.SET_MESSAGE({
-                            type: "error",
-                            text: this.form.error("ids"),
-                        });
                     }
                 },
             });
