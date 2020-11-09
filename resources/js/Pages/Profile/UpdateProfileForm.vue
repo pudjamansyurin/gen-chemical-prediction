@@ -7,7 +7,7 @@
             </div>
         </v-col>
         <v-col cols="12" sm="8">
-            <v-form @submit.prevent="updateProfile" :disabled="isLoading">
+            <v-form @submit.prevent="updateProfile" :disabled="form.processing">
                 <v-card :dark="dark">
                     <v-card-text>
                         <v-text-field
@@ -51,7 +51,7 @@
                                 Saved.
                             </span>
                             <v-btn
-                                :disabled="isLoading"
+                                :disabled="form.processing"
                                 type="submit"
                                 color="primary"
                             >

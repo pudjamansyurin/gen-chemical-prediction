@@ -64,7 +64,9 @@
                                 Loged out.
                             </span>
                             <v-btn
-                                :disabled="isLoading || sessions.length == 1"
+                                :disabled="
+                                    form.processing || sessions.length === 1
+                                "
                                 @click="confirmLogout"
                                 :dark="sessions.length > 1 || dark"
                                 color="red"
