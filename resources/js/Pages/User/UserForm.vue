@@ -42,6 +42,14 @@
                 <v-checkbox
                     v-if="!creating"
                     v-model="form.change_password"
+                    :append-icon="
+                        form.change_password ? passwordState.icon : ''
+                    "
+                    @click:append="
+                        form.change_password
+                            ? (showPassword = !showPassword)
+                            : ''
+                    "
                     label="Change password"
                 >
                 </v-checkbox>
@@ -50,10 +58,8 @@
                     <v-text-field
                         v-model="form.password"
                         :type="passwordState.type"
-                        :append-icon="passwordState.icon"
                         :error-messages="form.error('password')"
                         :success="!!form.error('password')"
-                        @click:append="showPassword = !showPassword"
                         label="Password"
                         hint="Password for this user"
                         autocomplete="off"
@@ -65,10 +71,8 @@
                     <v-text-field
                         v-model="form.password_confirmation"
                         :type="passwordState.type"
-                        :append-icon="passwordState.icon"
                         :error-messages="form.error('password_confirmation')"
                         :success="!!form.error('password_confirmation')"
-                        @click:append="showPassword = !showPassword"
                         label="Password Confirmation"
                         hint="Fill again the password"
                         autocomplete="off"

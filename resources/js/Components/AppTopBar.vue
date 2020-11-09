@@ -136,7 +136,7 @@ export default {
         },
         searchBoxIcon() {
             let opened = this.mobile || this.options.search;
-            return `mdi-magnify${opened ? "-close" : ""}`;
+            return opened ? "mdi-magnify-close" : "mdi-magnify";
         },
         search: {
             get() {

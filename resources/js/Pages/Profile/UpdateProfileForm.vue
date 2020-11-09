@@ -16,7 +16,7 @@
                             :success="!!form.error('name')"
                             label="Name"
                             type="text"
-                            hint="This should be unique name"
+                            hint="Your profile name"
                             persistent-hint
                             outlined
                         ></v-text-field>
@@ -27,7 +27,7 @@
                             :success="!!form.error('email')"
                             label="E-mail"
                             type="email"
-                            hint="This email is for recovery"
+                            hint="Your recovery email"
                             persistent-hint
                             outlined
                         ></v-text-field>
@@ -35,7 +35,7 @@
                         <v-text-field
                             :value="form.role.name"
                             label="Role"
-                            hint="Role for this user"
+                            hint="Your current role"
                             readonly
                             persistent-hint
                             outlined

@@ -1,7 +1,14 @@
 <template>
     <v-row>
         <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
-            <div class="text-h6">Update Password</div>
+            <div class="text-h6">
+                Update Password
+                <v-btn @click="showPassword = !showPassword" icon>
+                    <v-icon>
+                        {{ passwordState.icon }}
+                    </v-icon>
+                </v-btn>
+            </div>
             <div class="text-caption">
                 Ensure your account is using a long, random password to stay
                 secure.
@@ -14,10 +21,8 @@
                         <v-text-field
                             v-model="form.current_password"
                             :type="passwordState.type"
-                            :append-icon="passwordState.icon"
                             :error-messages="form.error('current_password')"
                             :success="!!form.error('current_password')"
-                            @click:append="showPassword = !showPassword"
                             label="Current Password"
                             hint="Your current password"
                             autocomplete="off"
@@ -29,10 +34,8 @@
                         <v-text-field
                             v-model="form.password"
                             :type="passwordState.type"
-                            :append-icon="passwordState.icon"
                             :error-messages="form.error('password')"
                             :success="!!form.error('password')"
-                            @click:append="showPassword = !showPassword"
                             label="New Password"
                             hint="Your new password"
                             autocomplete="off"
@@ -44,12 +47,10 @@
                         <v-text-field
                             v-model="form.password_confirmation"
                             :type="passwordState.type"
-                            :append-icon="passwordState.icon"
                             :error-messages="
                                 form.error('password_confirmation')
                             "
                             :success="!!form.error('password_confirmation')"
-                            @click:append="showPassword = !showPassword"
                             label="New Password Confirmation"
                             hint="Fill again the new password"
                             autocomplete="off"

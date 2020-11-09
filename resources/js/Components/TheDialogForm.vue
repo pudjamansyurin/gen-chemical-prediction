@@ -121,7 +121,7 @@ export default {
             if (!this.mobile && !this.fullscreen) return "max-height: 500px;";
         },
         iconFullscreen() {
-            return `mdi-fullscreen${this.fullscreen ? "-exit" : ""}`;
+            return this.fullscreen ? "mdi-fullscreen-exit" : "mdi-fullscreen";
         },
     },
 };

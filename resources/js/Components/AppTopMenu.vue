@@ -73,10 +73,10 @@ export default {
     mixins: [CommonMixin, NavigationMixin, FullscreenMixin],
     computed: {
         darkIcon() {
-            return `mdi-brightness${this.dark ? "-1" : "-3"}`;
+            return this.dark ? "mdi-brightness-1" : "mdi-brightness-3";
         },
         denseIcon() {
-            return `mdi-table${this.dense ? "" : "-large"}`;
+            return this.dense ? "mdi-table" : "mdi-table-large";
         },
     },
     methods: {
