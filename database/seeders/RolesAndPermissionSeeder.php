@@ -29,8 +29,8 @@ class RolesAndPermissionSeeder extends Seeder
             'delete',
         ];
         $roles = [
-            'inputor' => [],
-            'admin' => [
+            'INPUTOR' => [],
+            'ADMIN' => [
                 'user' => '*',
             ],
         ];

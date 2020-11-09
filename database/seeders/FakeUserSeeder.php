@@ -19,7 +19,7 @@ class FakeUserSeeder extends Seeder
         User::withoutEvents(function () {
             return User::factory(100)->create();
         })->each(function ($user) {
-            $role = Role::inRandomOrder()->first();
+            $role = Role::whereNotIn('name', ['ADMIN'])->inRandomOrder()->first();
             $user->assignRole($role);
         });
     }

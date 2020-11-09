@@ -23,20 +23,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $this->authorize('viewAny', User::class);
+        $this->authorize('viewAny', User::class);
 
-        // retrieve
         [$users, $total] = User::queried();
 
-        // Response
         return Inertia::render('User/Index', [
             'items' => UserItem::collection($users),
             'total' => $total,
             'roles' => Role::all()
         ]);
-
-        // return (UserItem::collection($users))
-        //     ->additional(['total' => $total]);
     }
 
     /**
@@ -47,19 +42,13 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        // $this->authorize('create', User::class);
+        $this->authorize('create', User::class);
 
-        // create
         $user = User::create(
             $this->transformPassword($request->validated())
         );
 
-
         return back()->with('status', 'New user added.');
-        // return response(
-        //     new UserItem($user->loadRelation()),
-        //     Response::HTTP_CREATED
-        // );
     }
 
     /**
@@ -70,7 +59,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        // $this->authorize('viewAny', User::class);
+        $this->authorize('view', $user);
 
         return new UserItem($user->loadRelation());
     }
@@ -84,19 +73,13 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        // $this->authorize('update', $user);
-        // update
+        $this->authorize('update', $user);
 
         $user->update(
             $this->transformPassword($request->validated())
         );
 
         return back()->with('status', 'User updated.');
-
-        // return response(
-        //     new UserItem($user->loadRelation()),
-        //     Response::HTTP_OK
-        // );
     }
 
     /**
@@ -108,7 +91,7 @@ class UserController extends Controller
     public function destroy(DeleteSomeRequest $request, $user)
     {
         $usersId = $request->ids;
-        // $this->authorize('delete', [User::class, $usersId]);
+        $this->authorize('delete', [User::class, $usersId]);
 
         // check
         // if ($response = User::rejectWhenHas($usersId, [])) {

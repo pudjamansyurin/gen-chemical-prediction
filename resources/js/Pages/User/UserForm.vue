@@ -125,7 +125,7 @@ export default {
     data() {
         return {
             model: "user",
-            fetching: true,
+            fetching: false,
             form: this.$inertia.form(
                 {
                     _method: "PUT",
@@ -168,8 +168,9 @@ export default {
                 .get(route("user.show", { id: this.id }).url())
                 .then(({ data }) => {
                     assign(this.form, pick(data, keys(User)));
-                    this.fetching = false;
-                });
+                })
+                .catch((e) => (this.dialog = false))
+                .then(() => (this.fetching = false));
         },
         reset() {
             delete this.$page.errorBags["userForm"];
