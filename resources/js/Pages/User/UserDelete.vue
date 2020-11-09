@@ -75,7 +75,7 @@ export default {
         remove() {
             this.form.ids = this.selected.map(({ id }) => id);
 
-            this.form.post(route("user.destroy", { id: -1 }), {
+            this.form.post(route("user.destroy", { id: this.form.ids[0] }), {
                 preserveScroll: true,
                 onStart: (visit) => this.START_LOADING(),
                 onFinish: () => this.STOP_LOADING(),

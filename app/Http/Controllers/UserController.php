@@ -44,9 +44,7 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        $user = User::create(
-            $this->transformPassword($request->validated())
-        );
+        $user = User::create($this->hashed($request->validated()));
 
         return back()->with('status', 'New user added.');
     }
@@ -75,9 +73,7 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        $user->update(
-            $this->transformPassword($request->validated())
-        );
+        $user->update($this->hashed($request->validated()));
 
         return back()->with('status', 'User updated.');
     }
@@ -88,10 +84,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DeleteSomeRequest $request, $user)
+    public function destroy(User $user)
     {
-        $usersId = $request->ids;
-        $this->authorize('delete', [User::class, $usersId]);
+        $this->authorize('delete', $user);
 
         // check
         // if ($response = User::rejectWhenHas($usersId, [])) {
@@ -99,7 +94,7 @@ class UserController extends Controller
         // }
 
         // delete
-        User::destroy($usersId);
+        $user->delete();
 
         return back()->with('status', 'User deleted.');
     }
@@ -107,7 +102,7 @@ class UserController extends Controller
     /**
      * Private functions
      */
-    private function transformPassword($input)
+    private function hashed($input)
     {
         if (array_key_exists('password', $input))
             $input['password'] = Hash::make($input['password']);

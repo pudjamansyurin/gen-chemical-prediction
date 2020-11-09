@@ -16,6 +16,7 @@
         selectable-key="authorized"
         sort-by="updated_at"
         class="elevation-1"
+        single-select
         sort-desc
         show-select
         must-sort
