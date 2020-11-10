@@ -4,12 +4,14 @@ export const menu = [
         text: "Dashboard",
         to: "dashboard",
         icon: "mdi-currency-usd",
+        roles: ["ADMIN", "INPUTOR"],
         bottomNav: true
     },
     {
         text: "User",
         to: "user.index",
         icon: "mdi-account-group",
+        roles: ["ADMIN"],
         bottomNav: true
     }
     // {

@@ -4,7 +4,7 @@
             <div class="text-h6">
                 Profile Information
                 <v-chip
-                    v-if="!user.verified"
+                    v-if="!profile.verified"
                     @click="verifyEmail"
                     :disabled="verifier.processing"
                     color="primary"
@@ -37,7 +37,7 @@
                             :error-messages="form.error('email')"
                             :success="!!form.error('email')"
                             :append-icon="
-                                user.verified ? 'mdi-check-decagram' : ''
+                                profile.verified ? 'mdi-check-decagram' : ''
                             "
                             label="E-mail"
                             type="email"
@@ -86,15 +86,15 @@ import { CommonMixin } from "@/Mixins";
 
 export default {
     mixins: [CommonMixin],
-    props: ["user"],
+    props: ["profile"],
     data() {
         return {
             form: this.$inertia.form(
                 {
                     _method: "PUT",
-                    name: this.user.name,
-                    email: this.user.email,
-                    role: this.user.role,
+                    name: this.profile.name,
+                    email: this.profile.email,
+                    role: this.profile.role,
                 },
                 {
                     bag: "updateProfileInformation",

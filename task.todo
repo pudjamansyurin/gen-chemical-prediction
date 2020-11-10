@@ -1,0 +1,4 @@
+[] synchronize pagination between server and client
+[] use $page.profile directly (no vuex state)
+[] use role for menu management
+[] remove mixins, instead use composition api

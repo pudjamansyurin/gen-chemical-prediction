@@ -1,15 +1,7 @@
-import { mapState } from "vuex";
-
 import { menu } from "@/Config/navs";
 
 export default {
-    data() {
-        return {
-            profile_url: "profile.show"
-        };
-    },
     computed: {
-        ...mapState("app", ["profile"]),
         navs() {
             //     let route = this.$route.name;
             //     let navs = cloneDeep(menu);
@@ -53,10 +45,10 @@ export default {
             return route().current(to);
         },
         gotoProfile() {
-            this.goto(this.profile_url);
+            this.goto("profile.show");
         },
         activeProfile() {
-            return this.active(this.profile_url);
+            return this.active("profile.show");
         },
         logout() {
             this.$axios

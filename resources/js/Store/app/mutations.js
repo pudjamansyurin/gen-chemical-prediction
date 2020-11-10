@@ -29,18 +29,6 @@ export default {
     [mutations.SET_DRAWER](state, open) {
         state.drawer = open;
     },
-    [mutations.SET_PROFILE](state, data) {
-        state.profile = data;
-        // ls.set("profile", data);
-    },
-    // [mutations.CLEAR_PROFILE](state) {
-    //     state.profile = cloneDeep(User);
-    //     // ls.remove("profile");
-    // },
-    // [mutations.SET_PER_PAGE](state, count) {
-    //     state.perPage = count;
-    //     ls.set("perPage", count);
-    // },
     [mutations.SET_SIZE](state, { width, height }) {
         state.size = { width, height };
     },
@@ -50,6 +38,18 @@ export default {
             type
         };
     }
+    // [mutations.SET_PROFILE](state, data) {
+    //     state.profile = data;
+    //     // ls.set("profile", data);
+    // },
+    // [mutations.CLEAR_PROFILE](state) {
+    //     state.profile = cloneDeep(User);
+    //     // ls.remove("profile");
+    // },
+    // [mutations.SET_PER_PAGE](state, count) {
+    //     state.perPage = count;
+    //     ls.set("perPage", count);
+    // },
     // [mutations.CLEAR_MESSAGE](state) {
     //     state.message = {
     //         text: "",
@@ -71,7 +71,6 @@ export default {
     // [mutations.SET_REMEMBER](state, { email, password, remember }) {
     //     state.remember = remember;
     //     ls.set("remember", remember);
-
     //     if (remember) {
     //         ls.set("credential", {
     //             email,

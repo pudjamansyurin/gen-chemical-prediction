@@ -98,7 +98,7 @@ export default {
     },
     methods: {
         me({ id }) {
-            return this.profile.id === id;
+            return this.$page.profile.id === id;
         },
         chip(item) {
             return this.me(item) ? "primary" : "green";

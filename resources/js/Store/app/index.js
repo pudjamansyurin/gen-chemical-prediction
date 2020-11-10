@@ -15,7 +15,7 @@ const state = {
     dense: ls.get("dense") || false,
     dark: ls.get("dark") || false,
     // perPage: ls.get("perPage") || options.itemsPerPage,
-    profile: cloneDeep(User),
+    // profile: cloneDeep(User),
     message: {
         text: "",
         type: "info"

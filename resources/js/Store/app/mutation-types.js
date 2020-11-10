@@ -14,5 +14,5 @@ export const SET_DRAWER = "SET_DRAWER";
 export const SET_MESSAGE = "SET_MESSAGE";
 // export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 // export const SET_REMEMBER = "SET_REMEMBER";
-export const SET_PROFILE = "SET_PROFILE";
+// export const SET_PROFILE = "SET_PROFILE";
 // export const CLEAR_PROFILE = "CLEAR_PROFILE";

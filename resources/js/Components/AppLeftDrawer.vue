@@ -8,7 +8,7 @@
     >
         <v-list class="py-0">
             <v-list-item
-                v-if="profile.id > -1"
+                v-if="$page.profile.id > -1"
                 @click="gotoProfile()"
                 :input-value="activeProfile()"
                 :dark="dark"
@@ -30,10 +30,10 @@
 
                 <v-list-item-content>
                     <v-list-item-title class="title">
-                        {{ profile.name }}
+                        {{ $page.profile.name }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        {{ profile.email }}
+                        {{ $page.profile.email }}
                     </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>

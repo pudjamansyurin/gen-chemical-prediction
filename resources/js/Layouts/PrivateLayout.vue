@@ -25,7 +25,7 @@ import FullscreenConfirmation from "@/Components/Extra/FullscreenConfirmation";
 import { CommonMixin } from "@/Mixins";
 import {
     SET_SIZE,
-    SET_PROFILE,
+    // SET_PROFILE,
     // CLEAR_PROFILE,
     SET_MESSAGE,
 } from "@/Store/app/mutation-types";
@@ -42,7 +42,7 @@ export default {
     methods: {
         ...mapMutations("app", [
             SET_SIZE,
-            SET_PROFILE,
+            // SET_PROFILE,
             // CLEAR_PROFILE,
             SET_MESSAGE,
         ]),
@@ -63,13 +63,13 @@ export default {
                     this.SET_MESSAGE({ type: "info", text: page.status });
             },
         },
-        "$page.profile": {
-            immediate: true,
-            handler: function (user) {
-                if (user) this.SET_PROFILE(user);
-                // else this.CLEAR_PROFILE();
-            },
-        },
+        // "$page.profile": {
+        //     immediate: true,
+        //     handler: function (user) {
+        //         if (user) this.SET_PROFILE(user);
+        //         // else this.CLEAR_PROFILE();
+        //     },
+        // },
     },
     mounted() {
         this.onResize();
