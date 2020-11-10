@@ -200,14 +200,15 @@ export default {
         },
     },
     watch: {
-        id: {
+        value: {
             immediate: true,
-            handler(id) {
-                this.reset();
-                if (!this.creating) {
-                    this.fetch();
+            handler(open) {
+                if (open) {
+                    if (!this.creating) this.fetch();
+                    this.form.change_password = this.creating;
+                } else {
+                    this.reset();
                 }
-                this.form.change_password = this.creating;
             },
         },
     },

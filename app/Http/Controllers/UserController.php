@@ -42,11 +42,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        // $this->authorize('create', User::class);
-
         $user = User::create($this->hashed($request->validated()));
 
-        return back()->with('status', 'New user added.');
+        return back()->with('status', 'user-added');
     }
 
     /**
@@ -71,11 +69,9 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        // $this->authorize('update', $user);
-
         $user->update($this->hashed($request->validated()));
 
-        return back()->with('status', 'User updated.');
+        return back()->with('status', 'user-updated');
     }
 
     /**
@@ -96,7 +92,7 @@ class UserController extends Controller
         // delete
         $user->delete();
 
-        return back()->with('status', 'User deleted.');
+        return back()->with('status', 'user-deleted');
     }
 
     /**

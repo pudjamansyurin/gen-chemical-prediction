@@ -20,10 +20,10 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user) {
-            return $this->authorize('update', $this->user);
+        if ($this->getMethod() == 'PUT') {
+            return $this->user()->can('update', $this->user);
         }
-        return $this->authorize('create', User::class);
+        return $this->user()->can('create', User::class);
     }
 
     /**
@@ -33,19 +33,17 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $user = $this->user ?: auth()->user();
-
         return [
             'name' => [
                 'required',
                 'min:3',
                 'max:25',
-                Rule::unique('users', 'name')->ignore($user)
+                Rule::unique('users', 'name')->ignore($this->user)
             ],
             'email'   => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($user)
+                Rule::unique('users', 'email')->ignore($this->user)
             ],
             'role_id' => [
                 'required',
