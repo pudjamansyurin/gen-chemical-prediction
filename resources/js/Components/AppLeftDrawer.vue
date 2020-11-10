@@ -9,8 +9,8 @@
         <v-list class="py-0">
             <v-list-item
                 v-if="$page.profile.id > -1"
-                @click="gotoProfile()"
-                :input-value="activeProfile()"
+                @click="goto('profile.show')"
+                :input-value="active('profile.show')"
                 :dark="dark"
                 color="green"
                 link

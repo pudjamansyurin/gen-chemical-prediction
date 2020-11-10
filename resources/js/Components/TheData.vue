@@ -1,17 +1,7 @@
 <template>
     <fragment>
-        <!-- <the-skeleton-loader v-if="items.length == 0 && loading">
-        </the-skeleton-loader> -->
-
-        <no-content
-            v-if="items.length === 0 && !loading"
-            :model="model"
-            :search="options.search"
-        >
-        </no-content>
-
         <!-- has data -->
-        <div v-if="items.length > 0">
+        <div v-show="items.length > 0">
             <the-data-table
                 v-if="!mobile"
                 :value="selected"
@@ -44,6 +34,16 @@
                 </template>
             </the-data-card>
         </div>
+
+        <!-- <the-skeleton-loader v-show="items.length == 0 && loading">
+        </the-skeleton-loader> -->
+
+        <no-content
+            v-show="items.length == 0"
+            :model="model"
+            :search="options.search"
+        >
+        </no-content>
     </fragment>
 </template>
 
@@ -97,9 +97,9 @@ export default {
     },
     methods: {
         updateOptions(value) {
-            if (!isEqual(this.options, value)) {
+            if (!isEqual(this.options, value)) 
                 this.$emit("update:options", value);
-            }
+            
         },
     },
 };
