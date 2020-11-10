@@ -8,8 +8,6 @@ import {
     START_LOADING,
     STOP_LOADING,
     SET_MESSAGE
-    // CLEAR_ERROR,
-    // CLEAR_MESSAGE
 } from "@/Store/app/mutation-types";
 
 // Create axios instance
@@ -35,8 +33,6 @@ instance.interceptors.request.use(
         // config.headers.Authorization = token ? `Bearer ${token}` : null;
 
         store.commit(ns("app", START_LOADING));
-        // store.commit(ns("app", CLEAR_ERROR));
-        // store.commit(ns("app", CLEAR_MESSAGE));
 
         return config;
     },
@@ -62,12 +58,12 @@ instance.interceptors.response.use(
         store.commit(ns("app", STOP_LOADING));
 
         // save api generated message
-        if (message) {
-            store.commit(ns("app", SET_MESSAGE), {
-                text: message,
-                type: "success"
-            });
-        }
+        // if (message) {
+        //     store.commit(ns("app", SET_MESSAGE), {
+        //         text: message,
+        //         type: "success"
+        //     });
+        // }
 
         return response;
     },
@@ -81,12 +77,12 @@ instance.interceptors.response.use(
         store.commit(ns("app", STOP_LOADING));
 
         // save api generated message
-        if (message) {
-            store.commit(ns("app", SET_MESSAGE), {
-                text: message,
-                type: "error"
-            });
-        }
+        // if (message) {
+        //     store.commit(ns("app", SET_MESSAGE), {
+        //         text: message,
+        //         type: "error"
+        //     });
+        // }
 
         return Promise.reject(error);
     }

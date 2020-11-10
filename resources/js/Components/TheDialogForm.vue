@@ -8,7 +8,7 @@
         persistent
         scrollable
     >
-        <v-card :loading="isLoading">
+        <v-card :loading="disabled">
             <v-card-title>
                 <v-row no-gutters>
                     <v-col cols="12" sm="5">

@@ -28,7 +28,6 @@
                     :append-icon="searchBoxIcon"
                     :autofocus="mobile"
                     :dark="dark"
-                    :loading="isLoading"
                     label="Search"
                     dense
                     flat

@@ -1,10 +1,10 @@
 <template>
     <fragment>
-        <!-- <the-skeleton-loader v-if="items.length == 0 && isLoading">
+        <!-- <the-skeleton-loader v-if="items.length == 0 && loading">
         </the-skeleton-loader> -->
 
         <no-content
-            v-if="items.length == 0 && !isLoading"
+            v-if="items.length === 0 && !loading"
             :model="model"
             :search="options.search"
         >
@@ -21,6 +21,7 @@
                 :items="items"
                 :headers="headers"
                 :total="total"
+                :loading="loading"
             >
                 <template
                     v-for="header in headers"
@@ -82,6 +83,10 @@ export default {
         model: {
             type: String,
             defautl: "",
+        },
+        loading: {
+            type: Boolean,
+            default: false,
         },
     },
     components: {

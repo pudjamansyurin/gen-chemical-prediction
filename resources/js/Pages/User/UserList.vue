@@ -8,6 +8,7 @@
         :headers="headers"
         :total="total"
         :items="items"
+        :loading="fetching"
     >
         <template v-slot:[`item.name`]="{ item }">
             <v-chip
@@ -87,6 +88,11 @@ export default {
             defautl: "",
         },
     },
+    data() {
+        return {
+            fetching: false,
+        };
+    },
     components: {
         TheData,
     },
@@ -105,6 +111,9 @@ export default {
         options: {
             handler: debounce(function (value) {
                 this.$inertia.replace(route(route().current()), {
+                    preserveScroll: true,
+                    onStart: (visit) => (this.fetching = true),
+                    onFinish: () => (this.fetching = false),
                     data: omit(value, [
                         "groupBy",
                         "groupDesc",
@@ -113,8 +122,6 @@ export default {
                         "mine",
                     ]),
                     only: ["status", "items", "total"],
-                    onStart: (visit) => this.START_LOADING(),
-                    onFinish: () => this.STOP_LOADING(),
                 });
             }, 500),
         },

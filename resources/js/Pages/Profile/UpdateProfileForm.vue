@@ -108,14 +108,11 @@ export default {
         updateProfile() {
             this.form.post(route("user-profile-information.update"), {
                 preserveScroll: true,
-                onStart: (visit) => this.START_LOADING(),
-                onFinish: () => this.STOP_LOADING(),
             });
         },
         verifyEmail() {
             this.verifier.post(route("verification.send"), {
-                onStart: (visit) => this.START_LOADING(),
-                onFinish: () => this.STOP_LOADING(),
+                preserveScroll: true,
             });
         },
     },

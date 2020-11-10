@@ -7,7 +7,7 @@
         :headers="headers"
         :items="items"
         :server-items-length="total"
-        :loading="isLoading"
+        :loading="loading"
         :dense="dense"
         :dark="dark"
         :footer-props="{
@@ -60,6 +60,10 @@ export default {
         total: {
             type: Number,
             default: 0,
+        },
+        loading: {
+            type: Boolean,
+            default: false,
         },
     },
     methods: {

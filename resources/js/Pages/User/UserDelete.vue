@@ -77,8 +77,6 @@ export default {
 
             this.form.post(route("user.destroy", { id: this.form.ids[0] }), {
                 preserveScroll: true,
-                onStart: (visit) => this.START_LOADING(),
-                onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) {
                         this.$emit("update:selected", []);

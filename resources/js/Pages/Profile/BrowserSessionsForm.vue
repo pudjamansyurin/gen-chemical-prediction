@@ -58,7 +58,7 @@
                     :append-icon="passwordState.icon"
                     :error-messages="form.error('password')"
                     :success="!!form.error('password')"
-                    :disabled="isLoading"
+                    :disabled="form.processing"
                     @click:append="showPassword = !showPassword"
                     @keyup.enter.native="logoutOtherBrowserSessions"
                     label="Current password"
@@ -112,8 +112,6 @@ export default {
         logoutOtherBrowserSessions() {
             this.form.post(route("other-browser-sessions.destroy"), {
                 preserveScroll: true,
-                onStart: (visit) => this.START_LOADING(),
-                onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) {
                         this.confirmingLogout = false;

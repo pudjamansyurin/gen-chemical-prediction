@@ -193,8 +193,6 @@ export default {
             this.form._method = method;
             this.form.post(url, {
                 preserveScroll: true,
-                onStart: (visit) => this.START_LOADING(),
-                onFinish: () => this.STOP_LOADING(),
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) this.dialog = false;
                 },

@@ -5,6 +5,7 @@ import "./vue-fullscreen";
 import "./vue-long-click";
 import "./vue-moment";
 import "./axios";
+import "./inertia-hooks";
 // import "./lodash";
 import Vuetify from "./vuetify";
 

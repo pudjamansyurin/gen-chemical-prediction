@@ -112,8 +112,6 @@ export default {
         updatePassword() {
             this.form.put(route("user-password.update"), {
                 preserveScroll: true,
-                onStart: (visit) => this.START_LOADING(),
-                onFinish: () => this.STOP_LOADING(),
             });
         },
     },

@@ -10,7 +10,6 @@
 
 <script>
 import { CommonMixin } from "@/Mixins";
-
 import AppOverlayIndicator from "@/Components/AppOverlayIndicator";
 
 export default {
