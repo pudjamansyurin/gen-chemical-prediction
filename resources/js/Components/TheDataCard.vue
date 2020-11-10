@@ -63,9 +63,10 @@ export default {
 
             let index = this.selectedIndex(item);
             if (index > -1) {
-                this.selected.splice(index, 1);
+                this.selected.splice(index, 1); // remove
             } else {
-                this.selected.push(item);
+                // this.selected.push(item);        // add
+                this.selected.splice(0, 1, item); // change
             }
         },
     },

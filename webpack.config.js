@@ -7,7 +7,7 @@ module.exports = {
         }
     },
     output: {
-        chunkFilename: "[name].js?id=[chunkhash]",
-        publicPath: "/"
+        chunkFilename: "js/[name].js?id=[chunkhash]"
+        // publicPath: "/"
     }
 };
