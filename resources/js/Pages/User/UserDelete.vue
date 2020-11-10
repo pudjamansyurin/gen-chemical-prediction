@@ -73,9 +73,9 @@ export default {
     methods: {
         ...mapMutations("app", [SET_MESSAGE]),
         remove() {
-            this.form.ids = this.selected.map(({ id }) => id);
+            this.form.ids = this.selected.map(({ id }) => id)[0];
 
-            this.form.post(route("user.destroy", { id: this.form.ids[0] }), {
+            this.form.post(route("user.destroy", this.form.ids), {
                 preserveScroll: true,
                 onSuccess: (page) => {
                     if (!this.form.hasErrors()) {

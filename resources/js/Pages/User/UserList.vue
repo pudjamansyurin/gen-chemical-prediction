@@ -110,19 +110,31 @@ export default {
     watch: {
         options: {
             handler: debounce(function (value) {
-                this.$inertia.replace(route(route().current()), {
-                    preserveScroll: true,
-                    onStart: (visit) => (this.fetching = true),
-                    onFinish: () => (this.fetching = false),
-                    data: omit(value, [
-                        "groupBy",
-                        "groupDesc",
-                        "mustSort",
-                        "multiSort",
-                        "mine",
-                    ]),
-                    only: ["status", "items", "total"],
-                });
+                this.$inertia.replace(
+                    route(
+                        route().current(),
+                        omit(value, [
+                            "groupBy",
+                            "groupDesc",
+                            "mustSort",
+                            "multiSort",
+                            "mine",
+                        ])
+                    ),
+                    {
+                        preserveScroll: true,
+                        onStart: (visit) => (this.fetching = true),
+                        onFinish: () => (this.fetching = false),
+                        // data: omit(value, [
+                        //     "groupBy",
+                        //     "groupDesc",
+                        //     "mustSort",
+                        //     "multiSort",
+                        //     "mine",
+                        // ]),
+                        only: ["status", "items", "total"],
+                    }
+                );
             }, 500),
         },
     },

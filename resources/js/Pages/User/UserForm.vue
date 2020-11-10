@@ -165,7 +165,7 @@ export default {
         fetch() {
             this.fetching = true;
             this.$axios
-                .get(route("user.show", { id: this.id }).url())
+                .get(route("user.show", this.id).url())
                 .then(({ data }) => {
                     assign(this.form, pick(data, keys(User)));
                 })
@@ -182,7 +182,7 @@ export default {
 
             if (!this.creating) {
                 method = "put";
-                url = route("user.update", { id: this.id });
+                url = route("user.update", this.id);
             }
 
             return { url, method };

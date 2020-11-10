@@ -50,7 +50,7 @@ export default {
             this.$inertia.visit(route(to));
         },
         active(to) {
-            return route().current() === to;
+            return route().current(to);
         },
         gotoProfile() {
             this.goto(this.profile_url);

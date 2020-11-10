@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -19,7 +20,10 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if ($this->user) {
+            return $this->authorize('update', $this->user);
+        }
+        return $this->authorize('create', User::class);
     }
 
     /**

@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $this->authorize('create', User::class);
+        // $this->authorize('create', User::class);
 
         $user = User::create($this->hashed($request->validated()));
 
@@ -71,7 +71,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        $this->authorize('update', $user);
+        // $this->authorize('update', $user);
 
         $user->update($this->hashed($request->validated()));
 
