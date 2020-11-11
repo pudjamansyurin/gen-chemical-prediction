@@ -1,0 +1,7 @@
+
+Todo:
+  ✔ synchronize pagination between server and client @done(20-11-11 11:29)
+  ✔ use $page.profile directly (no vuex state) @done(20-11-11 11:29)
+  ✔ use role for menu management @done(20-11-11 11:30)
+  ✘ remove mixins, instead use composition api @cancelled(20-11-11 11:30)
+
