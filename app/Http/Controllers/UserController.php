@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $user = User::create($this->hashed($request->validated()));
+        User::create($this->hashed($request->validated()));
 
         return back()->with('status', 'user-added');
     }

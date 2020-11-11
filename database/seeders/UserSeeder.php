@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -16,7 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $users = [
+        $data = [
             [
                 'name' => 'Inputor',
                 'email' => 'inputor@gen.com',
@@ -31,17 +32,17 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        foreach ($users as $user) {
-            $theUser = User::withoutEvents(function () use ($user) {
-                return User::create([
-                    'name' => $user['name'],
-                    'email' => $user['email'],
-                    'password' => Hash::make($user['password'])
-                ]);
+        $roles = Role::all();
+
+        foreach ($data as $d) {
+            $user = User::withoutEvents(function () use ($d) {
+                return User::create(array_merge(
+                    Arr::except($d, 'role'),
+                    ['password' => Hash::make($d['password'])]
+                ));
             });
 
-            $role = Role::firstWhere('name', $user['role']);
-            $theUser->assignRole($role);
+            $user->assignRole($roles->firstWhere('name', $d['role']));
         }
     }
 }

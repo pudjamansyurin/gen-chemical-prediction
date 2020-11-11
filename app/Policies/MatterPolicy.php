@@ -2,22 +2,23 @@
 
 namespace App\Policies;
 
+use App\Models\Matter;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class MatterPolicy
 {
     use HandlesAuthorization;
 
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
     {
-        return $user->can('user.view');
+        return $user->can('matter.view');
     }
 
     /**
@@ -27,51 +28,51 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Matter $matter)
     {
-        return $user->can('user.view');
+        return $user->can('matter.view');
     }
 
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        return $user->can('user.create');
+        return $user->can('matter.create');
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\User  $user
+     * @param  \App\Matter  $matter
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Matter $matter)
     {
         // owner can update
-        if ($user->id === $model->id)
+        if ($user->id === $matter->user_id)
             return true;
 
-        return $user->can('user.force-update');
+        return $user->can('matter.force-update');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\User  $user
+     * @param  \App\Matter  $matter
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Matter $matter)
     {
-        // user can't delete their own account
-        if ($user->id === $model->id)
-            return false;
+        // owner can delete
+        if ($user->id === $matter->user_id)
+            return true;
 
-        return $user->can('user.force-delete');
+        return $user->can('matter.force-delete');
     }
 }

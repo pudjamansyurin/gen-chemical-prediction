@@ -15,7 +15,6 @@ class FakeUserSeeder extends Seeder
      */
     public function run()
     {
-        // Create users
         User::withoutEvents(function () {
             return User::factory(100)->create();
         })->each(function ($user) {

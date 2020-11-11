@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Material;
-use App\User;
+use App\Models\Material;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MaterialPolicy
@@ -53,12 +53,11 @@ class MaterialPolicy
      */
     public function update(User $user, Material $material)
     {
-        // only owner can update
-        if ($user->id === $material->user_id) {
+        // owner can update
+        if ($user->id === $material->user_id)
             return true;
-        }
-        // above role can update all
-        return $user->hasRole(['admin', 'manager']);
+
+        return $user->can('material.force-update');
     }
 
     /**
@@ -68,16 +67,12 @@ class MaterialPolicy
      * @param  \App\Material  $material
      * @return mixed
      */
-    public function delete(User $user, $materialsId)
+    public function delete(User $user, Material $material)
     {
-        $others = Material::whereIn('id', $materialsId)
-            ->where('user_id', '!=', $user->id)
-            ->count();
-        // only owner can delete
-        if ($others == 0) {
+        // owner can delete
+        if ($user->id === $material->user_id)
             return true;
-        }
-        // above role can delete all
-        return $user->hasRole(['admin', 'manager']);
+
+        return $user->can('material.force-delete');
     }
 }

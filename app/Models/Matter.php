@@ -23,6 +23,7 @@ class Matter extends Model
      */
     protected $fillable = [
         'name',
+        'required',
         'user_id'
     ];
 
