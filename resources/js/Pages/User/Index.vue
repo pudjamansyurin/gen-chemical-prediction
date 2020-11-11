@@ -3,15 +3,15 @@
         <app-top-bar
             :selected.sync="selected"
             :options.sync="options"
-            :page="model"
+            :page-title="model.toUpperCase()"
             @create="onCreate"
             @delete="onDelete"
-        ></app-top-bar>
+        >
+        </app-top-bar>
 
         <user-list
             :selected.sync="selected"
             :options.sync="options"
-            :model="model"
             :headers="headers"
             :total="total"
             :items="items"
@@ -27,10 +27,8 @@
 </template>
 
 <script>
-import { cloneDeep } from "lodash";
-
 import { User } from "@/Config/models";
-import { options as tableOptions } from "@/Config/table";
+import { options as tableOptions, queryOptions } from "@/Config/table";
 
 import PrivateLayout from "@/Layouts/PrivateLayout";
 import AppTopBar from "@/Components/AppTopBar";
@@ -61,14 +59,14 @@ export default {
             selected: [],
             dialogForm: false,
             dialogDelete: false,
-            options: cloneDeep(tableOptions),
+            options: queryOptions(tableOptions),
         };
     },
-    computed: {
-        // fieldDisabled() {
-        //     return !this.creating && !this.form.authorized;
-        // },
-    },
+    // computed: {
+    //     fieldDisabled() {
+    //         return !this.creating && !this.form.authorized;
+    //     },
+    // },
     methods: {
         onCreate() {
             this.id = -1;

@@ -4,7 +4,6 @@
         @update:selected="$emit('update:selected', $event)"
         :options="options"
         @update:options="$emit('update:options', $event)"
-        :model="model"
         :headers="headers"
         :total="total"
         :items="items"
@@ -82,10 +81,6 @@ export default {
         total: {
             type: Number,
             default: 0,
-        },
-        model: {
-            type: String,
-            defautl: "",
         },
     },
     data() {

@@ -35,15 +35,11 @@
             </the-data-card>
         </div>
 
+        <no-content v-show="items.length == 0" :search="options.search">
+        </no-content>
+
         <!-- <the-skeleton-loader v-show="items.length == 0 && loading">
         </the-skeleton-loader> -->
-
-        <no-content
-            v-show="items.length == 0"
-            :model="model"
-            :search="options.search"
-        >
-        </no-content>
     </fragment>
 </template>
 
@@ -80,10 +76,6 @@ export default {
             type: Number,
             default: 0,
         },
-        model: {
-            type: String,
-            defautl: "",
-        },
         loading: {
             type: Boolean,
             default: false,
@@ -97,9 +89,8 @@ export default {
     },
     methods: {
         updateOptions(value) {
-            if (!isEqual(this.options, value)) 
+            if (!isEqual(this.options, value))
                 this.$emit("update:options", value);
-            
         },
     },
 };

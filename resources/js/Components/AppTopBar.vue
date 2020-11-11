@@ -14,7 +14,7 @@
                         :href="route(route().current())"
                         class="white--text text-decoration-none"
                     >
-                        {{ pageTitle }}
+                        {{ pageTitle || title }}
                     </inertia-link>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -104,13 +104,13 @@ export default {
                 return { search: "", mine: false };
             },
         },
-        page: {
-            type: String,
-            default: "",
-        },
         selected: {
             type: Array,
             default: () => [],
+        },
+        pageTitle: {
+            type: String,
+            default: "",
         },
         mineTab: {
             type: Boolean,
@@ -129,9 +129,6 @@ export default {
         ...mapState("app", ["title", "dark", "dense"]),
         crud() {
             return !!this.options.page;
-        },
-        pageTitle() {
-            return this.page.toUpperCase();
         },
         searchBoxIcon() {
             let opened = this.mobile || this.options.search;
@@ -169,9 +166,7 @@ export default {
         },
     },
     mounted() {
-        if (this.options.search) {
-            this.setSearchBox(true);
-        }
+        if (this.options.search) this.setSearchBox(true);
     },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
     <fragment>
-        <app-top-bar page="Profile"></app-top-bar>
+        <app-top-bar page-title="Profile"></app-top-bar>
 
         <update-profile-form :profile="profile"></update-profile-form>
         <update-password-form></update-password-form>

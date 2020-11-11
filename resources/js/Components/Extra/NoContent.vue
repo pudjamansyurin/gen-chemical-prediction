@@ -10,10 +10,6 @@ import { CommonMixin } from "@/Mixins";
 export default {
     mixins: [CommonMixin],
     props: {
-        model: {
-            type: String,
-            defautl: "",
-        },
         search: {
             type: String,
             defautl: "",
@@ -22,7 +18,7 @@ export default {
     computed: {
         text() {
             if (this.search) return `No item related to "${this.search}"`;
-            return `Oops, no ${this.model} data`;
+            return `Oops, no data`;
         },
     },
 };
