@@ -17,7 +17,6 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        // only ADMIN can view all users
         return $user->can('user.view');
     }
 
@@ -53,12 +52,11 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        // only owner can update
-        if ($user->id === $model->id) {
+        // owner can update
+        if ($user->id === $model->id)
             return true;
-        }
-        // ADMIN can update all
-        return $user->hasRole('ADMIN');
+
+        return $user->can('user.update');
     }
 
     /**
@@ -71,10 +69,9 @@ class UserPolicy
     public function delete(User $user, User $model)
     {
         // user can't delete their own account
-        if ($user->id === $model->id) {
+        if ($user->id === $model->id)
             return false;
-        }
-        // ADMIN can delete all
-        return $user->hasRole('ADMIN');
+
+        return $user->can('user.delete');
     }
 }

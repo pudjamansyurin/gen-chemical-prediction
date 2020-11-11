@@ -25,7 +25,7 @@ class RolesAndPermissionSeeder extends Seeder
         $actions = [
             'view',
             'create',
-            'edit',
+            'update',
             'delete',
         ];
         $roles = [
@@ -36,11 +36,9 @@ class RolesAndPermissionSeeder extends Seeder
         ];
 
         // create permissions
-        foreach ($models as $model) {
-            foreach ($actions as $action) {
+        foreach ($models as $model)
+            foreach ($actions as $action)
                 Permission::create(['name' => "{$model}.{$action}"]);
-            }
-        }
 
         // create roles
         foreach ($roles as $role => $models) {
@@ -49,9 +47,8 @@ class RolesAndPermissionSeeder extends Seeder
                 $theActions = (is_array($action) ? $action : $actions);
 
                 // apply actions to this role-model
-                foreach ($theActions as $theAction) {
+                foreach ($theActions as $theAction)
                     $theRole->givePermissionTo("{$model}.{$theAction}");
-                }
             }
         }
     }
