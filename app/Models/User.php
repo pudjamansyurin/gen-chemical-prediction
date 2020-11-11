@@ -89,4 +89,13 @@ class User extends Authenticatable // implements MustVerifyEmail
     /**
      * Relations
      */
+    public function matters()
+    {
+        return $this->hasMany(Matter::class);
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
 }
