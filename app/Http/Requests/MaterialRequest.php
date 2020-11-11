@@ -2,17 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Actions\Fortify\PasswordValidationRules;
-use App\Models\User;
+use App\Models\Material;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class MaterialRequest extends FormRequest
 {
-    use PasswordValidationRules;
-
-    protected $errorBag = 'userForm';
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -21,8 +16,8 @@ class UserRequest extends FormRequest
     public function authorize()
     {
         if ($this->getMethod() == 'PUT')
-            return $this->user()->can('update', $this->user);
-        return $this->user()->can('create', User::class);
+            return $this->user()->can('update', $this->material);
+        return $this->user()->can('create', Material::class);
     }
 
     /**
@@ -37,26 +32,20 @@ class UserRequest extends FormRequest
                 'required',
                 'min:3',
                 'max:25',
-                Rule::unique('users', 'name')->ignore($this->user)
+                Rule::unique('materials', 'name')->ignore($this->material)
             ],
-            'email'   => [
+            'matter_id' => [
                 'required',
-                'email',
-                Rule::unique('users', 'email')->ignore($this->user)
+                'integer',
+                'exists:matters,id'
             ],
-            'role_id' => [
-                'required',
-                'exists:roles,id'
-            ],
-            'password' => $this->passwordRules()
         ];
     }
-
 
     public function attributes()
     {
         return [
-            'role_id' => 'role',
+            'matter_id' => 'matter',
         ];
     }
 }

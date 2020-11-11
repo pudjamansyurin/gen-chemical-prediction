@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MatterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +25,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
+    Route::apiResource('matter', MatterController::class);
+    Route::apiResource('material', MaterialController::class);
     Route::apiResource('user', UserController::class);
 });
