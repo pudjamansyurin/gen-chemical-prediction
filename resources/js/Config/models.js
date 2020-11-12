@@ -11,7 +11,25 @@ export const User = {
     password: "",
     password_confirmation: "",
     change_password: null,
-    role: Role
+    role: Role,
+    authorized: false
+};
+
+export const Matter = {
+    id: -1,
+    name: "",
+    required: false,
+    authorized: false
+};
+
+export const Material = {
+    id: -1,
+    name: "",
+    matter_id: -1,
+    authorized: false
+    // rev: {
+    //     price: null
+    // }
 };
 
 // export const Pack = {
@@ -32,20 +50,6 @@ export const User = {
 //     unit_id: -1,
 //     capacity: null,
 //     _packers: []
-// };
-
-// export const Matter = {
-//     id: -1,
-//     name: ""
-// };
-
-// export const Material = {
-//     id: -1,
-//     name: "",
-//     matter_id: -1,
-//     rev: {
-//         price: null
-//     }
 // };
 
 // export const MaterialRev = {

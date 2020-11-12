@@ -35,7 +35,10 @@ class MatterController extends Controller
      */
     public function store(MatterRequest $request)
     {
-        Matter::create($request->validated());
+        Matter::create(array_merge(
+            $request->validated(),
+            ['user_id' => auth()->id()]
+        ));
 
         return back()->with('status', 'matter-added');
     }
@@ -78,9 +81,8 @@ class MatterController extends Controller
         $this->authorize('delete', $matter);
 
         // check
-        // if ($response = Matter::rejectWhenHas($mattersId, [])) {
+        // if ($response = Matter::rejectWhenHas($mattersId, ['materials']))
         //     return $response;
-        // }
 
         // delete
         $matter->delete();

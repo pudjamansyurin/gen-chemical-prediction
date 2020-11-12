@@ -74,10 +74,7 @@
 </template>
 
 <script>
-import { cloneDeep } from "lodash";
-
 import { CommonMixin, PasswordMixin } from "@/Mixins";
-import { User } from "@/Config/models";
 
 import TheDialogConfirmation from "@/Components/TheDialogConfirmation";
 import BrowserSessionsList from "./BrowserSessionsList";

@@ -101,11 +101,11 @@ export default {
             type: Boolean,
             default: false,
         },
-
         width: {
             type: [String, Number],
             default: 600,
         },
+
         tabs: {
             type: Array,
             default: () => [],

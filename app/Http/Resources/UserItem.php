@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 class UserItem extends JsonResource
 {
@@ -27,7 +28,7 @@ class UserItem extends JsonResource
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'authorized' => $this->id != auth()->id(),
+            'authorized' => Gate::allows('update', $this->resource)
         ];
     }
 }

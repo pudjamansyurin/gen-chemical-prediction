@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 
 class MaterialRequest extends FormRequest
 {
+    protected $errorBag = 'materialForm';
+
     /**
      * Determine if the user is authorized to make this request.
      *

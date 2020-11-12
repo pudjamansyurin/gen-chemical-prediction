@@ -20,8 +20,9 @@ export const logger = (message, type = "log") => {
     console[type](message);
 };
 
-export const bool = string => {
-    return string === "true";
+export const bool = val => {
+    if (Number.isInteger(val)) return !(val === 0);
+    return val === "true";
 };
 
 // export const eHandler = e => {

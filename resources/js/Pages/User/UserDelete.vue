@@ -48,9 +48,6 @@ export default {
                 {
                     _method: "DELETE",
                     ids: [],
-                },
-                {
-                    bag: "defaultDelete",
                 }
             ),
         };
@@ -78,10 +75,8 @@ export default {
             this.form.post(route("user.destroy", this.form.ids), {
                 preserveScroll: true,
                 onSuccess: (page) => {
-                    if (!this.form.hasErrors()) {
-                        this.$emit("update:selected", []);
-                        this.dialog = false;
-                    }
+                    this.$emit("update:selected", []);
+                    this.dialog = false;
                 },
             });
         },

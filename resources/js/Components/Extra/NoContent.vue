@@ -1,5 +1,5 @@
 <template>
-    <v-alert :dark="dark" type="info" border="top">
+    <v-alert :dark="dark" type="info" border="left" outlined>
         <span>{{ text }}</span>
     </v-alert>
 </template>
@@ -17,8 +17,8 @@ export default {
     },
     computed: {
         text() {
-            if (this.search) return `No item related to "${this.search}"`;
-            return `Oops, no data`;
+            if (this.search) return `No item related to "${this.search}".`;
+            return `Oops, no data found.`;
         },
     },
 };

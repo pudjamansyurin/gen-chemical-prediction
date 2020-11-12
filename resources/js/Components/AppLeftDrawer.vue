@@ -65,7 +65,7 @@
 
                 <v-divider v-else-if="item.divider" :key="index"></v-divider>
 
-                <!-- <v-list-group
+                <v-list-group
                     v-else-if="item.children"
                     :key="index"
                     v-model="item.model"
@@ -93,7 +93,8 @@
                     <v-list-item
                         v-for="(child, i) in item.children"
                         :key="i"
-                        :to="{ name: child.to }"
+                        @click="goto(child.to)"
+                        :input-value="active(child.to)"
                         :dark="dark"
                         link
                     >
@@ -114,7 +115,7 @@
                             <v-icon>{{ child.icon }}</v-icon>
                         </v-list-item-action>
                     </v-list-item>
-                </v-list-group> -->
+                </v-list-group>
 
                 <v-list-item
                     v-else

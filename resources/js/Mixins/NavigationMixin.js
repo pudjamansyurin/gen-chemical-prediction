@@ -3,30 +3,18 @@ import { menu } from "@/Config/navs";
 export default {
     computed: {
         navs() {
-            // let route = this.$route.name;
-            // let navs = cloneDeep(menu);
+            return menu.reduce((arr, el) => {
+                if (el.children) {
+                    let newNavGroup = this.convertNavGroup(el);
+                    if (newNavGroup) return arr.concat(newNavGroup);
+                } else if (el.to) {
+                    if (this.authorized(el)) return arr.concat(el);
+                } else {
+                    return arr.concat(el);
+                }
 
-            // group menu
-            // navs.forEach((nav, index) => {
-            //     if (nav.children) {
-            //         nav.model = nav.children.some(({ to }) => to === route);
-            //         // check pages role (at least 1 for group)
-            //         if (nav.children) {
-            //             let authNavs = nav.children.filter(({ to }) =>
-            //                 this.authPage(to)
-            //             );
-            //             // force replace group as single nav
-            //             if (authNavs.length == 1) {
-            //                 navs[index] = authNavs[0];
-            //             } else {
-            //                 navs[index].children = authNavs;
-            //             }
-            //         }
-            //     }
-            // });
-
-            // non group
-            return menu.filter(m => this.authorized(m.to));
+                return arr;
+            }, []);
         }
     },
     methods: {
@@ -39,18 +27,28 @@ export default {
         logout() {
             this.$axios
                 .post(route("logout").url())
-                .then(response => {
-                    window.location = "/";
-                })
+                .then(response => (window.location = "/"))
                 .catch(e => {});
         },
-        authorized(to) {
-            let page = menu.find(m => m.to === to);
-            let currentRole = this.$page.profile.role;
+        convertNavGroup(nav) {
+            nav.model = nav.children.some(({ to }) => to === route().current());
 
-            if (!page) return false;
-            if (!page.roles) return true;
-            if (page.roles.includes(currentRole.name)) return true;
+            let authNavs = nav.children.filter(el => this.authorized(el));
+
+            if (authNavs.length > 1) {
+                return {
+                    ...nav,
+                    children: authNavs
+                };
+            } else if (authNavs.length == 1) {
+                return authNavs[0];
+            }
+            return;
+        },
+        authorized(nav) {
+            if (!nav.to) return false;
+            if (nav.roles.includes("*")) return true;
+            if (nav.roles.includes(this.$page.profile.role.name)) return true;
             return false;
         }
     }

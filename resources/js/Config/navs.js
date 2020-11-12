@@ -4,7 +4,7 @@ export const menu = [
         text: "Dashboard",
         to: "dashboard",
         icon: "mdi-currency-usd",
-        roles: ["ADMIN", "INPUTOR"],
+        roles: "*",
         bottomNav: true
     },
     {
@@ -13,31 +13,33 @@ export const menu = [
         icon: "mdi-account-group",
         roles: ["ADMIN"],
         bottomNav: true
+    },
+    {
+        text: "Materials",
+        model: false,
+        icon: "mdi-palette",
+        bottomNav: true,
+        children: [
+            {
+                text: "Material",
+                to: "material.index",
+                icon: "mdi-format-color-fill",
+                roles: "*",
+                bottomNav: true
+            },
+            {
+                text: "Matter",
+                to: "matter.index",
+                icon: "mdi-spray",
+                roles: "*"
+            }
+        ]
     }
     // {
     //     text: "Formula",
     //     to: "formula",
     //     icon: "mdi-dna",
     //     bottomNav: true
-    // },
-    // {
-    //     text: "Materials",
-    //     model: false,
-    //     icon: "mdi-palette",
-    //     bottomNav: true,
-    //     children: [
-    //         {
-    //             text: "Material",
-    //             to: "material",
-    //             icon: "mdi-format-color-fill",
-    //             bottomNav: true
-    //         },
-    //         {
-    //             text: "Matter",
-    //             to: "matter",
-    //             icon: "mdi-spray"
-    //         }
-    //     ]
     // },
     // {
     //     text: "Packages",

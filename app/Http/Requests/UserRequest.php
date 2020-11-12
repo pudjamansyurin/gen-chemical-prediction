@@ -11,7 +11,7 @@ class UserRequest extends FormRequest
 {
     use PasswordValidationRules;
 
-    protected $errorBag = 'userForm';
+    protected $errorBag = 'user_form';
 
     /**
      * Determine if the user is authorized to make this request.

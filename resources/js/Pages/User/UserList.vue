@@ -66,10 +66,6 @@ export default {
             type: Array,
             default: () => [],
         },
-        headers: {
-            type: Array,
-            default: () => [],
-        },
         options: {
             type: Object,
             default: () => {},
@@ -86,6 +82,12 @@ export default {
     data() {
         return {
             fetching: false,
+            headers: [
+                { text: "Name", value: "name" },
+                { text: "Email", value: "email" },
+                { text: "Role", value: "role.name", sortable: false },
+                { text: "UpdatedAt", value: "updated_at" },
+            ],
         };
     },
     components: {
@@ -120,13 +122,6 @@ export default {
                         preserveScroll: true,
                         onStart: (visit) => (this.fetching = true),
                         onFinish: () => (this.fetching = false),
-                        // data: omit(value, [
-                        //     "groupBy",
-                        //     "groupDesc",
-                        //     "mustSort",
-                        //     "multiSort",
-                        //     "mine",
-                        // ]),
                         only: ["status", "items", "total"],
                     }
                 );

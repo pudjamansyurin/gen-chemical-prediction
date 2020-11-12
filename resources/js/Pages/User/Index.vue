@@ -12,7 +12,6 @@
         <user-list
             :selected.sync="selected"
             :options.sync="options"
-            :headers="headers"
             :total="total"
             :items="items"
             @edit="onEdit"
@@ -27,7 +26,6 @@
 </template>
 
 <script>
-import { User } from "@/Config/models";
 import { options as tableOptions, queryOptions } from "@/Config/table";
 
 import PrivateLayout from "@/Layouts/PrivateLayout";
@@ -48,12 +46,6 @@ export default {
     data() {
         return {
             model: "user",
-            headers: [
-                { text: "Name", value: "name" },
-                { text: "Email", value: "email" },
-                { text: "Role", value: "role.name", sortable: false },
-                { text: "UpdatedAt", value: "updated_at" },
-            ],
 
             id: -1,
             selected: [],
@@ -62,11 +54,6 @@ export default {
             options: queryOptions(tableOptions),
         };
     },
-    // computed: {
-    //     fieldDisabled() {
-    //         return !this.creating && !this.form.authorized;
-    //     },
-    // },
     methods: {
         onCreate() {
             this.id = -1;

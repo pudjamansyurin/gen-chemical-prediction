@@ -87,10 +87,7 @@
 </template>
 
 <script>
-import { cloneDeep } from "lodash";
-
 import { CommonMixin, PasswordMixin } from "@/Mixins";
-import { User } from "@/Config/models";
 
 export default {
     mixins: [CommonMixin, PasswordMixin],

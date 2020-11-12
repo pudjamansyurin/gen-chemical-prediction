@@ -3,9 +3,10 @@
         v-model="dialog"
         :title="formTitle"
         :disabled="disabled"
+        :readonly="readonly"
         @submit="save"
     >
-        <v-form @submit.prevent="save" :disabled="disabled">
+        <v-form @submit.prevent="save" :disabled="disabled || readonly">
             <v-text-field
                 v-model="form.name"
                 :error-messages="form.error('name')"
@@ -106,18 +107,10 @@ export default {
             type: Number,
             default: -1,
         },
-        readonly: {
-            type: Boolean,
-            default: false,
-        },
         roles: {
             type: Array,
             default: () => [],
         },
-        // fieldDisabled: {
-        //     type: Boolean,
-        //     default: false,
-        // },
     },
     components: {
         TheDialogForm,
@@ -129,10 +122,10 @@ export default {
             form: this.$inertia.form(
                 {
                     _method: "PUT",
-                    ...cloneDeep(User),
+                    ...cloneDeep(User)
                 },
                 {
-                    bag: "userForm",
+                    bag: "user_form",
                     resetOnSuccess: false,
                 }
             ),
@@ -142,15 +135,18 @@ export default {
         creating() {
             return this.id === -1;
         },
+        disabled() {
+            return this.form.processing || this.fetching;
+        },
+        readonly() {
+            return !(this.creating || this.form.authorized);
+        },
         formTitle() {
             if (this.readonly) return;
 
             let action = this.creating ? "New" : "Edit";
             let title = this.model.toUpperCase();
             return `${action} ${title}`;
-        },
-        disabled() {
-            return this.form.processing || this.fetching;
         },
         dialog: {
             get() {
@@ -173,7 +169,7 @@ export default {
                 .then(() => (this.fetching = false));
         },
         reset() {
-            delete this.$page.errorBags["userForm"];
+            delete this.$page.errorBags["user_form"];
             assign(this.form, User);
         },
         method() {
