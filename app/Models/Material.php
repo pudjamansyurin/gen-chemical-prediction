@@ -52,6 +52,11 @@ class Material extends Model
     /**
      * Relations
      */
+    public function formulas()
+    {
+        return $this->hasMany(Formula::class);
+    }
+
     public function matter()
     {
         return $this->belongsTo(Matter::class);

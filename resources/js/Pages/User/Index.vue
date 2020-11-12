@@ -18,10 +18,10 @@
         >
         </user-list>
 
+        <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
+
         <user-delete v-model="dialogDelete" :selected.sync="selected">
         </user-delete>
-
-        <user-form v-model="dialogForm" :id="id" :roles="roles"></user-form>
     </fragment>
 </template>
 

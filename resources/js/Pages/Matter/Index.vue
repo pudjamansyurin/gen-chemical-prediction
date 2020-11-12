@@ -19,10 +19,10 @@
         >
         </matter-list>
 
+        <matter-form v-model="dialogForm" :id="id"></matter-form>
+
         <matter-delete v-model="dialogDelete" :selected.sync="selected">
         </matter-delete>
-
-        <matter-form v-model="dialogForm" :id="id"></matter-form>
     </fragment>
 </template>
 

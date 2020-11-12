@@ -21,8 +21,8 @@
 
             <v-checkbox
                 v-model="form.required"
-                :error-messages="form.error('name')"
-                :success="!!form.error('name')"
+                :error-messages="form.error('required')"
+                :success="!!form.error('required')"
                 label="Required matter?"
                 hint="This rule is used when composing formula"
                 persistent-hint
@@ -30,7 +30,12 @@
             >
             </v-checkbox>
 
-            <v-btn v-show="false" type="submit"></v-btn>
+            <v-btn
+                v-if="!readonly"
+                :disabled="disabled"
+                class="d-none"
+                type="submit"
+            ></v-btn>
         </v-form>
     </the-dialog-form>
 </template>

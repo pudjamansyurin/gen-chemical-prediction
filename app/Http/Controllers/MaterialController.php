@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MaterialRequest;
 use App\Http\Resources\MaterialItem;
 use App\Models\Material;
+use App\Models\Matter;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class MaterialController extends Controller
@@ -24,6 +26,7 @@ class MaterialController extends Controller
         return Inertia::render('Material/Index', [
             'items' => MaterialItem::collection($materials),
             'total' => $total,
+            'matters' => Matter::all()
         ]);
     }
 
@@ -35,7 +38,10 @@ class MaterialController extends Controller
      */
     public function store(MaterialRequest $request)
     {
-        Material::create($request->validated());
+        Material::create(array_merge(
+            $request->validated(),
+            ['user_id' => auth()->id()]
+        ));
 
         return back()->with('status', 'material-added');
     }
@@ -77,12 +83,10 @@ class MaterialController extends Controller
     {
         $this->authorize('delete', $material);
 
-        // check
-        // if ($response = Material::rejectWhenHas($materialsId, [])) {
-        //     return $response;
-        // }
+        if ($response = Material::rejectWhenHas($material->id, 'formulas'))
+            throw ValidationException::withMessages($response)
+                ->errorBag('material_delete');
 
-        // delete
         $material->delete();
 
         return back()->with('status', 'material-deleted');

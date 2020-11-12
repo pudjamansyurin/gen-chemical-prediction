@@ -8,13 +8,6 @@ export const menu = [
         bottomNav: true
     },
     {
-        text: "User",
-        to: "user.index",
-        icon: "mdi-account-group",
-        roles: ["ADMIN"],
-        bottomNav: true
-    },
-    {
         text: "Materials",
         model: false,
         icon: "mdi-palette",
@@ -34,6 +27,13 @@ export const menu = [
                 roles: "*"
             }
         ]
+    },
+    {
+        text: "User",
+        to: "user.index",
+        icon: "mdi-account-group",
+        roles: ["ADMIN"],
+        bottomNav: true
     }
     // {
     //     text: "Formula",

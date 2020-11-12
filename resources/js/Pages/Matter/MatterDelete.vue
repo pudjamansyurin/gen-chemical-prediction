@@ -6,9 +6,6 @@
     >
         <template #title>Delete confirmation</template>
         <template #content>
-            <v-alert v-if="!!form.error('ids')" type="warning" dense left>
-                {{ form.error("ids") }}
-            </v-alert>
             <p>Are you sure to delete?</p>
             <v-chip v-for="item in selected" :key="item.id" class="ma-1">
                 {{ item.name }}
@@ -47,6 +44,9 @@ export default {
                 {
                     _method: "DELETE",
                     ids: [],
+                },
+                {
+                    bag: 'matter_delete'
                 }
             ),
         };
@@ -69,8 +69,11 @@ export default {
             this.form.post(route("matter.destroy", this.form.ids), {
                 preserveScroll: true,
                 onSuccess: (page) => {
-                    this.$emit("update:selected", []);
-                    this.dialog = false;
+                    if (!this.form.hasErrors()) {
+                        this.$emit("update:selected", []);
+                        this.dialog = false;
+                    } else
+                        this.SET_MESSAGE({type: "error", text: this.form.error('ids')});
                 },
             });
         },

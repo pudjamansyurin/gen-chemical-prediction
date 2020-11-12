@@ -6,9 +6,6 @@
     >
         <template #title>Delete confirmation</template>
         <template #content>
-            <v-alert v-if="!!form.error('ids')" type="warning" dense left>
-                {{ form.error("ids") }}
-            </v-alert>
             <p>Are you sure to delete?</p>
             <v-chip v-for="item in selected" :key="item.id" class="ma-1">
                 {{ item.name }}
@@ -19,7 +16,6 @@
 
 <script>
 import { mapMutations } from "vuex";
-// import pluralize from "pluralize";
 
 import { CommonMixin } from "@/Mixins";
 import { SET_MESSAGE } from "@/Store/app/mutation-types";
@@ -48,6 +44,9 @@ export default {
                 {
                     _method: "DELETE",
                     ids: [],
+                },
+                {
+                    bag: 'user_delete'
                 }
             ),
         };
@@ -61,11 +60,6 @@ export default {
                 this.$emit("input", value);
             },
         },
-        // question() {
-        //     const { length: single } = this.selected;
-        //     if (single) return `this ${this.model}?`;
-        //     return `these ${length} ${pluralize(this.model)}?`;
-        // },
     },
     methods: {
         ...mapMutations("app", [SET_MESSAGE]),
@@ -75,8 +69,11 @@ export default {
             this.form.post(route("user.destroy", this.form.ids), {
                 preserveScroll: true,
                 onSuccess: (page) => {
-                    this.$emit("update:selected", []);
-                    this.dialog = false;
+                    if (!this.form.hasErrors()) {
+                        this.$emit("update:selected", []);
+                        this.dialog = false;
+                    } else
+                        this.SET_MESSAGE({type: "error", text: this.form.error('ids')});
                 },
             });
         },

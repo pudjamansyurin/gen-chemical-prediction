@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
@@ -84,12 +85,10 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
-        // check
-        // if ($response = User::rejectWhenHas($usersId, [])) {
-        //     return $response;
-        // }
+        if ($response = User::rejectWhenHas($user->id, ['matters', 'materials']))
+            throw ValidationException::withMessages($response)
+                ->errorBag('user_delete');
 
-        // delete
         $user->delete();
 
         return back()->with('status', 'user-deleted');

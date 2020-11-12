@@ -25,6 +25,6 @@ class MaterialItem extends JsonResource
             'updated_at' => $this->updated_at,
             'user' => $this->whenLoaded('user'),
             'authorized' => Gate::allows('update', $this->resource)
-        ]
+        ];
     }
 }

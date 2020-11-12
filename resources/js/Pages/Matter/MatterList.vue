@@ -46,12 +46,12 @@
 <script>
 import { omit, debounce } from "lodash";
 
-import { CommonMixin, PasswordMixin } from "@/Mixins";
+import { CommonMixin } from "@/Mixins";
 
 import TheData from "@/Components/TheData";
 
 export default {
-    mixins: [CommonMixin, PasswordMixin],
+    mixins: [CommonMixin],
     props: {
         selected: {
             type: Array,

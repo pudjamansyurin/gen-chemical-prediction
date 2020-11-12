@@ -83,7 +83,12 @@
                 ></v-text-field>
             </template>
 
-            <v-btn v-show="false" type="submit"></v-btn>
+            <v-btn
+                v-if="!readonly"
+                :disabled="disabled"
+                class="d-none"
+                type="submit"
+            ></v-btn>
         </v-form>
     </the-dialog-form>
 </template>

@@ -20,18 +20,15 @@ trait ExtendedScope
         return $query->has($relation)->whereIn('id', $ids)->count();
     }
 
-    public static function rejectWhenHas($ids, $relations = [])
+    public static function rejectWhenHas($ids, $relations)
     {
-        foreach ($relations as $relation) {
-            // check: Relation
-            if (self::countRelation($ids, $relation)) {
-                $relation = Str::upper($relation);
-                // failed
-                return response([
-                    'message' => "Still used by {$relation}."
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
-        }
+        $ids = is_array($ids) ? $ids : [$ids];
+        $relations = is_array($relations) ? $relations : [$relations];
+
+        foreach ($relations as $relation)
+            if (self::countRelation($ids, $relation))
+                return ['ids' => ["still-used-by-{$relation}"]];
+
         return;
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\MatterRequest;
 use App\Http\Resources\MatterItem;
 use App\Models\Matter;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class MatterController extends Controller
@@ -80,11 +81,10 @@ class MatterController extends Controller
     {
         $this->authorize('delete', $matter);
 
-        // check
-        // if ($response = Matter::rejectWhenHas($mattersId, ['materials']))
-        //     return $response;
+        if ($response = Matter::rejectWhenHas($matter->id, 'materials'))
+            throw ValidationException::withMessages($response)
+                ->errorBag('matter_delete');
 
-        // delete
         $matter->delete();
 
         return back()->with('status', 'matter-deleted');
