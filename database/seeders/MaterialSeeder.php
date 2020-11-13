@@ -18,109 +18,60 @@ class MaterialSeeder extends Seeder
     public function run()
     {
         $data = [
-            [
-                'name' => 'Cosco S4',
-                'matter' => 'BASE OIL',
-            ],
-            [
-                'name' => 'Cosco S6',
-                'matter' => 'BASE OIL',
-            ],
-            [
-                'name' => 'Cosco S8',
-                'matter' => 'BASE OIL',
-            ],
-            [
-                'name' => 'Genlube 0831',
-                'matter' => 'ESTER',
-            ],
-            [
-                'name' => 'Triester',
-                'matter' => 'ESTER',
-            ],
-            [
-                'name' => 'Priolube (Palm Ester 3970)',
-                'matter' => 'ESTER',
-            ],
-            [
-                'name' => 'CV 1103',
-                'matter' => 'ADDITIVE',
-            ],
-            [
-                'name' => 'SPAMA 52%',
-                'matter' => 'VM',
-            ],
-            [
-                'name' => 'VM - NMM (HV)',
-                'matter' => 'VM',
-            ],
+            'BASE_OIL' => 'Cosco S4',
+            'BASE_OIL' => 'Cosco S6',
+            'BASE_OIL' => 'Cosco S8',
+            'ESTER' => 'Genlube 0831',
+            'ESTER' => 'Triester',
+            'ESTER' => 'Priolube (Palm Ester 3970)',
+            'ADDITIVE' => 'CV 1103',
+            'VM' => 'SPAMA 52%',
+            'VM' => 'VM - NMM (HV)',
 
-        ];
-
-        $misc = [
-            'Genlube 135',
-            'Genlube 165',
-            'Genlube 6165',
-            'Croda 3970',
-            'C050 C80',
-            'Genvis SPMA 20/5 - 41.5%',
-            'Genvis SPAMA 3',
-            'Genvis VM-HV',
-            'Genvis SPAMA 52',
-            'Genvis SPAMA 41',
-            'N 150',
-            'N 500',
-            'PAMA 52%',
-            'PAMA 62%-Z1',
-            'SPAMA 20/5 - 41.5%',
-            'VM - SPAMA 52%',
-            'Lucant HC 600',
-            'RF 6066',
-            'Lubrizol VL 9101F',
-            'FC 9250',
-            'FC 9270',
-            'WN 1014',
-            'WN 2018',
-            'WN 2112',
-            'WN 2118',
-            'WN 7014',
-            'WN 9014',
-            'WN 2010 B',
-            'PV 1510'
+            'MISC.' => 'Genlube 135',
+            'MISC.' => 'Genlube 165',
+            'MISC.' => 'Genlube 6165',
+            'MISC.' => 'Croda 3970',
+            'MISC.' => 'C050 C80',
+            'MISC.' => 'Genvis SPMA 20/5 - 41.5%',
+            'MISC.' => 'Genvis SPAMA 3',
+            'MISC.' => 'Genvis VM-HV',
+            'MISC.' => 'Genvis SPAMA 52',
+            'MISC.' => 'Genvis SPAMA 41',
+            'MISC.' => 'N 150',
+            'MISC.' => 'N 500',
+            'MISC.' => 'PAMA 52%',
+            'MISC.' => 'PAMA 62%-Z1',
+            'MISC.' => 'SPAMA 20/5 - 41.5%',
+            'MISC.' => 'VM - SPAMA 52%',
+            'MISC.' => 'Lucant HC 600',
+            'MISC.' => 'RF 6066',
+            'MISC.' => 'Lubrizol VL 9101F',
+            'MISC.' => 'FC 9250',
+            'MISC.' => 'FC 9270',
+            'MISC.' => 'WN 1014',
+            'MISC.' => 'WN 2018',
+            'MISC.' => 'WN 2112',
+            'MISC.' => 'WN 2118',
+            'MISC.' => 'WN 7014',
+            'MISC.' => 'WN 9014',
+            'MISC.' => 'WN 2010 B',
+            'MISC.' => 'PV 1510',
         ];
 
         $matters = Matter::all();
         $admin = User::role('ADMIN')->first();
 
-        foreach ($data as $d) {
-            $matter = $matters->firstWhere('name', $d['matter']);
-            $this->createMaterial(
-                $d['name'],
-                $matter->id,
-                $admin->id
-            );
-        }
+        foreach ($data as $matter => $material) {
+            $matter = $matters->firstWhere('name', $matter);
 
-        foreach ($misc as $name) {
-            $matter = $matters->firstWhere('name', 'MISC.');
-            $this->createMaterial(
-                $name,
-                $matter->id,
-                $admin->id
-            );
+            Material::withoutEvents(function () use ($material, $matter, $admin) {
+                return Material::create([
+                    'name' => $material,
+                    'matter_id' => $matter->id,
+                    'user_id' => $admin->id
+                ]);
+            });
         }
-    }
-
-    private function createMaterial($name, $matterId, $userId)
-    {
-        return Material::withoutEvents(function () use ($name, $matterId, $userId) {
-            return Material::create(
-                [
-                    'name' => $name,
-                    'matter_id' => $matterId,
-                    'user_id' => $userId,
-                ]
-            );
-        });
     }
 }

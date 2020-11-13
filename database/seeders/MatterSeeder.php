@@ -16,35 +16,22 @@ class MatterSeeder extends Seeder
     public function run()
     {
         $data = [
-            [
-                'name' => 'BASE OIL',
-                'required' => true,
-            ],
-            [
-                'name' => 'ESTER',
-                'required' => true,
-            ],
-            [
-                'name' => 'ADDITIVE',
-                'required' => true,
-            ],
-            [
-                'name' => 'VM',
-                'required' => true,
-            ],
-            [
-                'name' => 'MISC.',
-                'required' => false,
-            ]
+            'BASE OIL' => true,
+            'ESTER' => true,
+            'ADDITIVE' => true,
+            'VM' => true,
+            'MISC.' => false,
         ];
 
         $admin = User::role('ADMIN')->first();
 
-        foreach ($data as $d) {
-            Matter::withoutEvents(function () use ($d, $admin) {
-                return Matter::create(array_merge($d, [
+        foreach ($data as $matter => $required) {
+            Matter::withoutEvents(function () use ($matter, $required, $admin) {
+                return Matter::create([
+                    'name' => $matter,
+                    'required' => $required,
                     'user_id' => $admin->id
-                ]));
+                ]);
             });
         }
     }

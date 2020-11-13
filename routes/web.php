@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MatterController;
+use App\Http\Controllers\MeasurementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,5 +28,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::apiResource('matter', MatterController::class);
     Route::apiResource('material', MaterialController::class);
+    Route::apiResource('measurement', MeasurementController::class);
     Route::apiResource('user', UserController::class);
 });

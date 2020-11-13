@@ -13,8 +13,8 @@ class Material extends Model
     use ClientQueryScope, ExtendedScope;
 
     protected $client_relations = ['user:id,name', 'matter:id,name',];
-    // protected $client_details = ['revs', 'revs.user:id,name'];
-    // protected $client_counts = ['revs', 'formulas'];
+    protected $client_details = ['formulas'];
+    protected $client_counts = ['formulas'];
 
     /**
      * The attributes that are mass assignable.

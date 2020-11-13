@@ -32,6 +32,12 @@ export const Material = {
     // }
 };
 
+export const Measurement = {
+    id: -1,
+    name: "",
+    authorized: false
+};
+
 // export const Pack = {
 //     id: -1,
 //     name: "",

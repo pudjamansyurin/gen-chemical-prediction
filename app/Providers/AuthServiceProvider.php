@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Material;
+use App\Models\Matter;
+use App\Models\Measurement;
+use App\Models\User;
+use App\Policies\MaterialPolicy;
+use App\Policies\MatterPolicy;
+use App\Policies\MeasurementPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -13,9 +21,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Models\Matter' => 'App\Policies\MatterPolicy',
-        'App\Models\Material' => 'App\Policies\MaterialPolicy',
-        'App\Models\User' => 'App\Policies\UserPolicy',
+        Matter::class => MatterPolicy::class,
+        Material::class => MaterialPolicy::class,
+        Measurement::class => MeasurementPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**

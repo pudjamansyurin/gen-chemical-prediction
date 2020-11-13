@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MatterSeeder::class,
             MaterialSeeder::class,
+            MeasurementSeeder::class,
+            FormulaSeeder::class,
 
             FakeUserSeeder::class,
         ]);

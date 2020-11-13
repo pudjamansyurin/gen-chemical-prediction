@@ -1,9 +1,18 @@
+import { APP_ROLES } from "@/Config/config";
+
 export const menu = [
     { heading: "MENU" },
     {
         text: "Dashboard",
         to: "dashboard",
         icon: "mdi-currency-usd",
+        roles: "*",
+        bottomNav: true
+    },
+    {
+        text: "Formula",
+        to: "formula.index",
+        icon: "mdi-dna",
         roles: "*",
         bottomNav: true
     },
@@ -24,7 +33,13 @@ export const menu = [
                 text: "Matter",
                 to: "matter.index",
                 icon: "mdi-spray",
-                roles: "*"
+                roles: [APP_ROLES.ADMIN]
+            },
+            {
+                text: "Measurement",
+                to: "measurement.index",
+                icon: "mdi-test-tube",
+                roles: [APP_ROLES.ADMIN]
             }
         ]
     },
@@ -32,7 +47,7 @@ export const menu = [
         text: "User",
         to: "user.index",
         icon: "mdi-account-group",
-        roles: ["ADMIN"],
+        roles: [APP_ROLES.ADMIN],
         bottomNav: true
     }
     // {

@@ -22,6 +22,8 @@ class RolesAndPermissionSeeder extends Seeder
         $models = [
             'matter',
             'material',
+            'measurement',
+            'formula',
             'user'
         ];
         $actions = [
@@ -31,13 +33,15 @@ class RolesAndPermissionSeeder extends Seeder
             'force-delete',
         ];
         $roles = [
-            'INPUTOR' => [
-                'matter' => ['view', 'create'],
-                'material' => ['view', 'create']
+            'INPUTTOR' => [
+                'material' => ['view', 'create'],
+                'formula' => ['view', 'create']
             ],
             'ADMIN' => [
                 'matter' => '*',
                 'material' => '*',
+                'measurement' => '*',
+                'formula' => '*',
                 'user' => '*',
             ],
         ];

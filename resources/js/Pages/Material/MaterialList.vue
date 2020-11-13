@@ -70,11 +70,11 @@ export default {
             headers: [
                 { text: "Name", value: "name" },
                 { text: "Matter", value: "matter.name" },
-                // {
-                //     text: "Formula",
-                //     value: "formulas_count",
-                //     align: "center",
-                // },
+                {
+                    text: "Formula",
+                    value: "formulas_count",
+                    align: "center",
+                },
                 { text: "Creator", value: "user.name" },
                 { text: "UpdatedAt", value: "updated_at" },
             ],

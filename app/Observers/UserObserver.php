@@ -16,11 +16,9 @@ class UserObserver
     public function updating(User $user)
     {
         // unverify on email changes
-        if ($email = request('email')) {
-            if ($user->getOriginal('email') != $email) {
+        if ($email = request('email'))
+            if ($user->getOriginal('email') != $email)
                 $user->email_verified_at = null;
-            }
-        }
     }
 
     /**
@@ -32,17 +30,13 @@ class UserObserver
     public function saved(User $user)
     {
         // update role
-        if (auth()->id() != $user->id) {
-            if ($roleId = request('role_id')) {
-                if ($role = Role::find($roleId)) {
+        if (auth()->id() != $user->id)
+            if ($roleId = request('role_id'))
+                if ($role = Role::find($roleId))
                     $user->syncRoles($role);
-                }
-            }
-        }
 
         // // send email verification
-        // if (!$user->hasVerifiedEmail()) {
+        // if (!$user->hasVerifiedEmail())
         //     $user->sendEmailVerificationNotification();
-        // }
     }
 }
