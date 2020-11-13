@@ -22,6 +22,13 @@ class MaterialItem extends JsonResource
             'matter_id' => $this->matter_id,
             'matter' => new MatterItem($this->whenLoaded('matter')),
 
+            'formulas_count' => $this->formulas_count,
+            'formulas' => FormulaItem::collection($this->whenLoaded('formulas')),
+
+            'value' => $this->whenPivotLoaded('formula_material', function () {
+                return $this->pivot->value;
+            }),
+
             'updated_at' => $this->updated_at,
             'user' => new UserItem($this->whenLoaded('user')),
             'authorized' => Gate::allows('update', $this->resource)

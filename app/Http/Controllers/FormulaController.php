@@ -55,7 +55,7 @@ class FormulaController extends Controller
     {
         $this->authorize('view', $formula);
 
-        return new FormulaItem($formula->loadRelation());
+        return new FormulaItem($formula->loadRelationDetailed());
     }
 
     /**
@@ -82,7 +82,7 @@ class FormulaController extends Controller
     {
         $this->authorize('delete', $formula);
 
-        if ($response = Formula::rejectWhenHas($formula->id, 'formulas'))
+        if ($response = Formula::rejectWhenHas($formula->id, []))
             throw ValidationException::withMessages($response)
                 ->errorBag('formula_delete');
 

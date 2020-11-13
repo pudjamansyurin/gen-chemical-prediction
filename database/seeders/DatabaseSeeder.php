@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionSeeder::class,
             UserSeeder::class,
+            FakeUserSeeder::class,
+
             MatterSeeder::class,
             MaterialSeeder::class,
             MeasurementSeeder::class,
             FormulaSeeder::class,
-
-            // FakeUserSeeder::class,
         ]);
     }
 }

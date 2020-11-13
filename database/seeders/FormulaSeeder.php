@@ -22,16 +22,17 @@ class FormulaSeeder extends Seeder
     {
         $data = $this->csvLoad()['formulas'];
 
-        $admin = User::role('ADMIN')->first();
+        // $user = User::role('ADMIN')->first();
+        $user = User::inRandomOrder()->first();
         $materials = Material::all();
         $measurements = Measurement::all();
 
         foreach ($data as $key => $param) {
-            $formula = Formula::withoutEvents(function () use ($key, $admin) {
+            $formula = Formula::withoutEvents(function () use ($key, $user) {
                 return Formula::create([
                     'name' => $key,
                     'note' => '',
-                    'user_id' => $admin->id
+                    'user_id' => $user->id
                 ]);
             });
 

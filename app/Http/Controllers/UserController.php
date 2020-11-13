@@ -58,7 +58,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
 
-        return new UserItem($user->loadRelation());
+        return new UserItem($user->loadRelationDetailed());
     }
 
     /**

@@ -19,14 +19,13 @@ class MeasurementSeeder extends Seeder
     public function run()
     {
         $data = $this->csvLoad()['measurements'];
-
-        $admin = User::role('ADMIN')->first();
+        $user = User::role('ADMIN')->first();
 
         foreach ($data as $measurement) {
-            Measurement::withoutEvents(function () use ($measurement, $admin) {
+            Measurement::withoutEvents(function () use ($measurement, $user) {
                 return Measurement::create([
                     'name' => $measurement,
-                    'user_id' => $admin->id
+                    'user_id' => $user->id
                 ]);
             });
         }

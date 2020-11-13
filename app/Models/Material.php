@@ -55,6 +55,7 @@ class Material extends Model
     public function formulas()
     {
         return $this->belongsToMany(Formula::class);
+        // ->withPivot(['value']);
     }
 
     public function matter()

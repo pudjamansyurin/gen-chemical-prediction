@@ -22,6 +22,10 @@ class MeasurementItem extends JsonResource
             'formulas_count' => $this->formulas_count,
             'formulas' => FormulaItem::collection($this->whenLoaded('formulas')),
 
+            'value' => $this->whenPivotLoaded('formula_measurement', function () {
+                return $this->pivot->value;
+            }),
+
             'updated_at' => $this->updated_at,
             'user' => new UserItem($this->whenLoaded('user')),
             'authorized' => Gate::allows('update', $this->resource)

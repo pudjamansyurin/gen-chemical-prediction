@@ -54,7 +54,7 @@ class MatterController extends Controller
     {
         $this->authorize('view', $matter);
 
-        return new MatterItem($matter->loadRelation());
+        return new MatterItem($matter->loadRelationDetailed());
     }
 
     /**

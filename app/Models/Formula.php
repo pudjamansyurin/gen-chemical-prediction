@@ -52,12 +52,14 @@ class Formula extends Model
      */
     public function materials()
     {
-        return $this->belongsToMany(Material::class);
+        return $this->belongsToMany(Material::class)
+            ->withPivot(['value']);
     }
 
     public function measurements()
     {
-        return $this->belongsToMany(Measurement::class);
+        return $this->belongsToMany(Measurement::class)
+            ->withPivot(['value']);
     }
 
     public function user()

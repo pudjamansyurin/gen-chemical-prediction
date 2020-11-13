@@ -27,14 +27,20 @@ export const Material = {
     name: "",
     matter_id: -1,
     authorized: false
-    // rev: {
-    //     price: null
-    // }
 };
 
 export const Measurement = {
     id: -1,
     name: "",
+    authorized: false
+};
+
+export const Formula = {
+    id: -1,
+    name: "",
+    note: "",
+    materials: [],
+    measurements: [],
     authorized: false
 };
 
@@ -62,16 +68,6 @@ export const Measurement = {
 //     id: -1,
 //     price: 0,
 //     updated_at: null
-// };
-
-// export const Formula = {
-//     id: -1,
-//     name: "",
-//     // description: "",
-//     main: null,
-//     density: null,
-//     shrink: null,
-//     _recipes: []
 // };
 
 // export const Sale = {

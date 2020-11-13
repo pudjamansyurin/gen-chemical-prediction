@@ -56,7 +56,7 @@ class MaterialController extends Controller
     {
         $this->authorize('view', $material);
 
-        return new MaterialItem($material->loadRelation());
+        return new MaterialItem($material->loadRelationDetailed());
     }
 
     /**

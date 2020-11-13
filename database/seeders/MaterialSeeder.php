@@ -22,17 +22,18 @@ class MaterialSeeder extends Seeder
     {
         $data = $this->csvLoad()['materials'];
 
+        // $user = User::role('ADMIN')->first();
+        $user = User::inRandomOrder()->first();
         $matters = Matter::all();
-        $admin = User::role('ADMIN')->first();
 
         foreach ($data as $material => $matter) {
             $matter = $matters->firstWhere('name', $matter);
 
-            Material::withoutEvents(function () use ($material, $matter, $admin) {
+            Material::withoutEvents(function () use ($material, $matter, $user) {
                 return Material::create([
                     'name' => $material,
                     'matter_id' => $matter->id,
-                    'user_id' => $admin->id
+                    'user_id' => $user->id
                 ]);
             });
         }

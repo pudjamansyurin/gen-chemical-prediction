@@ -20,14 +20,14 @@ class MatterSeeder extends Seeder
     {
         $data = $this->csvLoad()['matters'];
 
-        $admin = User::role('ADMIN')->first();
+        $user = User::role('ADMIN')->first();
 
         foreach ($data as $matter => $required) {
-            Matter::withoutEvents(function () use ($matter, $required, $admin) {
+            Matter::withoutEvents(function () use ($matter, $required, $user) {
                 return Matter::create([
                     'name' => $matter,
                     'required' => $required,
-                    'user_id' => $admin->id
+                    'user_id' => $user->id
                 ]);
             });
         }
