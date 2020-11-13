@@ -20,9 +20,10 @@ class MeasurementItem extends JsonResource
             'name' => $this->name,
 
             'formulas_count' => $this->formulas_count,
+            'formulas' => FormulaItem::collection($this->whenLoaded('formulas')),
 
             'updated_at' => $this->updated_at,
-            'user' => $this->whenLoaded('user'),
+            'user' => new UserItem($this->whenLoaded('user')),
             'authorized' => Gate::allows('update', $this->resource)
         ];
     }

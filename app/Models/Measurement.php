@@ -41,17 +41,17 @@ class Measurement extends Model
     /**
      * Accessors
      */
-    public function getNameAttribute($value)
-    {
-        return strtoupper($value);
-    }
+    // public function getNameAttribute($value)
+    // {
+    //     return strtoupper($value);
+    // }
 
     /**
      * Relations
      */
     public function formulas()
     {
-        return $this->hasMany(Formula::class);
+        return $this->belongsToMany(Formula::class);
     }
 
     public function user()

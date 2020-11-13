@@ -2,11 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\Formula;
+use App\Models\Material;
+use App\Models\Measurement;
 use App\Models\User;
+use App\Traits\CsvSeeder;
 use Illuminate\Database\Seeder;
 
 class FormulaSeeder extends Seeder
 {
+    use CsvSeeder;
+
     /**
      * Run the database seeds.
      *
@@ -14,23 +20,38 @@ class FormulaSeeder extends Seeder
      */
     public function run()
     {
-        // $data = [
-        //     'F540-1' => [
-        //         'Cosco S8' => 65.7,
-        //         'Triester' => 10,
-        //         'CV 1103' => 14.3,
-        //         'SPAMA52' => 10
-        //     ]
-        // ];
+        $data = $this->csvLoad()['formulas'];
 
-        // $admin = User::role('ADMIN')->first();
+        $admin = User::role('ADMIN')->first();
+        $materials = Material::all();
+        $measurements = Measurement::all();
 
-        // foreach ($data as $d) {
-        //     Measurement::withoutEvents(function () use ($d, $admin) {
-        //         return Measurement::create(array_merge($d, [
-        //             'user_id' => $admin->id
-        //         ]));
-        //     });
-        // }
+        foreach ($data as $key => $param) {
+            $formula = Formula::withoutEvents(function () use ($key, $admin) {
+                return Formula::create([
+                    'name' => $key,
+                    'note' => '',
+                    'user_id' => $admin->id
+                ]);
+            });
+
+            if ($formula) {
+                $data = [];
+                foreach ($param['materials'] as $key => $value)
+                    if ($material = $materials->firstWhere('name', $key))
+                        $data[$material->id] = [
+                            'value' => $value
+                        ];
+                $formula->materials()->attach($data);
+
+                $data = [];
+                foreach ($param['measurements'] as $key => $value)
+                    if ($measurement = $measurements->firstWhere('name', $key))
+                        $data[$measurement->id] = [
+                            'value' => $value
+                        ];
+                $formula->measurements()->attach($data);
+            }
+        }
     }
 }

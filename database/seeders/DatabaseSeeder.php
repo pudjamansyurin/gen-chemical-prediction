@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             MeasurementSeeder::class,
             FormulaSeeder::class,
 
-            FakeUserSeeder::class,
+            // FakeUserSeeder::class,
         ]);
     }
 }

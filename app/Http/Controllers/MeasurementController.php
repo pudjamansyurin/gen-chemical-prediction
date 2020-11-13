@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MeasurementRequest;
+use App\Http\Resources\MeasurementItem;
 use App\Models\Measurement;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;

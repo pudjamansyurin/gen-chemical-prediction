@@ -4,10 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\Matter;
 use App\Models\User;
+use App\Traits\CsvSeeder;
 use Illuminate\Database\Seeder;
 
 class MatterSeeder extends Seeder
 {
+    use CsvSeeder;
+
     /**
      * Run the database seeds.
      *
@@ -15,13 +18,7 @@ class MatterSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            'BASE OIL' => true,
-            'ESTER' => true,
-            'ADDITIVE' => true,
-            'VM' => true,
-            'MISC.' => false,
-        ];
+        $data = $this->csvLoad()['matters'];
 
         $admin = User::role('ADMIN')->first();
 

@@ -42,10 +42,10 @@ class Matter extends Model
     /**
      * Accessors
      */
-    public function getNameAttribute($value)
-    {
-        return strtoupper($value);
-    }
+    // public function getNameAttribute($value)
+    // {
+    //     return strtoupper($value);
+    // }
 
     /**
      * Relations

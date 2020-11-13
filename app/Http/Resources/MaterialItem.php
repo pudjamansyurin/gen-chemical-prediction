@@ -23,7 +23,7 @@ class MaterialItem extends JsonResource
             'matter' => new MatterItem($this->whenLoaded('matter')),
 
             'updated_at' => $this->updated_at,
-            'user' => $this->whenLoaded('user'),
+            'user' => new UserItem($this->whenLoaded('user')),
             'authorized' => Gate::allows('update', $this->resource)
         ];
     }

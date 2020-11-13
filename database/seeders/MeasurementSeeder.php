@@ -4,10 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\Measurement;
 use App\Models\User;
+use App\Traits\CsvSeeder;
 use Illuminate\Database\Seeder;
 
 class MeasurementSeeder extends Seeder
 {
+    use CsvSeeder;
+
     /**
      * Run the database seeds.
      *
@@ -15,24 +18,16 @@ class MeasurementSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            'KV 40',
-            'KV 100',
-            'VI',
-            'HTHS',
-            'CCS',
-            'Pour Point',
-            'Noack',
-            '4 Ball (WSD/Coef. Friction)'
-        ];
+        $data = $this->csvLoad()['measurements'];
 
         $admin = User::role('ADMIN')->first();
 
-        foreach ($data as $d) {
-            Measurement::withoutEvents(function () use ($d, $admin) {
-                return Measurement::create(array_merge($d, [
+        foreach ($data as $measurement) {
+            Measurement::withoutEvents(function () use ($measurement, $admin) {
+                return Measurement::create([
+                    'name' => $measurement,
                     'user_id' => $admin->id
-                ]));
+                ]);
             });
         }
     }

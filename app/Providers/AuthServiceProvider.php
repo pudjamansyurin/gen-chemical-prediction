@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Formula;
 use App\Models\Material;
 use App\Models\Matter;
 use App\Models\Measurement;
 use App\Models\User;
+use App\Policies\FormulaPolicy;
 use App\Policies\MaterialPolicy;
 use App\Policies\MatterPolicy;
 use App\Policies\MeasurementPolicy;
@@ -24,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         Matter::class => MatterPolicy::class,
         Material::class => MaterialPolicy::class,
         Measurement::class => MeasurementPolicy::class,
+        Formula::class => FormulaPolicy::class,
         User::class => UserPolicy::class,
     ];
 

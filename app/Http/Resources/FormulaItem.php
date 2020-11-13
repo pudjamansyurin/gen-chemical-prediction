@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 
-class MatterItem extends JsonResource
+class FormulaItem extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +18,13 @@ class MatterItem extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'required' => $this->required,
+            'note' => $this->note,
 
             'materials_count' => $this->materials_count,
             'materials' => MaterialItem::collection($this->whenLoaded('materials')),
+
+            'measurements_count' => $this->measurements_count,
+            'measurements' => MeasurementItem::collection($this->whenLoaded('measurements')),
 
             'updated_at' => $this->updated_at,
             'user' => new UserItem($this->whenLoaded('user')),

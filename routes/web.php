@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FormulaController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MatterController;
 use App\Http\Controllers\MeasurementController;
@@ -29,5 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::apiResource('matter', MatterController::class);
     Route::apiResource('material', MaterialController::class);
     Route::apiResource('measurement', MeasurementController::class);
+    Route::apiResource('formula', FormulaController::class);
     Route::apiResource('user', UserController::class);
 });
