@@ -23,11 +23,11 @@ class MaterialSeeder extends Seeder
         $data = $this->csvLoad()['materials'];
 
         // $user = User::role('ADMIN')->first();
-        $user = User::inRandomOrder()->first();
         $matters = Matter::all();
 
         foreach ($data as $material => $matter) {
             $matter = $matters->firstWhere('name', $matter);
+            $user = User::inRandomOrder()->first();
 
             Material::withoutEvents(function () use ($material, $matter, $user) {
                 return Material::create([
