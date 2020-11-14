@@ -81,7 +81,7 @@ class MeasurementController extends Controller
     {
         $this->authorize('delete', $measurement);
 
-        if ($response = Measurement::rejectWhenHas($measurement->id, 'formulas'))
+        if ($response = Measurement::validateRelation($measurement->id, 'formulas'))
             throw ValidationException::withMessages($response)
                 ->errorBag('measurement_delete');
 

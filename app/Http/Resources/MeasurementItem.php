@@ -18,6 +18,7 @@ class MeasurementItem extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'required' => $this->required,
 
             'formulas_count' => $this->formulas_count,
             'formulas' => FormulaItem::collection($this->whenLoaded('formulas')),

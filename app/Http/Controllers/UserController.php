@@ -85,7 +85,7 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
-        if ($response = User::rejectWhenHas($user->id, ['matters', 'materials']))
+        if ($response = User::validateRelation($user->id, ['matters', 'materials']))
             throw ValidationException::withMessages($response)
                 ->errorBag('user_delete');
 

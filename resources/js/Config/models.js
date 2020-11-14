@@ -18,7 +18,7 @@ export const User = {
 export const Matter = {
     id: -1,
     name: "",
-    required: false,
+    required: null,
     authorized: false
 };
 
@@ -32,6 +32,7 @@ export const Material = {
 export const Measurement = {
     id: -1,
     name: "",
+    required: null,
     authorized: false
 };
 

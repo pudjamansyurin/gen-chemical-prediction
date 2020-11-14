@@ -20,7 +20,7 @@ trait ExtendedScope
         return $query->has($relation)->whereIn('id', $ids)->count();
     }
 
-    public static function rejectWhenHas($ids, $relations)
+    public static function validateRelation($ids, $relations)
     {
         $ids = is_array($ids) ? $ids : [$ids];
         $relations = is_array($relations) ? $relations : [$relations];

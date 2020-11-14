@@ -14,13 +14,18 @@
                 {{ item.name }}
             </v-chip>
         </template>
+        <template v-slot:[`item.required`]="{ item }">
+            <v-icon :color="item.required ? 'primary' : 'red'">
+                {{ item.required ? "mdi-check" : "mdi-window-close" }}
+            </v-icon>
+        </template>
         <template v-slot:[`item.updated_at`]="{ item }">
             {{ item.updated_at | moment("from") }}
         </template>
 
         <template #card="{ item }">
             <v-btn :color="chip(item)" outlined absolute right small tile top>
-                SOMETHING
+                {{ item.required ? "Required" : "Optional" }}
             </v-btn>
 
             <v-card-text @click="edit(item)">
@@ -69,6 +74,7 @@ export default {
         return {
             headers: [
                 { text: "Name", value: "name" },
+                { text: "Required", value: "required", align: "center" },
                 {
                     text: "Formula",
                     value: "formulas_count",

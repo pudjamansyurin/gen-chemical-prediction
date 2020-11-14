@@ -82,7 +82,7 @@ class FormulaController extends Controller
     {
         $this->authorize('delete', $formula);
 
-        if ($response = Formula::rejectWhenHas($formula->id, []))
+        if ($response = Formula::validateRelation($formula->id, []))
             throw ValidationException::withMessages($response)
                 ->errorBag('formula_delete');
 

@@ -81,7 +81,7 @@ class MatterController extends Controller
     {
         $this->authorize('delete', $matter);
 
-        if ($response = Matter::rejectWhenHas($matter->id, 'materials'))
+        if ($response = Matter::validateRelation($matter->id, 'materials'))
             throw ValidationException::withMessages($response)
                 ->errorBag('matter_delete');
 

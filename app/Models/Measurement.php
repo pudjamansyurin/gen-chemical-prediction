@@ -23,6 +23,7 @@ class Measurement extends Model
      */
     protected $fillable = [
         'name',
+        'required',
         'user_id'
     ];
 

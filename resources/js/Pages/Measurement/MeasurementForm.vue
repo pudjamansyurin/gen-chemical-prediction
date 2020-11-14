@@ -19,6 +19,17 @@
                 outlined
             ></v-text-field>
 
+            <v-checkbox
+                v-model="form.required"
+                :error-messages="form.error('required')"
+                :success="!!form.error('required')"
+                label="Required measurement?"
+                hint="This rule is used when measure formula"
+                persistent-hint
+                outlined
+            >
+            </v-checkbox>
+
             <v-btn
                 v-if="!readonly"
                 :disabled="disabled"

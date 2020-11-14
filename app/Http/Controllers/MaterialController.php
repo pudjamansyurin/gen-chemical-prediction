@@ -83,7 +83,7 @@ class MaterialController extends Controller
     {
         $this->authorize('delete', $material);
 
-        if ($response = Material::rejectWhenHas($material->id, 'formulas'))
+        if ($response = Material::validateRelation($material->id, 'formulas'))
             throw ValidationException::withMessages($response)
                 ->errorBag('material_delete');
 
