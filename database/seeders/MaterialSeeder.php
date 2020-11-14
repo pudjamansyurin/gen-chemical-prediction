@@ -5,13 +5,12 @@ namespace Database\Seeders;
 use App\Models\Material;
 use App\Models\Matter;
 use App\Models\User;
-use App\Traits\CsvSeeder;
+use App\Utils\CsvExtractor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
 class MaterialSeeder extends Seeder
 {
-    use CsvSeeder;
 
     /**
      * Run the database seeds.
@@ -20,7 +19,7 @@ class MaterialSeeder extends Seeder
      */
     public function run()
     {
-        $data = $this->csvLoad()['materials'];
+        $data = (new CsvExtractor())->getMaterials();
 
         // $user = User::role('ADMIN')->first();
         $matters = Matter::all();

@@ -4,12 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Matter;
 use App\Models\User;
-use App\Traits\CsvSeeder;
+use App\Utils\CsvExtractor;
 use Illuminate\Database\Seeder;
 
 class MatterSeeder extends Seeder
 {
-    use CsvSeeder;
 
     /**
      * Run the database seeds.
@@ -18,7 +17,7 @@ class MatterSeeder extends Seeder
      */
     public function run()
     {
-        $data = $this->csvLoad()['matters'];
+        $data = (new CsvExtractor())->getMatters();
 
         $user = User::role('ADMIN')->first();
 

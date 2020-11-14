@@ -6,12 +6,11 @@ use App\Models\Formula;
 use App\Models\Material;
 use App\Models\Measurement;
 use App\Models\User;
-use App\Traits\CsvSeeder;
+use App\Utils\CsvExtractor;
 use Illuminate\Database\Seeder;
 
 class FormulaSeeder extends Seeder
 {
-    use CsvSeeder;
 
     /**
      * Run the database seeds.
@@ -20,7 +19,7 @@ class FormulaSeeder extends Seeder
      */
     public function run()
     {
-        $data = $this->csvLoad()['formulas'];
+        $data = (new CsvExtractor())->getFormulas();
 
         // $user = User::role('ADMIN')->first();
         $materials = Material::all();
