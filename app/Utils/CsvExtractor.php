@@ -6,11 +6,15 @@ use League\Csv\Reader;
 
 class CsvExtractor
 {
-    protected $term_misc = 'Misc.';
-    protected $term_category = 'Category';
+    private $term_no = 'No';
+    private $term_entry = 'Entry';
+    private $term_total = 'Total';
 
-    protected $header = [];
-    protected $records = [];
+    private $term_misc = 'Misc.';
+    private $term_category = 'Category';
+
+    private $header = [];
+    private $records = [];
 
     public function __construct($file = 'database/seeders/csv/Viskositas.csv')
     {
@@ -29,24 +33,20 @@ class CsvExtractor
     public function getFormulas()
     {
         $formulas = [];
-        $run = false;
 
-        foreach ($this->records as $offset => $record) {
-            if ($record['No'] == 1)
-                $run = true;
+        $records = $this->parseRecordFormula();
 
-            if ($run)
-                if (!in_array($record['Entry'], array_keys($formulas))) {
-                    $materials = $this->getRecordMaterials($record);
-                    $measurements = $this->getRecordMeasurements($record);
+        foreach ($records as $record)
+            if (!in_array($record[$this->term_entry], array_keys($formulas))) {
+                $materials = $this->getRecordMaterials($record);
+                $measurements = $this->getRecordMeasurements($record);
 
-                    if ($materials && $measurements)
-                        $formulas[$record['Entry']] = [
-                            'materials' => $materials,
-                            'measurements' => $measurements,
-                        ];
-                }
-        }
+                if ($materials && $measurements)
+                    $formulas[$record[$this->term_entry]] = [
+                        'materials' => $materials,
+                        'measurements' => $measurements,
+                    ];
+            }
 
         return $formulas;
     }
@@ -54,29 +54,15 @@ class CsvExtractor
     public function getMaterials()
     {
         $materials = [];
-        $run = false;
 
-        foreach ($this->records as $record) {
-            if ($this->isSameStr($record['Entry'], $this->term_category)) {
-                foreach ($record as $field => $matter) {
-                    if ($field == 'Entry') {
-                        $run = true;
-                        continue;
-                    } else if ($field == 'Total') {
-                        $run = false;
-                        break;
-                    }
+        $record = $this->parseRecordCategory();
 
-                    if ($run) {
-                        if (!$matter) $matter = $this->term_misc;
-
-                        if (!in_array($field, array_keys($materials)))
-                            $materials[$field] = $matter;
-                    }
-                }
-                break;
+        foreach ($record as $field => $matter)
+            if (!in_array($field, array_keys($materials))) {
+                if (!$matter) $matter = $this->term_misc;
+                $materials[$field] = $matter;
             }
-        }
+
 
         return $materials;
     }
@@ -84,29 +70,16 @@ class CsvExtractor
     public function getMatters()
     {
         $matters = [];
-        $run = false;
 
-        foreach ($this->records as $record) {
-            if ($this->isSameStr($record['Entry'], $this->term_category)) {
-                foreach ($record as $field => $matter) {
-                    if ($field == 'Entry') {
-                        $run = true;
-                        continue;
-                    } else if ($field == 'Total') {
-                        $run = false;
-                        break;
-                    }
+        $record = $this->parseRecordCategory();
 
-                    if ($run && $matter) {
-                        $required = !$this->isSameStr($matter, $this->term_misc);
-
-                        if (!in_array($matter, array_keys($matters)))
-                            $matters[$matter] = $required;
-                    }
+        foreach ($record as $matter)
+            if ($matter)
+                if (!in_array($matter, array_keys($matters))) {
+                    $required = !$this->isSameStr($matter, $this->term_misc);
+                    $matters[$matter] = $required;
                 }
-                break;
-            }
-        }
+
 
         if (!in_array($this->term_misc, array_keys($matters)))
             $matters[$this->term_misc] = false;
@@ -117,18 +90,12 @@ class CsvExtractor
     public function getMeasurements()
     {
         $measurements = [];
-        $run = false;
 
-        foreach ($this->header as $field) {
-            if ($field == 'Total') {
-                $run = true;
-                continue;
-            }
+        $header = $this->parseColumn($this->header, true);
 
-            if ($run)
-                if (!in_array($field, $measurements))
-                    array_push($measurements, $field);
-        }
+        foreach ($header as $field)
+            if (!in_array($field, $measurements))
+                array_push($measurements, $field);
 
         return $measurements;
     }
@@ -136,21 +103,15 @@ class CsvExtractor
     private function getRecordMaterials($record)
     {
         $materials = [];
-        $run = false;
 
-        foreach ($record as $field => $value) {
-            if ($field == 'Entry') {
-                $run = true;
-                continue;
-            } else if ($field == 'Total') {
-                $run = false;
-                continue;
-            }
+        $total = $record[$this->term_total];
 
-            if ($run && is_numeric($value))
+        $record = $this->parseColumn($record);
+
+        foreach ($record as $field => $value)
+            if (is_numeric($value))
                 if (!in_array($field, array_keys($materials)))
-                    $materials[$field] = $value * 100 / $record["Total"];
-        }
+                    $materials[$field] = $value * 100 / $total;
 
         return $materials;
     }
@@ -158,20 +119,57 @@ class CsvExtractor
     private function getRecordMeasurements($record)
     {
         $measurements = [];
-        $run = false;
 
-        foreach ($record as $field => $value) {
-            if ($field == 'Total') {
-                $run = true;
-                continue;
-            }
+        $record = $this->parseColumn($record, true);
 
-            if ($run && is_numeric($value))
+        foreach ($record as $field => $value)
+            if (is_numeric($value))
                 if (!in_array($field, array_keys($measurements)))
                     $measurements[$field] = $value;
-        }
 
         return $measurements;
+    }
+
+    private function parseRecordCategory()
+    {
+        foreach ($this->records as $record)
+            if ($this->isSameStr($record[$this->term_entry], $this->term_category))
+                break;
+
+        return $this->parseColumn($record);
+    }
+
+    private function parseRecordFormula()
+    {
+        $records = [];
+
+        foreach ($this->records as $record)
+            if (is_numeric($record[$this->term_no]))
+                $records[] = $record;
+
+        return $records;
+    }
+
+    private function parseColumn($record, $measurements = false)
+    {
+        $start = array_search($this->term_entry, $this->header);
+        $stop = array_search($this->term_total, $this->header);
+
+        if ($measurements) {
+            $start = $stop;
+            $stop = null;
+        }
+
+        return (array_filter($record, function ($key) use ($start, $stop) {
+            if (!is_numeric($key))
+                $key = array_search($key, $this->header);
+
+            $pass = $key > $start;
+            if ($stop)
+                $pass = $pass && $key < $stop;
+
+            return $pass;
+        }, ARRAY_FILTER_USE_KEY));
     }
 
     private function isSameStr($str1, $str2)
