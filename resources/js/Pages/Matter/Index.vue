@@ -28,14 +28,14 @@
 
 <script>
 import PrivateLayout from "@/Layouts/PrivateLayout";
-import ModelIndex from "@/Mixins/Model/ModelIndex";
+import { ModelIndexMixin } from "@/Mixins/Model";
 
 import MatterList from "./MatterList";
 import MatterForm from "./MatterForm";
 import MatterDelete from "./MatterDelete";
 
 export default {
-    mixins: [ModelIndex],
+    mixins: [ModelIndexMixin],
     layout: PrivateLayout,
     components: {
         MatterList,

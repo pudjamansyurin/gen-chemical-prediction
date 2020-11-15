@@ -41,120 +41,17 @@
 </template>
 
 <script>
-import { cloneDeep, keys, pick, assign } from "lodash";
+import { Matter as model } from "@/Config/models";
 
-import { Matter } from "@/Config/models";
 import { CommonMixin } from "@/Mixins";
-
-import TheDialogForm from "@/Components/TheDialogForm";
+import { ModelFormMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin],
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-        id: {
-            type: Number,
-            default: -1,
-        },
-    },
-    components: {
-        TheDialogForm,
-    },
+    mixins: [CommonMixin, ModelFormMixin],
     data() {
         return {
-            model: "matter",
-            fetching: false,
-            form: this.$inertia.form(
-                {
-                    _method: "PUT",
-                    ...cloneDeep(Matter)
-                },
-                {
-                    bag: "matter_form",
-                    resetOnSuccess: false,
-                }
-            ),
+            model
         };
-    },
-    computed: {
-        creating() {
-            return this.id === -1;
-        },
-        disabled() {
-            return this.form.processing || this.fetching;
-        },
-        readonly() {
-            return !(this.creating || this.form.authorized);
-        },
-        formTitle() {
-            if (this.readonly) return;
-
-            let action = this.creating ? "New" : "Edit";
-            let title = this.model.toUpperCase();
-            return `${action} ${title}`;
-        },
-        dialog: {
-            get() {
-                return this.value;
-            },
-            set(value) {
-                this.$emit("input", value);
-            },
-        },
-    },
-    methods: {
-        fetch() {
-            this.fetching = true;
-            this.$axios
-                .get(route("matter.show", this.id).url())
-                .then(({ data }) => {
-                    assign(this.form, pick(data, keys(Matter)));
-                })
-                .catch((e) => (this.dialog = false))
-                .then(() => (this.fetching = false));
-        },
-        reset() {
-            delete this.$page.errorBags["matter_form"];
-            assign(this.form, Matter);
-        },
-        method() {
-            let method = "post";
-            let url = route("matter.store");
-
-            if (!this.creating) {
-                method = "put";
-                url = route("matter.update", this.id);
-            }
-
-            return { url, method };
-        },
-        save() {
-            let { url, method } = this.method();
-
-            this.form._method = method;
-            this.form.post(url, {
-                preserveScroll: true,
-                onSuccess: (page) => {
-                    if (!this.form.hasErrors()) this.dialog = false;
-                },
-            });
-        },
-    },
-    watch: {
-        value: {
-            immediate: true,
-            handler(open) {
-                if (open) {
-                    if (!this.creating) this.fetch();
-                    this.form.change_password = this.creating;
-                } else {
-                    this.reset();
-                }
-            },
-        },
     },
 };
 </script>

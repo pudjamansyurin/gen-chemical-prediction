@@ -32,14 +32,14 @@
 
 <script>
 import PrivateLayout from "@/Layouts/PrivateLayout";
-import ModelIndex from "@/Mixins/Model/ModelIndex";
+import { ModelIndexMixin } from "@/Mixins/Model";
 
 import FormulaList from "./FormulaList";
 import FormulaForm from "./FormulaForm";
 import FormulaDelete from "./FormulaDelete";
 
 export default {
-    mixins: [ModelIndex],
+    mixins: [ModelIndexMixin],
     layout: PrivateLayout,
     components: {
         FormulaList,

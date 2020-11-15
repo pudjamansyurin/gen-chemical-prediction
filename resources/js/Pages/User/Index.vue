@@ -27,14 +27,14 @@
 
 <script>
 import PrivateLayout from "@/Layouts/PrivateLayout";
-import ModelIndex from "@/Mixins/Model/ModelIndex";
+import { ModelIndexMixin } from "@/Mixins/Model";
 
 import UserList from "./UserList";
 import UserForm from "./UserForm";
 import UserDelete from "./UserDelete";
 
 export default {
-    mixins: [ModelIndex],
+    mixins: [ModelIndexMixin],
     layout: PrivateLayout,
     components: {
         UserList,

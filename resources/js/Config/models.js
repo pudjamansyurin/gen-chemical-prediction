@@ -4,45 +4,60 @@ export const Role = {
 };
 
 export const User = {
-    id: -1,
-    name: "",
-    email: "",
-    role_id: -1,
-    password: "",
-    password_confirmation: "",
-    change_password: null,
-    role: Role,
-    authorized: false
+    name: "user",
+    form: {
+        id: -1,
+        name: "",
+        email: "",
+        role_id: -1,
+        password: "",
+        password_confirmation: "",
+        change_password: null,
+        role: Role,
+        authorized: false
+    }
 };
 
 export const Matter = {
-    id: -1,
-    name: "",
-    required: null,
-    authorized: false
+    name: "matter",
+    form: {
+        id: -1,
+        name: "",
+        required: null,
+        authorized: false
+    }
 };
 
 export const Material = {
-    id: -1,
-    name: "",
-    matter_id: -1,
-    authorized: false
+    name: "material",
+    form: {
+        id: -1,
+        name: "",
+        matter_id: -1,
+        authorized: false
+    }
 };
 
 export const Measurement = {
-    id: -1,
-    name: "",
-    primary: null,
-    authorized: false
+    name: "measurement",
+    form: {
+        id: -1,
+        name: "",
+        primary: null,
+        authorized: false
+    }
 };
 
 export const Formula = {
-    id: -1,
-    name: "",
-    note: "",
-    materials: [],
-    measurements: [],
-    authorized: false
+    name: "formula",
+    form: {
+        id: -1,
+        name: "",
+        note: "",
+        materials: [],
+        measurements: [],
+        authorized: false
+    }
 };
 
 // export const Pack = {

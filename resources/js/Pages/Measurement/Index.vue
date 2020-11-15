@@ -28,14 +28,14 @@
 
 <script>
 import PrivateLayout from "@/Layouts/PrivateLayout";
-import ModelIndex from "@/Mixins/Model/ModelIndex";
+import { ModelIndexMixin } from "@/Mixins/Model";
 
 import MeasurementList from "./MeasurementList";
 import MeasurementForm from "./MeasurementForm";
 import MeasurementDelete from "./MeasurementDelete";
 
 export default {
-    mixins: [ModelIndex],
+    mixins: [ModelIndexMixin],
     layout: PrivateLayout,
     components: {
         MeasurementList,
