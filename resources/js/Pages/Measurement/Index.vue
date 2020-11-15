@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import PrivateLayout from "@/Layouts/PrivateLayout";
 import ModelIndex from "@/Mixins/Model/ModelIndex";
 
 import MeasurementList from "./MeasurementList";
@@ -35,6 +36,7 @@ import MeasurementDelete from "./MeasurementDelete";
 
 export default {
     mixins: [ModelIndex],
+    layout: PrivateLayout,
     components: {
         MeasurementList,
         MeasurementForm,

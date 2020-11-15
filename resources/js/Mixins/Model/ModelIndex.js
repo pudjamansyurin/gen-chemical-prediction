@@ -1,10 +1,8 @@
 import { options as tableOptions, queryOptions } from "@/Config/table";
 
-import PrivateLayout from "@/Layouts/PrivateLayout";
 import AppTopBar from "@/Components/AppTopBar";
 
 export default {
-    layout: PrivateLayout,
     components: {
         AppTopBar
     },

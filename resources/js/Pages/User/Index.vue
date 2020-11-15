@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import PrivateLayout from "@/Layouts/PrivateLayout";
 import ModelIndex from "@/Mixins/Model/ModelIndex";
 
 import UserList from "./UserList";
@@ -34,6 +35,7 @@ import UserDelete from "./UserDelete";
 
 export default {
     mixins: [ModelIndex],
+    layout: PrivateLayout,
     components: {
         UserList,
         UserForm,

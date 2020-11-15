@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import PrivateLayout from "@/Layouts/PrivateLayout";
 import ModelIndex from "@/Mixins/Model/ModelIndex";
 
 import MaterialList from "./MaterialList";
@@ -39,6 +40,7 @@ import MaterialDelete from "./MaterialDelete";
 
 export default {
     mixins: [ModelIndex],
+    layout: PrivateLayout,
     components: {
         MaterialList,
         MaterialForm,
