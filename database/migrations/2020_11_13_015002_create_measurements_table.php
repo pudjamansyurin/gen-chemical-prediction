@@ -16,7 +16,7 @@ class CreateMeasurementsTable extends Migration
         Schema::create('measurements', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->boolean('required');
+            $table->boolean('primary');
             $table->foreignId('user_id');
             $table->timestamps();
         });

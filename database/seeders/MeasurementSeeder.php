@@ -21,10 +21,11 @@ class MeasurementSeeder extends Seeder
 
         $user = User::role('ADMIN')->first();
 
-        foreach ($data as $measurement) {
-            Measurement::withoutEvents(function () use ($measurement, $user) {
+        foreach ($data as $measurement => $primary) {
+            Measurement::withoutEvents(function () use ($measurement, $primary, $user) {
                 return Measurement::create([
                     'name' => $measurement,
+                    'primary' => $primary,
                     'user_id' => $user->id
                 ]);
             });

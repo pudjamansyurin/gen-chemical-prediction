@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Routines\UserRoutine;
 use App\Traits\Scopes\ClientQueryScope;
 use App\Traits\Scopes\ExtendedScope;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -24,7 +23,6 @@ class User extends Authenticatable // implements MustVerifyEmail
     use TwoFactorAuthenticatable;
     use HasRoles;
     use ClientQueryScope, ExtendedScope;
-    use UserRoutine;
 
     protected $client_relations = ['roles:id,name'];
 

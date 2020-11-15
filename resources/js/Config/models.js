@@ -32,7 +32,7 @@ export const Material = {
 export const Measurement = {
     id: -1,
     name: "",
-    required: null,
+    primary: null,
     authorized: false
 };
 

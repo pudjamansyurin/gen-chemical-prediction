@@ -20,10 +20,10 @@
             ></v-text-field>
 
             <v-checkbox
-                v-model="form.required"
-                :error-messages="form.error('required')"
-                :success="!!form.error('required')"
-                label="Required measurement?"
+                v-model="form.primary"
+                :error-messages="form.error('primary')"
+                :success="!!form.error('primary')"
+                label="Primary measurement?"
                 hint="This rule is used when measure formula"
                 persistent-hint
                 outlined

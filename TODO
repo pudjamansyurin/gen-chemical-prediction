@@ -3,7 +3,9 @@ Todo:
   ✔ synchronize pagination between server and client @done(20-11-11 11:29)
   ✔ use $page.profile directly (no vuex state) @done(20-11-11 11:29)
   ✔ use role for menu management @done(20-11-11 11:30)
-  ✘ remove mixins, instead use composition api @cancelled(20-11-11 11:30)
+  ☐ remove mixins, instead use composition api
   ✔ change policy check form role to permisson based @done(20-11-11 11:43)
-  ☐ add material & matter backend logic
-  ☐ add material & matter frontend logic
+  ✔ add material & matter backend logic @done(20-11-15 10:28)
+  ✔ add material & matter frontend logic @done(20-11-15 10:28)
+  ✔ use csv-seeder class to seed directly @done(20-11-15 10:28)
+  ☐ @high use vuetify a-la-carte to minimize assets

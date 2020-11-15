@@ -14,9 +14,9 @@
                 {{ item.name }}
             </v-chip>
         </template>
-        <template v-slot:[`item.required`]="{ item }">
-            <v-icon :color="item.required ? 'primary' : 'red'">
-                {{ item.required ? "mdi-check" : "mdi-window-close" }}
+        <template v-slot:[`item.primary`]="{ item }">
+            <v-icon :color="item.primary ? 'primary' : 'red'">
+                {{ item.primary ? "mdi-check" : "mdi-window-close" }}
             </v-icon>
         </template>
         <template v-slot:[`item.updated_at`]="{ item }">
@@ -25,7 +25,7 @@
 
         <template #card="{ item }">
             <v-btn :color="chip(item)" outlined absolute right small tile top>
-                {{ item.required ? "Required" : "Optional" }}
+                {{ item.primary ? "Required" : "Optional" }}
             </v-btn>
 
             <v-card-text @click="edit(item)">
@@ -74,7 +74,7 @@ export default {
         return {
             headers: [
                 { text: "Name", value: "name" },
-                { text: "Required", value: "required", align: "center" },
+                { text: "Primary", value: "primary", align: "center" },
                 {
                     text: "Formula",
                     value: "formulas_count",

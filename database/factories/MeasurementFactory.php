@@ -24,6 +24,7 @@ class MeasurementFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->word,
+            'primary' => $this->faker->boolean(),
             'user_id' => User::inRandomOrder()->first()->id,
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];

@@ -6,12 +6,18 @@ use League\Csv\Reader;
 
 class CsvExtractor
 {
-    private $term_no = 'No';
-    private $term_entry = 'Entry';
-    private $term_total = 'Total';
+    private $termNumber = 'No';
+    private $termEntry = 'Entry';
+    private $termTotal = 'Total';
 
-    private $term_misc = 'Misc.';
-    private $term_category = 'Category';
+    private $termMisc = 'Misc.';
+    private $termCategory = 'Category';
+
+    private $primaryMeasurements = [
+        'KV 40',
+        'KV 100',
+        'VI'
+    ];
 
     private $header = [];
     private $records = [];
@@ -37,12 +43,12 @@ class CsvExtractor
         $records = $this->parseRecordFormula();
 
         foreach ($records as $record)
-            if (!in_array($record[$this->term_entry], array_keys($formulas))) {
+            if (!in_array($record[$this->termEntry], array_keys($formulas))) {
                 $materials = $this->getRecordMaterials($record);
                 $measurements = $this->getRecordMeasurements($record);
 
                 if ($materials && $measurements)
-                    $formulas[$record[$this->term_entry]] = [
+                    $formulas[$record[$this->termEntry]] = [
                         'materials' => $materials,
                         'measurements' => $measurements,
                     ];
@@ -59,7 +65,7 @@ class CsvExtractor
 
         foreach ($record as $field => $matter)
             if (!in_array($field, array_keys($materials))) {
-                if (!$matter) $matter = $this->term_misc;
+                if (!$matter) $matter = $this->termMisc;
                 $materials[$field] = $matter;
             }
 
@@ -73,16 +79,16 @@ class CsvExtractor
 
         $record = $this->parseRecordCategory();
 
-        foreach ($record as $matter)
-            if ($matter)
-                if (!in_array($matter, array_keys($matters))) {
-                    $required = !$this->isSameStr($matter, $this->term_misc);
-                    $matters[$matter] = $required;
+        foreach ($record as $field)
+            if ($field)
+                if (!in_array($field, array_keys($matters))) {
+                    $required = !$this->isSameStr($field, $this->termMisc);
+                    $matters[$field] = $required;
                 }
 
 
-        if (!in_array($this->term_misc, array_keys($matters)))
-            $matters[$this->term_misc] = false;
+        if (!in_array($this->termMisc, array_keys($matters)))
+            $matters[$this->termMisc] = false;
 
         return $matters;
     }
@@ -94,8 +100,16 @@ class CsvExtractor
         $header = $this->parseColumn($this->header, true);
 
         foreach ($header as $field)
-            if (!in_array($field, $measurements))
-                array_push($measurements, $field);
+            if (!in_array($field, array_keys($measurements))) {
+                $primary = false;
+                foreach ($this->primaryMeasurements as $primaryMeasurement)
+                    if ($this->isSameStr($field, $primaryMeasurement)) {
+                        $primary = true;
+                        break;
+                    }
+
+                $measurements[$field] = $primary;
+            }
 
         return $measurements;
     }
@@ -104,7 +118,7 @@ class CsvExtractor
     {
         $materials = [];
 
-        $total = $record[$this->term_total];
+        $total = $record[$this->termTotal];
 
         $record = $this->parseColumn($record);
 
@@ -133,7 +147,7 @@ class CsvExtractor
     private function parseRecordCategory()
     {
         foreach ($this->records as $record)
-            if ($this->isSameStr($record[$this->term_entry], $this->term_category))
+            if ($this->isSameStr($record[$this->termEntry], $this->termCategory))
                 break;
 
         return $this->parseColumn($record);
@@ -144,7 +158,7 @@ class CsvExtractor
         $records = [];
 
         foreach ($this->records as $record)
-            if (is_numeric($record[$this->term_no]))
+            if (is_numeric($record[$this->termNumber]))
                 $records[] = $record;
 
         return $records;
@@ -152,8 +166,8 @@ class CsvExtractor
 
     private function parseColumn($record, $measurements = false)
     {
-        $start = array_search($this->term_entry, $this->header);
-        $stop = array_search($this->term_total, $this->header);
+        $start = array_search($this->termEntry, $this->header);
+        $stop = array_search($this->termTotal, $this->header);
 
         if ($measurements) {
             $start = $stop;

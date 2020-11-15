@@ -36,7 +36,7 @@ class MeasurementRequest extends FormRequest
                 'max:25',
                 Rule::unique('measurements', 'name')->ignore($this->measurement)
             ],
-            'required' => [
+            'primary' => [
                 'required',
                 'boolean'
             ]
