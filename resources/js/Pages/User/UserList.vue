@@ -10,12 +10,7 @@
         :loading="fetching"
     >
         <template v-slot:[`item.name`]="{ item }">
-            <v-chip
-                @click="!me(item) && edit(item)"
-                :color="chip(item)"
-                :small="dense"
-                dark
-            >
+            <v-chip @click="edit(item)" :color="chip(item)" :small="dense" dark>
                 {{ item.name }}
             </v-chip>
         </template>
@@ -31,10 +26,10 @@
 
         <template #card="{ item }">
             <v-btn :color="chip(item)" outlined absolute right small tile top>
-                {{ me(item) ? "Profile" : item.role.name }}
+                {{ item.authorized ? item.role.name : "ME" }}
             </v-btn>
 
-            <v-card-text @click="!me(item) && edit(item)">
+            <v-card-text @click="edit(item)">
                 <div class="overline">
                     {{ item.updated_at | moment("from") }}
                 </div>
@@ -67,11 +62,6 @@ export default {
                 { text: "UpdatedAt", value: "updated_at" },
             ],
         };
-    },
-    methods: {
-        me({ id }) {
-            return this.$page.profile.id === id;
-        },
     },
 };
 </script>

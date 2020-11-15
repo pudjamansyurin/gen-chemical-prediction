@@ -33,7 +33,7 @@ class RolesAndPermissionSeeder extends Seeder
             'force-delete',
         ];
         $roles = [
-            'INPUTTOR' => [
+            'INPUTOR' => [
                 'material' => ['view', 'create'],
                 'formula' => ['view', 'create']
             ],

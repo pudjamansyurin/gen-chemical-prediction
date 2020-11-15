@@ -9,6 +9,6 @@ export const APP_URL = production
     : process.env.MIX_APP_URL;
 
 export const APP_ROLES = {
-    INPUTTOR: "INPUTTOR",
+    INPUTOR: "INPUTOR",
     ADMIN: "ADMIN"
 };
