@@ -19,7 +19,7 @@ class FormulaRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->getMethod() == 'PUT')
+        if ($this->formula)
             return $this->user()->can('update', $this->formula);
         return $this->user()->can('create', Formula::class);
     }

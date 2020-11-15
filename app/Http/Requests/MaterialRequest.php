@@ -17,7 +17,7 @@ class MaterialRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->getMethod() == 'PUT')
+        if ($this->material)
             return $this->user()->can('update', $this->material);
         return $this->user()->can('create', Material::class);
     }

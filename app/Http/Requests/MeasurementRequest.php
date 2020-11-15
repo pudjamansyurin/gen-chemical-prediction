@@ -17,7 +17,7 @@ class MeasurementRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->getMethod() == 'PUT')
+        if ($this->measurement)
             return $this->user()->can('update', $this->measurement);
         return $this->user()->can('create', Measurement::class);
     }

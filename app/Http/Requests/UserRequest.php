@@ -20,7 +20,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->getMethod() == 'PUT')
+        if ($this->user)
             return $this->user()->can('update', $this->user);
         return $this->user()->can('create', User::class);
     }

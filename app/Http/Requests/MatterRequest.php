@@ -17,7 +17,7 @@ class MatterRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->getMethod() == 'PUT')
+        if ($this->matter)
             return $this->user()->can('update', $this->matter);
         return $this->user()->can('create', Matter::class);
     }
