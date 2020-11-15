@@ -27,18 +27,15 @@
 </template>
 
 <script>
-import { options as tableOptions, queryOptions } from "@/Config/table";
+import ModelIndex from "@/Mixins/Model/ModelIndex";
 
-import PrivateLayout from "@/Layouts/PrivateLayout";
-import AppTopBar from "@/Components/AppTopBar";
 import MeasurementList from "./MeasurementList";
 import MeasurementForm from "./MeasurementForm";
 import MeasurementDelete from "./MeasurementDelete";
 
 export default {
-    layout: PrivateLayout,
+    mixins: [ModelIndex],
     components: {
-        AppTopBar,
         MeasurementList,
         MeasurementForm,
         MeasurementDelete,
@@ -47,28 +44,7 @@ export default {
     data() {
         return {
             model: "measurement",
-
-            id: -1,
-            selected: [],
-            dialogForm: false,
-            dialogDelete: false,
-            options: queryOptions(tableOptions),
         };
-    },
-    methods: {
-        onCreate() {
-            this.id = -1;
-            this.dialogForm = true;
-        },
-        onEdit(id) {
-            if (this.selected.length === 0) {
-                this.id = id;
-                this.dialogForm = true;
-            }
-        },
-        onDelete() {
-            this.dialogDelete = true;
-        },
     },
 };
 </script>

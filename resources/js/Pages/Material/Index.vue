@@ -31,48 +31,24 @@
 </template>
 
 <script>
-import { options as tableOptions, queryOptions } from "@/Config/table";
+import ModelIndex from "@/Mixins/Model/ModelIndex";
 
-import PrivateLayout from "@/Layouts/PrivateLayout";
-import AppTopBar from "@/Components/AppTopBar";
 import MaterialList from "./MaterialList";
 import MaterialForm from "./MaterialForm";
 import MaterialDelete from "./MaterialDelete";
 
 export default {
-    layout: PrivateLayout,
+    mixins: [ModelIndex],
     components: {
-        AppTopBar,
         MaterialList,
         MaterialForm,
         MaterialDelete,
     },
-    props: ["items", "total", "matters"],
+    props: ["matters"],
     data() {
         return {
             model: "material",
-
-            id: -1,
-            selected: [],
-            dialogForm: false,
-            dialogDelete: false,
-            options: queryOptions(tableOptions),
         };
-    },
-    methods: {
-        onCreate() {
-            this.id = -1;
-            this.dialogForm = true;
-        },
-        onEdit(id) {
-            if (this.selected.length === 0) {
-                this.id = id;
-                this.dialogForm = true;
-            }
-        },
-        onDelete() {
-            this.dialogDelete = true;
-        },
     },
 };
 </script>
