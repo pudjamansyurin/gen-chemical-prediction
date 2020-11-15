@@ -58,8 +58,6 @@
 </template>
 
 <script>
-import { Formula as model } from "@/Config/models";
-
 import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
@@ -70,11 +68,6 @@ export default {
             type: Array,
             default: () => [],
         },
-    },
-    data() {
-        return {
-            model,
-        }
     },
 };
 </script>

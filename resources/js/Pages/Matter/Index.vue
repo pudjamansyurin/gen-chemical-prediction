@@ -3,7 +3,7 @@
         <app-top-bar
             :selected.sync="selected"
             :options.sync="options"
-            :page-title="model.toUpperCase()"
+            :page-title="model.name.toUpperCase()"
             @create="onCreate"
             @delete="onDelete"
             mine-tab
@@ -16,19 +16,26 @@
             :total="total"
             :items="items"
             @edit="onEdit"
+            mine-tab
         >
         </matter-list>
 
-        <matter-form v-model="dialogForm" :id="id"></matter-form>
+        <matter-form v-model="dialogForm" :model="model" :id="id"></matter-form>
 
-        <matter-delete v-model="dialogDelete" :selected.sync="selected">
+        <matter-delete
+            v-model="dialogDelete"
+            :model="model"
+            :selected.sync="selected"
+        >
         </matter-delete>
     </fragment>
 </template>
 
 <script>
 import PrivateLayout from "@/Layouts/PrivateLayout";
+
 import { ModelIndexMixin } from "@/Mixins/Model";
+import { Matter as model } from "@/Config/models";
 
 import MatterList from "./MatterList";
 import MatterForm from "./MatterForm";
@@ -44,7 +51,7 @@ export default {
     },
     data() {
         return {
-            model: "matter",
+            model,
         };
     },
 };

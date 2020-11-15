@@ -14,6 +14,13 @@ export default {
         id: {
             type: Number,
             default: -1
+        },
+        model: {
+            type: Object,
+            default: () => ({
+                name: "",
+                form: []
+            })
         }
     },
     data() {

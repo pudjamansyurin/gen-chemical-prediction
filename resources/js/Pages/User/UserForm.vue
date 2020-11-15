@@ -94,23 +94,16 @@
 </template>
 
 <script>
-import { User as model } from "@/Config/models";
-
 import { CommonMixin, PasswordMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, PasswordMixin, ModelFormMixin],
+    mixins: [CommonMixin, ModelFormMixin, PasswordMixin],
     props: {
         roles: {
             type: Array,
             default: () => [],
         },
-    },
-    data() {
-        return {
-            model,
-        }
     },
     methods: {
         onFormOpen() {

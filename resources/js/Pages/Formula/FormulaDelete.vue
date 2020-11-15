@@ -15,18 +15,10 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import { ModelDeleteMixin } from "@/Mixins/Model";
 
-import { Formula as model} from "@/Config/models";
-
 export default {
-    mixins: [CommonMixin, ModelDeleteMixin],
-    data() {
-        return {
-            model
-        };
-    },
+    mixins: [ModelDeleteMixin],
 };
 </script>
 

@@ -53,35 +53,13 @@
 </template>
 
 <script>
-import { omit, debounce } from "lodash";
-
 import { CommonMixin, PasswordMixin } from "@/Mixins";
-
-import TheData from "@/Components/TheData";
+import { ModelListMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, PasswordMixin],
-    props: {
-        selected: {
-            type: Array,
-            default: () => [],
-        },
-        options: {
-            type: Object,
-            default: () => {},
-        },
-        items: {
-            type: Array,
-            default: () => [],
-        },
-        total: {
-            type: Number,
-            default: 0,
-        },
-    },
+    mixins: [CommonMixin, ModelListMixin, PasswordMixin],
     data() {
         return {
-            fetching: false,
             headers: [
                 { text: "Name", value: "name" },
                 { text: "Email", value: "email" },
@@ -90,42 +68,9 @@ export default {
             ],
         };
     },
-    components: {
-        TheData,
-    },
     methods: {
         me({ id }) {
             return this.$page.profile.id === id;
-        },
-        chip(item) {
-            return this.me(item) ? "primary" : "green";
-        },
-        edit(item) {
-            this.$emit("edit", item.id);
-        },
-    },
-    watch: {
-        options: {
-            handler: debounce(function (value) {
-                this.$inertia.replace(
-                    route(
-                        route().current(),
-                        omit(value, [
-                            "groupBy",
-                            "groupDesc",
-                            "mustSort",
-                            "multiSort",
-                            "mine",
-                        ])
-                    ),
-                    {
-                        preserveScroll: true,
-                        onStart: (visit) => (this.fetching = true),
-                        onFinish: () => (this.fetching = false),
-                        only: ["status", "items", "total"],
-                    }
-                );
-            }, 500),
         },
     },
 };

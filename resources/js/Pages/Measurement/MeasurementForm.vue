@@ -41,18 +41,11 @@
 </template>
 
 <script>
-import { Measurement as model} from "@/Config/models";
-
 import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
 export default {
     mixins: [CommonMixin, ModelFormMixin],
-    data() {
-        return {
-            model,
-        }
-    },
 };
 </script>
 

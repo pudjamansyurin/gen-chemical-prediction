@@ -16,6 +16,13 @@ export default {
         selected: {
             type: Array,
             default: () => []
+        },
+        model: {
+            type: Object,
+            default: () => ({
+                name: "",
+                form: []
+            })
         }
     },
     data() {

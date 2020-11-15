@@ -39,32 +39,11 @@
 </template>
 
 <script>
-import { omit, debounce } from "lodash";
-
 import { CommonMixin } from "@/Mixins";
-
-import TheData from "@/Components/TheData";
+import { ModelListMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin],
-    props: {
-        selected: {
-            type: Array,
-            default: () => [],
-        },
-        options: {
-            type: Object,
-            default: () => {},
-        },
-        items: {
-            type: Array,
-            default: () => [],
-        },
-        total: {
-            type: Number,
-            default: 0,
-        },
-    },
+    mixins: [CommonMixin, ModelListMixin],
     data() {
         return {
             headers: [
@@ -78,42 +57,7 @@ export default {
                 { text: "Creator", value: "user.name" },
                 { text: "UpdatedAt", value: "updated_at" },
             ],
-            fetching: false,
         };
-    },
-    components: {
-        TheData,
-    },
-    methods: {
-        chip(item) {
-            return item.authorized ? "primary" : "grey";
-        },
-        edit(item) {
-            this.$emit("edit", item.id);
-        },
-    },
-    watch: {
-        options: {
-            handler: debounce(function (value) {
-                this.$inertia.replace(
-                    route(
-                        route().current(),
-                        omit(value, [
-                            "groupBy",
-                            "groupDesc",
-                            "mustSort",
-                            "multiSort",
-                        ])
-                    ),
-                    {
-                        preserveScroll: true,
-                        onStart: (visit) => (this.fetching = true),
-                        onFinish: () => (this.fetching = false),
-                        only: ["status", "items", "total"],
-                    }
-                );
-            }, 500),
-        },
     },
 };
 </script>

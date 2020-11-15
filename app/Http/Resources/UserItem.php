@@ -28,7 +28,7 @@ class UserItem extends JsonResource
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'authorized' => Gate::allows('update', $this->resource)
+            'authorized' => Gate::allows('delete', $this->resource)
         ];
     }
 }
