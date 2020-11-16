@@ -15,7 +15,6 @@
                 label="Material name"
                 type="text"
                 hint="This should be unique name"
-                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -29,8 +28,8 @@
                 label="Matter"
                 hint="Category for this material"
                 chips
-                persistent-hint
                 outlined
+                attach
             ></v-autocomplete>
 
             <v-btn

@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FormulaRequest;
 use App\Http\Resources\FormulaItem;
+use App\Http\Resources\MaterialItem;
+use App\Http\Resources\MeasurementItem;
 use App\Models\Formula;
+use App\Models\Material;
+use App\Models\Matter;
+use App\Models\Measurement;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -25,7 +30,9 @@ class FormulaController extends Controller
         return Inertia::render('Formula/Index', [
             'items' => FormulaItem::collection($formulas),
             'total' => $total,
-            // 'matters' => Matter::all()
+            'matters' => Matter::getAsList(),
+            'materials' => MaterialItem::collection(Material::all()),
+            'measurements' => MeasurementItem::collection(Measurement::all()),
         ]);
     }
 

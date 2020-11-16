@@ -15,7 +15,6 @@
                 label="Name"
                 type="text"
                 hint="This should be unique name"
-                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -26,7 +25,6 @@
                 label="E-mail"
                 type="email"
                 hint="This email is for recovery"
-                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -40,8 +38,8 @@
                 label="Role"
                 hint="Role for this user"
                 chips
-                persistent-hint
                 outlined
+                attach
             ></v-autocomplete>
 
             <v-checkbox
@@ -64,7 +62,6 @@
                     label="Password"
                     hint="Password for this user"
                     autocomplete="off"
-                    persistent-hint
                     outlined
                     counter
                 ></v-text-field>
@@ -77,7 +74,6 @@
                     label="Password Confirmation"
                     hint="Fill again the password"
                     autocomplete="off"
-                    persistent-hint
                     outlined
                     counter
                 ></v-text-field>

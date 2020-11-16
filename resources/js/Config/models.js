@@ -10,11 +10,11 @@ export const User = {
         name: "",
         email: "",
         role_id: -1,
+        role: Role,
         password: "",
         password_confirmation: "",
         change_password: null,
-        role: Role,
-        authorized: false
+        authorized: null
     }
 };
 
@@ -24,7 +24,7 @@ export const Matter = {
         id: -1,
         name: "",
         required: null,
-        authorized: false
+        authorized: null
     }
 };
 
@@ -34,7 +34,7 @@ export const Material = {
         id: -1,
         name: "",
         matter_id: -1,
-        authorized: false
+        authorized: null
     }
 };
 
@@ -44,7 +44,7 @@ export const Measurement = {
         id: -1,
         name: "",
         primary: null,
-        authorized: false
+        authorized: null
     }
 };
 
@@ -56,7 +56,7 @@ export const Formula = {
         note: "",
         materials: [],
         measurements: [],
-        authorized: false
+        authorized: null
     }
 };
 

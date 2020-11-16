@@ -68,6 +68,9 @@ export default {
         }
     },
     methods: {
+        getFromList(list, { id }) {
+            return list.find(el => el.id === id);
+        },
         fetch() {
             this.fetching = true;
             this.$axios

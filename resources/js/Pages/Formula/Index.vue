@@ -24,7 +24,9 @@
             v-model="dialogForm"
             :model="model"
             :id="id"
+            :matters="matters"
             :materials="materials"
+            :measurements="measurements"
         ></formula-form>
 
         <formula-delete
@@ -54,7 +56,7 @@ export default {
         FormulaForm,
         FormulaDelete,
     },
-    props: ["materials"],
+    props: ["matters", "materials", "measurements"],
     data() {
         return {
             model,

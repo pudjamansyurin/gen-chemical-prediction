@@ -26,7 +26,7 @@ class MaterialController extends Controller
         return Inertia::render('Material/Index', [
             'items' => MaterialItem::collection($materials),
             'total' => $total,
-            'matters' => Matter::all()
+            'matters' => Matter::getAsList()
         ]);
     }
 

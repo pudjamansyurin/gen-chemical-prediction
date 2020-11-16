@@ -15,7 +15,6 @@
                 label="Formula name"
                 type="text"
                 hint="This should be unique name"
-                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -26,26 +25,77 @@
                 label="Formula note"
                 type="text"
                 hint="Just for documentation"
-                persistent-hint
                 outlined
                 auto-grow
                 clearable
             >
             </v-textarea>
 
+            <formula-field-material
+                :_form.sync="form"
+                :matters="matters"
+                :materials="materials"
+            ></formula-field-material>
+
             <!-- <v-autocomplete
-                v-model="form.material_id"
+                v-model="form.materials"
                 :items="materials"
-                :error-messages="form.error('material_id')"
-                :success="!!form.error('material_id')"
+                :error-messages="form.error('materials')"
+                :success="!!form.error('materials')"
                 item-text="name"
                 item-value="id"
-                label="Matter"
-                hint="Category for this formula"
+                label="Materials"
+                hint="Materials used for this formula"
                 chips
-                persistent-hint
                 outlined
-            ></v-autocomplete> -->
+                attach
+                multiple
+                return-object
+                deletable-chips
+            ></v-autocomplete>
+
+            <v-text-field
+                v-for="(material, idx) in form.materials"
+                :key="`material.${material.id}`"
+                v-model="material.value"
+                :error-messages="form.error(`materials[${idx}].value`)"
+                :success="!!form.error(`materials[${idx}].value`)"
+                :label="`Value: ${getFromList(materials, material).name}`"
+                type="text"
+                hint="Percentage value for this material"
+                suffix="%"
+                outlined
+            ></v-text-field>
+
+            <v-autocomplete
+                v-model="form.measurements"
+                :items="measurements"
+                :error-messages="form.error('measurements')"
+                :success="!!form.error('measurements')"
+                item-text="name"
+                item-value="id"
+                label="Measurements"
+                hint="Measurements used for this formula"
+                chips
+                outlined
+                attach
+                multiple
+                deletable-chips
+            ></v-autocomplete>
+
+            <v-text-field
+                v-for="(measurement, idx) in form.measurements"
+                :key="`measurement.${measurement.id}`"
+                v-model="measurement.value"
+                :error-messages="form.error(`measurements[${idx}].value`)"
+                :success="!!form.error(`measurements[${idx}].value`)"
+                :label="`Result: ${
+                    getFromList(measurements, measurement).name
+                }`"
+                type="text"
+                hint="Result value for this measurement"
+                outlined
+            ></v-text-field> -->
 
             <v-btn
                 v-if="!readonly"
@@ -61,13 +111,39 @@
 import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
+import FormulaFieldMaterial from "./FormulaFieldMaterial";
+
 export default {
+    components: { FormulaFieldMaterial },
     mixins: [CommonMixin, ModelFormMixin],
+    component: {
+        FormulaFieldMaterial
+    },
     props: {
+        matters: {
+            type: Array,
+            default: () => [],
+        },
         materials: {
             type: Array,
             default: () => [],
         },
+        measurements: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    watch: {
+        'form.materials': {
+            handler(v) {
+                console.warn(v);
+            }
+        },
+        'materials': {
+            handler(v) {
+                console.log(v);
+            }
+        }
     },
 };
 </script>

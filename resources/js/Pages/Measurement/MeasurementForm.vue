@@ -15,7 +15,6 @@
                 label="Measurement name"
                 type="text"
                 hint="This should be unique name"
-                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -25,7 +24,6 @@
                 :success="!!form.error('primary')"
                 label="Primary measurement?"
                 hint="This rule is used when measure formula"
-                persistent-hint
                 outlined
             >
             </v-checkbox>

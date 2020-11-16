@@ -15,7 +15,6 @@
                 label="Matter name"
                 type="text"
                 hint="This should be unique name"
-                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -25,7 +24,6 @@
                 :success="!!form.error('required')"
                 label="Required matter?"
                 hint="This rule is used when composing formula"
-                persistent-hint
                 outlined
             >
             </v-checkbox>
