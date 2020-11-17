@@ -29,8 +29,7 @@
                                     form.processing || sessions.length === 1
                                 "
                                 @click="confirmLogout"
-                                :dark="sessions.length > 1 || dark"
-                                color="red"
+                                color="primary"
                             >
                                 Logout Other Sessions
                             </v-btn>
