@@ -31,12 +31,16 @@
             >
             </v-textarea>
 
-            <formula-form-table
+            <formula-form-material
                 :form="form"
                 :matters="matters"
                 :materials="materials"
+            ></formula-form-material>
+            <br />
+            <formula-form-measurement
+                :form="form"
                 :measurements="measurements"
-            ></formula-form-table>
+            ></formula-form-measurement>
 
             <!-- <v-autocomplete
                 v-model="form.materials"
@@ -113,11 +117,13 @@ import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
 import FormulaFormMaterial from './FormulaFormMaterial'
+import FormulaFormMeasurement from './FormulaFormMeasurement'
 
 export default {
     mixins: [CommonMixin, ModelFormMixin],
     components: {
-        FormulaFormMaterial
+        FormulaFormMaterial,
+        FormulaFormMeasurement
     },
     props: {
         matters: {

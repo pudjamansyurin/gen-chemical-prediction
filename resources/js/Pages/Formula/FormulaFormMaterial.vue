@@ -6,10 +6,10 @@
         <template v-slot:name="{ item, index }">
             <v-autocomplete
                 :value="item.id"
-                @change="changeMaterial(index, $event)"
+                @change="change(index, $event)"
                 :items="list(item)"
                 append-icon="mdi-close-circle-outline"
-                @click:append="removeMaterial(index)"
+                @click:append="remove(index)"
                 item-text="name"
                 item-value="id"
                 hide-details="auto"
@@ -45,13 +45,10 @@
         </template>
 
         <template v-slot:footer>
-            <!-- <tr>
-                <td :colspan="headers.length"></td>
-            </tr> -->
             <tr class="font-weight-bold">
                 <td>
                     <v-icon
-                        @click="addMaterial()"
+                        @click="add()"
                         :disabled="_form.materials.some((m) => m.id <= 0)"
                         color="primary"
                     >
@@ -96,10 +93,6 @@ export default {
             default: () => [],
         },
         materials: {
-            type: Array,
-            default: () => [],
-        },
-        measurements: {
             type: Array,
             default: () => [],
         },
@@ -155,28 +148,27 @@ export default {
         },
     },
     methods: {
+        getMatter({matter_id}) {
+            return this.matters.find(m => m.id === matter_id) || '';
+        },
         list({id: materialId}) {
             let ids = this._form.materials
                             .filter(m => m.id != materialId)
                             .map(m => m.id)
 
             return this.materials.filter((m) => !ids.includes(m.id))
-
         },
-        getMatter({matter_id}) {
-            return this.matters.find(m => m.id === matter_id) || '';
-        },
-        changeMaterial(idx, {id, matter_id}) {
+        change(idx, {id, matter_id}) {
             this._form.materials.splice(idx, 1, {
                 ...this._form.materials[idx],
                 id,
                 matter_id
             })
         },
-        removeMaterial(idx) {
+        remove(idx) {
             this._form.materials.splice(idx, 1);
         },
-        addMaterial() {
+        add() {
             this._form.materials.push({
                 id: -1,
                 value: null,
@@ -188,7 +180,7 @@ export default {
         '_form.materials.length' : {
             immediate: true,
             handler(v) {
-                if(v == 0) this.addMaterial()
+                if(v == 0) this.add()
             }
         }
     },

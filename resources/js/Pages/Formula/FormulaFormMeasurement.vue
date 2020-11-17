@@ -1,15 +1,15 @@
 <template>
-    <the-simple-table :headers="headers" :items="_form.materials">
+    <the-simple-table :headers="headers" :items="_form.measurements">
         <template v-slot:no="{ index }">
             {{ index + 1 }}
         </template>
         <template v-slot:name="{ item, index }">
             <v-autocomplete
                 :value="item.id"
-                @change="changeMeasurement(index, $event)"
+                @change="change(index, $event)"
                 :items="list(item)"
                 append-icon="mdi-close-circle-outline"
-                @click:append="removeMeasurement(index)"
+                @click:append="remove(index)"
                 item-text="name"
                 item-value="id"
                 hide-details="auto"
@@ -20,22 +20,14 @@
             ></v-autocomplete>
         </template>
         <template v-slot:type="{ item, index }">
-            <v-text-field
-                v-model="getMatter(item).name"
-                hide-details="auto"
-                readonly
-                solo
-                flat
-                dense
-            ></v-text-field>
+            {{ getType(item) }}
         </template>
-        <template v-slot:portion="{ item, index }">
+        <template v-slot:value="{ item, index }">
             <v-text-field
                 v-model.number="item.value"
-                :error-messages="_form.error(`materials.${index}.value`)"
-                :success="!!_form.error(`materials.${index}.value`)"
+                :error-messages="_form.error(`measurements.${index}.value`)"
+                :success="!!_form.error(`measurements.${index}.value`)"
                 type="number"
-                prefix="%"
                 hide-details="auto"
                 reverse
                 flat
@@ -45,35 +37,17 @@
         </template>
 
         <template v-slot:footer>
-            <!-- <tr>
-                <td :colspan="headers.length"></td>
-            </tr> -->
             <tr class="font-weight-bold">
                 <td>
                     <v-icon
-                        @click="addMeasurement()"
-                        :disabled="_form.materials.some((m) => m.id <= 0)"
+                        @click="add()"
+                        :disabled="_form.measurements.some((m) => m.id <= 0)"
                         color="primary"
                     >
                         mdi-plus-circle-outline
                     </v-icon>
                 </td>
-                <td class="text-right" :colspan="headers.length - 2">TOTAL</td>
-                <td class="text-right">
-                    <v-text-field
-                        :value="portionTotal"
-                        :error-messages="portionTotalError"
-                        :success="!!portionTotalError"
-                        type="number"
-                        prefix="%"
-                        hide-details="auto"
-                        readonly
-                        reverse
-                        flat
-                        solo
-                        dense
-                    ></v-text-field>
-                </td>
+                <td :colspan="headers.length - 1"></td>
             </tr>
         </template>
     </the-simple-table>
@@ -90,14 +64,6 @@ export default {
         form: {
             type: Object,
             default: () => {}
-        },
-        matters: {
-            type: Array,
-            default: () => [],
-        },
-        materials: {
-            type: Array,
-            default: () => [],
         },
         measurements: {
             type: Array,
@@ -125,8 +91,8 @@ export default {
                     width: 200,
                 },
                 {
-                    text: "Portion",
-                    value: "portion",
+                    text: "Value",
+                    value: "value",
                     align: "right",
                     width: 150,
                 },
@@ -142,53 +108,49 @@ export default {
                 this.$emit("update:form", value);
             },
         },
-        portionTotal() {
-            return this.form.materials.reduce(
-                (carry, { value }) => carry + Number(value),
-                0
-            );
-        },
-        portionTotalError() {
-            if (this.portionTotal != 100)
-                return ['Total portion should be 100%'];
-            return;
-        },
     },
     methods: {
-        list({id: materialId}) {
-            let ids = this._form.materials
-                            .filter(m => m.id != materialId)
+        getType({primary}) {
+            if (primary) return 'Primary';
+            if (primary === 0) return 'Secondary';
+            return;
+        },
+        list({id: measurementId}) {
+            let ids = this._form.measurements
+                            .filter(m => m.id != measurementId)
                             .map(m => m.id)
 
-            return this.materials.filter((m) => !ids.includes(m.id))
-
+            return this.measurements.filter((m) => !ids.includes(m.id))
         },
-        getMatter({matter_id}) {
-            return this.matters.find(m => m.id === matter_id) || '';
-        },
-        changeMeasurement(idx, {id, matter_id}) {
-            this._form.materials.splice(idx, 1, {
-                ...this._form.materials[idx],
+        change(idx, {id, primary}) {
+            this._form.measurements.splice(idx, 1, {
+                ...this._form.measurements[idx],
                 id,
-                matter_id
+                primary
             })
         },
-        removeMeasurement(idx) {
-            this._form.materials.splice(idx, 1);
+        remove(idx) {
+            this._form.measurements.splice(idx, 1);
         },
-        addMeasurement() {
-            this._form.materials.push({
+        add() {
+            this._form.measurements.push({
                 id: -1,
                 value: null,
-                matter_id : -1,
+                primary : null,
             })
         }
     },
     watch: {
-        '_form.materials.length' : {
+        '_form.measurements.length' : {
             immediate: true,
             handler(v) {
-                if(v == 0) this.addMeasurement()
+                if(v == 0) this.add()
+            }
+        },
+        '_form.measurements' : {
+            immediate: true,
+            handler(v) {
+                console.warn(v);
             }
         }
     },
