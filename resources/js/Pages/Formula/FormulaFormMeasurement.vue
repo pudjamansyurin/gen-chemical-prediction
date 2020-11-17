@@ -19,8 +19,10 @@
                 return-object
             ></v-autocomplete>
         </template>
-        <template v-slot:type="{ item, index }">
-            {{ getType(item) }}
+        <template v-slot:primary="{ item, index }">
+            <v-icon :color="item.primary ? 'primary' : 'red'">
+                {{ getType(item) }}
+            </v-icon>
         </template>
         <template v-slot:value="{ item, index }">
             <v-text-field
@@ -41,7 +43,7 @@
                 <td>
                     <v-icon
                         @click="add()"
-                        :disabled="_form.measurements.some((m) => m.id <= 0)"
+                        :disabled="disableAdd"
                         color="primary"
                     >
                         mdi-plus-circle-outline
@@ -85,9 +87,9 @@ export default {
                     align: "left",
                 },
                 {
-                    text: "Type",
-                    value: "type",
-                    align: "left",
+                    text: "Primary",
+                    value: "primary",
+                    align: "center",
                     width: 200,
                 },
                 {
@@ -108,12 +110,18 @@ export default {
                 this.$emit("update:form", value);
             },
         },
+        disableAdd() {
+            let hasUnFilled = this._form.measurements.some((m) => m.id <= 0);
+            let maxListReached = this._form.measurements.length == this.measurements.length;
+
+            return hasUnFilled || maxListReached;
+        }
     },
     methods: {
         getType({primary}) {
-            if (primary) return 'Primary';
-            if (primary === 0) return 'Secondary';
-            return;
+            if (primary) return 'mdi-check';
+            if (primary === 0) return 'mdi-window-close';
+            return ;
         },
         list({id: measurementId}) {
             let ids = this._form.measurements

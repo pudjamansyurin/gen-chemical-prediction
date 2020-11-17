@@ -29,7 +29,7 @@
                 dense
             ></v-text-field>
         </template>
-        <template v-slot:portion="{ item, index }">
+        <template v-slot:value="{ item, index }">
             <v-text-field
                 v-model.number="item.value"
                 :error-messages="_form.error(`materials.${index}.value`)"
@@ -49,7 +49,7 @@
                 <td>
                     <v-icon
                         @click="add()"
-                        :disabled="_form.materials.some((m) => m.id <= 0)"
+                        :disabled="disableAdd"
                         color="primary"
                     >
                         mdi-plus-circle-outline
@@ -119,7 +119,7 @@ export default {
                 },
                 {
                     text: "Portion",
-                    value: "portion",
+                    value: "value",
                     align: "right",
                     width: 150,
                 },
@@ -146,6 +146,12 @@ export default {
                 return ['Total portion should be 100%'];
             return;
         },
+        disableAdd() {
+            let hasUnFilled = this._form.materials.some((m) => m.id <= 0);
+            let maxListReached = this._form.materials.length == this.materials.length;
+
+            return hasUnFilled || maxListReached;
+        }
     },
     methods: {
         getMatter({matter_id}) {

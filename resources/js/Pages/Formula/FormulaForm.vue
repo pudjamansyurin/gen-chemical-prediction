@@ -25,6 +25,7 @@
                 label="Formula note"
                 type="text"
                 hint="Just for documentation"
+                row-height="2"
                 outlined
                 auto-grow
                 clearable
