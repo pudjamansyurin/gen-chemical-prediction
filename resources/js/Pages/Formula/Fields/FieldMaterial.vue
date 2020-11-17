@@ -1,7 +1,14 @@
 <template>
-    <the-simple-table :headers="headers" :items="_form.materials">
+    <the-simple-table v-if="!mobile" :headers="headers" :items="_form.materials">
         <template v-slot:no="{ index }">
-            {{ index + 1 }}
+            <v-hover
+                v-slot="{ hover }"
+            >
+                <span v-if="!hover">{{ index + 1 }}</span>
+                <v-icon v-else @click="remove(index)" color="red">
+                    mdi-close-circle-outline
+                </v-icon>
+            </v-hover>
         </template>
         <template v-slot:name="{ item, index }">
             <v-autocomplete
@@ -10,8 +17,6 @@
                 :items="list(item)"
                 :error-messages="_form.error(`materials.${index}.id`)"
                 :success="!!_form.error(`materials.${index}.id`)"
-                append-icon="mdi-close-circle-outline"
-                @click:append="remove(index)"
                 item-text="name"
                 item-value="id"
                 hide-details="auto"
@@ -19,17 +24,21 @@
                 outlined
                 dense
                 return-object
-            ></v-autocomplete>
+            >
+              <template v-slot:item="{item}">
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ item.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ getMatter(item).name }}
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+              </template>
+            </v-autocomplete>
         </template>
         <template v-slot:type="{ item, index }">
-            <v-text-field
-                :value="getMatter(item).name || '-'"
-                hide-details="auto"
-                readonly
-                solo
-                flat
-                dense
-            ></v-text-field>
+            {{ getMatter(item).name || '-' }}
         </template>
         <template v-slot:value="{ item, index }">
             <v-text-field
@@ -81,14 +90,102 @@
             </tr>
         </template>
     </the-simple-table>
+    <the-data-iterator
+        v-else
+        :headers="headers"
+        :items="_form.materials"
+        @remove="remove"
+    >
+        <template v-slot:no="{ index }">
+            {{ index + 1 }}
+        </template>
+        <template v-slot:name="{ item, index }">
+            <v-autocomplete
+                :value="item.id"
+                @change="change(index, $event)"
+                :items="list(item)"
+                :error-messages="_form.error(`materials.${index}.id`)"
+                :success="!!_form.error(`materials.${index}.id`)"
+                item-text="name"
+                item-value="id"
+                hide-details="auto"
+                flat
+                outlined
+                dense
+                return-object
+            >
+              <template v-slot:item="{item}">
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ item.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ getMatter(item).name }}
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+              </template>
+            </v-autocomplete>
+        </template>
+        <template v-slot:type="{ item, index }">
+            {{ getMatter(item).name || '-' }}
+        </template>
+        <template v-slot:value="{ item, index }">
+            <v-text-field
+                v-model.number="item.value"
+                :error-messages="_form.error(`materials.${index}.value`)"
+                :success="!!_form.error(`materials.${index}.value`)"
+                type="number"
+                prefix="%"
+                hide-details="auto"
+                reverse
+                flat
+                outlined
+                dense
+            ></v-text-field>
+        </template>
+
+        <template v-slot:footer-title>
+            <v-btn @click="add()" :disabled="disableAdd" color="primary" block>
+                <v-icon dark>
+                    mdi-plus-circle-outline
+                </v-icon> Material
+            </v-btn>
+        </template>
+
+        <template v-slot:footer>
+            <v-list-item>
+                <v-list-item-content>Total</v-list-item-content>
+                <v-list-item-content class="align-end justify-end">
+                    <v-text-field
+                        :value="portionTotal"
+                        :error-messages="_form.error(`materials.value`)"
+                        :success="!!_form.error(`materials.value`)"
+                        type="text"
+                        prefix="%"
+                        hide-details="auto"
+                        readonly
+                        reverse
+                        flat
+                        solo
+                        dense
+                    ></v-text-field>
+                </v-list-item-content>
+            </v-list-item>
+        </template>
+    </the-data-iterator>
 </template>
 
 <script>
+import CommonMixin from '@/Mixins/CommonMixin'
+
 import TheSimpleTable from "@/Components/TheSimpleTable";
+import TheDataIterator from "@/Components/TheDataIterator";
 
 export default {
+    mixins: [CommonMixin],
     components: {
-        TheSimpleTable
+        TheSimpleTable,
+        TheDataIterator
     },
     props: {
         form: {

@@ -48,6 +48,13 @@ class Formula extends Model
     // }
 
     /**
+     * Scopes
+     */
+    // public function scopePrimaryMeasurements($query)
+    // {
+    // }
+
+    /**
      * Relations
      */
     public function materials()

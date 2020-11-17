@@ -2,8 +2,12 @@
     <v-data-iterator :items="items" item-key="id" hide-default-footer>
         <template v-slot="{ items }">
             <v-card v-for="(item, index) in items" :key="item.id" class="mb-1">
-                <v-card-title>
-                    <h4>{{ item.name }}</h4>
+                <v-card-title class="align-center">
+                    <span class="text-subtitle-1">{{ item.name }}</span>
+                    <v-spacer></v-spacer>
+                    <v-icon @click="$emit('remove', index)" color="red">
+                        mdi-close-circle-outline
+                    </v-icon>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
@@ -12,8 +16,7 @@
                             {{ header.text }} :
                         </v-list-item-content>
                         <v-list-item-content
-                            class="align-end"
-                            :class="{ 'justify-end': header.align == 'right' }"
+                            class="align-end justify-end"
                         >
                             <slot
                                 :name="header.value"
@@ -25,7 +28,9 @@
                 </v-list>
             </v-card>
             <v-card class="mt-1">
-                <v-card-title></v-card-title>
+                <v-card-title>
+                    <slot name="footer-title"></slot>
+                </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
                     <slot name="footer"></slot>

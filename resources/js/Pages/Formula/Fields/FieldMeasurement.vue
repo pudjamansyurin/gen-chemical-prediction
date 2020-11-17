@@ -1,7 +1,14 @@
 <template>
-    <the-simple-table :headers="headers" :items="_form.measurements">
+    <the-simple-table v-if="!mobile" :headers="headers" :items="_form.measurements">
         <template v-slot:no="{ index }">
-            {{ index + 1 }}
+            <v-hover
+                v-slot="{ hover }"
+            >
+                <span v-if="!hover">{{ index + 1 }}</span>
+                <v-icon v-else @click="remove(index)" color="red">
+                    mdi-close-circle-outline
+                </v-icon>
+            </v-hover>
         </template>
         <template v-slot:name="{ item, index }">
             <v-autocomplete
@@ -10,8 +17,6 @@
                 :items="list(item)"
                 :error-messages="_form.error(`measurements.${index}.id`)"
                 :success="!!_form.error(`measurements.${index}.id`)"
-                append-icon="mdi-close-circle-outline"
-                @click:append="remove(index)"
                 item-text="name"
                 item-value="id"
                 hide-details="auto"
@@ -21,10 +26,8 @@
                 return-object
             ></v-autocomplete>
         </template>
-        <template v-slot:primary="{ item, index }">
-            <v-icon :color="item.primary ? 'primary' : 'red'">
-                {{ getType(item) }}
-            </v-icon>
+        <template v-slot:type="{ item, index }">
+            {{ getType(item) || '-' }}
         </template>
         <template v-slot:value="{ item, index }">
             <v-text-field
@@ -55,14 +58,69 @@
             </tr>
         </template>
     </the-simple-table>
+    <the-data-iterator
+        v-else
+        :headers="headers"
+        :items="_form.measurements"
+        @remove="remove"
+    >
+        <template v-slot:no="{ index }">
+            {{ index + 1 }}
+        </template>
+        <template v-slot:name="{ item, index }">
+            <v-autocomplete
+                :value="item.id"
+                @change="change(index, $event)"
+                :items="list(item)"
+                :error-messages="_form.error(`measurements.${index}.id`)"
+                :success="!!_form.error(`measurements.${index}.id`)"
+                item-text="name"
+                item-value="id"
+                hide-details="auto"
+                flat
+                outlined
+                dense
+                return-object
+            ></v-autocomplete>
+        </template>
+        <template v-slot:type="{ item, index }">
+            {{ getType(item) || '-' }}
+        </template>
+        <template v-slot:value="{ item, index }">
+            <v-text-field
+                v-model.number="item.value"
+                :error-messages="_form.error(`measurements.${index}.value`)"
+                :success="!!_form.error(`measurements.${index}.value`)"
+                type="number"
+                hide-details="auto"
+                reverse
+                flat
+                outlined
+                dense
+            ></v-text-field>
+        </template>
+
+        <template v-slot:footer-title>
+            <v-btn @click="add()" :disabled="disableAdd" color="primary" block>
+                <v-icon dark>
+                    mdi-plus-circle-outline
+                </v-icon> Measurements
+            </v-btn>
+        </template>
+    </the-data-iterator>
 </template>
 
 <script>
+import { CommonMixin } from "@/Mixins";
+
 import TheSimpleTable from "@/Components/TheSimpleTable";
+import TheDataIterator from "@/Components/TheDataIterator";
 
 export default {
+    mixins: [CommonMixin],
     components: {
-        TheSimpleTable
+        TheSimpleTable,
+        TheDataIterator
     },
     props: {
         form: {
@@ -89,8 +147,8 @@ export default {
                     align: "left",
                 },
                 {
-                    text: "Primary",
-                    value: "primary",
+                    text: "Type",
+                    value: "type",
                     align: "left",
                     width: 200,
                 },
@@ -121,9 +179,8 @@ export default {
     },
     methods: {
         getType({primary}) {
-            if (primary) return 'mdi-check';
-            if (primary === 0) return 'mdi-window-close';
-            return 'mdi-minus';
+            if (primary) return 'Primary';
+            if (primary === 0) return 'Non-Primary';
         },
         list({id: measurementId}) {
             let ids = this._form.measurements

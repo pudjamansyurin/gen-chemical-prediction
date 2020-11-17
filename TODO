@@ -9,3 +9,7 @@ Todo:
   ✔ add material & matter frontend logic @done(20-11-15 10:28)
   ✔ use csv-seeder class to seed directly @done(20-11-15 10:28)
   ☐ @high use vuetify a-la-carte to minimize assets
+  ☐ formula > material form > autocomplete with category should searchable
+  ☐ use primary measurements as table comlumn
+  ☐
+

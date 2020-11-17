@@ -33,13 +33,13 @@
                 :items="roles"
                 :error-messages="form.error('role_id')"
                 :success="!!form.error('role_id')"
+                :attach="mobile"
                 item-text="name"
                 item-value="id"
                 label="Role"
                 hint="Role for this user"
                 chips
                 outlined
-                attach
             ></v-autocomplete>
 
             <v-checkbox

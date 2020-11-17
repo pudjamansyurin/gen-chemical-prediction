@@ -23,13 +23,13 @@
                 :items="matters"
                 :error-messages="form.error('matter_id')"
                 :success="!!form.error('matter_id')"
+                :attach="mobile"
                 item-text="name"
                 item-value="id"
                 label="Matter"
                 hint="Category for this material"
                 chips
                 outlined
-                attach
             ></v-autocomplete>
 
             <v-btn

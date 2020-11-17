@@ -81,6 +81,16 @@ class FormulaRequest extends FormRequest
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'materials.*.id' => 'material',
+            'materials.*.value' => 'portion',
+            'measurements.*.id' => 'measurement',
+            'measurements.*.value' => 'value',
+        ];
+    }
+
     /**
      * Configure the validator instance.
      *
