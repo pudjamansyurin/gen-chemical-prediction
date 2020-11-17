@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Material;
+use App\Models\Matter;
 use App\Traits\Validators\ExtendedValidator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 class FormulaRequest extends FormRequest
@@ -38,6 +41,11 @@ class FormulaRequest extends FormRequest
                 'max:25',
                 Rule::unique('formulas', 'name')->ignore($this->formula)
             ],
+            'note' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
             'materials' => [
                 'required',
                 'array'
@@ -68,8 +76,6 @@ class FormulaRequest extends FormRequest
             'measurements.*.value' => [
                 'required',
                 'numeric',
-                'min:0',
-                'max:100',
                 'not_in:0',
             ],
         ];
@@ -86,22 +92,22 @@ class FormulaRequest extends FormRequest
         if (!$validator->fails()) {
             $validator->after(function ($validator) {
                 $this->validateSum($validator, 'materials', 'value', 100);
-                // $this->validateHasAllRequiredMatters($validator);
+                $this->validateHasAllRequiredMatters($validator);
             });
         }
     }
 
-
     private function validateHasAllRequiredMatters($validator)
     {
-        // if ($recipes = request('_recipes')) {
-        //     $recipeFormulas = $this->getRecipeableFormulas($recipes);
-        //     foreach ($recipeFormulas as $key => $recipeFormula) {
-        //         if (Formula::find($recipeFormula['recipeable_id'])->main) {
-        //             $target = "_recipes.{$key}.recipeable_id";
-        //             $validator->errors()->add($target, "Main formula may not be used as recipe.");
-        //         }
-        //     }
-        // }
+        if ($materials = request('materials')) {
+            $requiredMatters = Matter::whereRequired(1)->get();
+            $materials = Material::find(Arr::pluck($materials, 'id'));
+
+            $requiredMatters->each(function ($matter) use ($validator, $materials) {
+                if (!$materials->firstWhere('matter_id', $matter->id)) {
+                    $validator->errors()->add("materials", "Use at least 1 {$matter->name} material.");
+                }
+            });
+        }
     }
 }

@@ -16,7 +16,7 @@ class CreateFormulasTable extends Migration
         Schema::create('formulas', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->foreignId('user_id');
             $table->timestamps();
         });

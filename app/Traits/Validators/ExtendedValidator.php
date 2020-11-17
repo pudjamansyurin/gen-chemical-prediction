@@ -14,7 +14,7 @@ trait ExtendedValidator
 
             // add error message
             if ($total != $value) {
-                $target = "{$array}_{$field}";
+                $target = "{$array}.{$field}";
                 $validator->errors()->add($target, "Total {$field} should be {$value}.");
             }
         }
