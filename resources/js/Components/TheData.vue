@@ -9,8 +9,8 @@
                 :options="options"
                 @update:options="updateOptions"
                 :items="items"
-                :headers="headers"
                 :total="total"
+                :headers="headers"
                 :loading="loading"
             >
                 <template
@@ -28,6 +28,7 @@
                 :options="options"
                 @update:options="updateOptions"
                 :items="items"
+                :total="total"
             >
                 <template v-slot="{ item }">
                     <slot name="card" :item="item"></slot>

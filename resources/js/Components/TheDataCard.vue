@@ -19,6 +19,17 @@
                 <slot :item="item"></slot>
             </v-card>
         </v-col>
+        <v-col cols="12">
+            <v-pagination
+                :value="options.page"
+                @input="updateOptions"
+                :length="pageCount"
+                :total-visible="5"
+                :dark="darker"
+                circle
+            >
+            </v-pagination>
+        </v-col>
     </v-row>
 </template>
 
@@ -39,6 +50,10 @@ export default {
             type: Object,
             default: () => {},
         },
+        total: {
+            type: Number,
+            default: 0,
+        },
     },
     computed: {
         ...mapState("app", ["size"]),
@@ -50,6 +65,9 @@ export default {
                 this.$emit("input", value);
             },
         },
+        pageCount() {
+            return Math.ceil(this.total/this.options.itemsPerPage);
+        }
     },
     methods: {
         selectedIndex(item) {
@@ -66,6 +84,12 @@ export default {
                 this.selected.splice(0, 1, item); // change
             }
         },
+        updateOptions(page) {
+            this.$emit('update:options', {
+                ...this.options,
+                page
+            });
+        }
     },
 };
 </script>

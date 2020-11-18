@@ -49,8 +49,8 @@ trait ClientQueryScope
             ->filtered()
             ->sortered();
 
-        if ((new Agent())->isDesktop())
-            $q = $q->limited();
+        // if ((new Agent())->isDesktop())
+        $q = $q->limited();
 
         return $q->get();
     }

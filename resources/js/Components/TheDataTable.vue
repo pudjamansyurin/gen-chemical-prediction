@@ -42,7 +42,7 @@ export default {
             type: Array,
             default: () => [],
         },
-        headers: {
+        items: {
             type: Array,
             default: () => [],
         },
@@ -50,13 +50,13 @@ export default {
             type: Object,
             default: () => {},
         },
-        items: {
-            type: Array,
-            default: () => [],
-        },
         total: {
             type: Number,
             default: 0,
+        },
+        headers: {
+            type: Array,
+            default: () => [],
         },
         loading: {
             type: Boolean,

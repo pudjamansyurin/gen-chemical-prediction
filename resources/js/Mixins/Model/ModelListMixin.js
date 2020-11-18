@@ -51,7 +51,7 @@ export default {
                 this.$inertia.replace(
                     route(route().current(), omit(value, this.ignoredOptions)),
                     {
-                        preserveScroll: true,
+                        preserveScroll: !this.mobile,
                         onStart: visit => (this.fetching = true),
                         onFinish: () => (this.fetching = false),
                         only: ["status", "items", "total"]
