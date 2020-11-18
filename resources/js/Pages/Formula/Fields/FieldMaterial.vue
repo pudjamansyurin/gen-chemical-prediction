@@ -21,14 +21,14 @@
                             {{ item.name }}
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ getMatter(item).name }}
+                            {{ getMatterName(item) }}
                         </v-list-item-subtitle>
                     </v-list-item-content>
               </template>
             </v-autocomplete>
         </template>
         <template v-slot:[`item.type`]="{ item, index }">
-            {{ getMatter(item).name || '-' }}
+            {{ getMatterName(item) || '-' }}
         </template>
         <template v-slot:[`item.value`]="{ item, index }">
             <v-text-field
@@ -91,27 +91,11 @@
 
 <script>
 import { CommonMixin } from "@/Mixins";
-
-import TheSimpleData from "@/Components/TheSimpleData";
+import ModelFormFieldMixin from "@/Mixins/Model/ModelFormFieldMixin";
 
 export default {
-    mixins: [CommonMixin],
-    components: {
-        TheSimpleData
-    },
+    mixins: [CommonMixin, ModelFormFieldMixin],
     props: {
-        form: {
-            type: Object,
-            default: () => {}
-        },
-        readonly: {
-            type: Boolean,
-            default: false
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
         materials: {
             type: Array,
             default: () => [],
@@ -152,41 +136,20 @@ export default {
         }
     },
     computed: {
-        _form: {
-            get() {
-                return this.form;
-            },
-            set(value) {
-                this.$emit("update:form", value);
-            },
-        },
-        formField() {
-            return this._form[this.field];
-        },
-        disableAdd() {
-            let hasUnFilled = this.formField.some((m) => m.id <= 0);
-            let maxListReached = this.formField.length == this[this.field].length;
-
-            return this.disabled || hasUnFilled || maxListReached;
-        },
         portionTotal() {
-            return this.formField.reduce(
+            return this._form[this.field].reduce(
                 (carry, { value }) => carry + Number(value),
                 0
             );
         },
     },
     methods: {
-        list({id}) {
-            let ids = this._form[this.field]
-                            .filter(m => m.id != id)
-                            .map(m => m.id)
-
-            return this[this.field]
-                        .filter((m) => !ids.includes(m.id))
-        },
-        remove(idx) {
-            this._form[this.field].splice(idx, 1);
+        add() {
+            this._form[this.field].push({
+                id: -1,
+                value: null,
+                matter_id: -1
+            })
         },
         change(idx, el) {
             this._form[this.field].splice(idx, 1, {
@@ -195,22 +158,16 @@ export default {
                 matter_id: el.matter_id
             })
         },
-        add() {
-            this._form[this.field].push({
-                id: -1,
-                value: null,
-                matter_id : -1,
-            })
-        },
-        getMatter({matter_id}) {
-            return this.matters.find(m => m.id === matter_id) || '';
+        getMatterName(el) {
+            let matter = this.matters.find(m => m.id === el.matter_id);
+            if (matter) return matter.name;
         },
     },
     watch: {
         '_form.materials.length' : {
             immediate: true,
             handler(v) {
-                if(v == 0) this.add()
+                if (v == 0) this.add()
             }
         }
     },
