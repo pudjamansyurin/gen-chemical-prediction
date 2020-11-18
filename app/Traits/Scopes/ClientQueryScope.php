@@ -70,9 +70,8 @@ trait ClientQueryScope
 
             // handle this model
             $q = $q->where(function ($q) use ($fields, $search) {
-                foreach ($fields as $field) {
+                foreach ($fields as $field)
                     $q->orWhere($field, 'LIKE', "%{$search}%");
-                }
             });
 
             // handle relations model
@@ -89,9 +88,8 @@ trait ClientQueryScope
         }
 
         // retrive current user data
-        if ($mine) {
+        if ($mine)
             $q->where('user_id', auth()->id());
-        }
 
         return $q;
     }
@@ -103,9 +101,9 @@ trait ClientQueryScope
         $sortDesc = request()->boolean('sortDesc.0', true);
         // sorting
         $sorter = $this->sorter();
-        if (array_key_exists($sortBy, $sorter)) {
+        if (array_key_exists($sortBy, $sorter))
             $sortBy = $sorter[$sortBy];
-        }
+
         $q = $q->orderBy($sortBy, $sortDesc ? 'desc' : 'asc');
 
         return $q;
@@ -117,9 +115,8 @@ trait ClientQueryScope
         $page = request('page', $this->page);
         $itemsPerPage = request('itemsPerPage', $this->itemsPerPage);
         // limiting
-        if ($itemsPerPage > 0) {
+        if ($itemsPerPage > 0)
             $q = $q->take($itemsPerPage)->skip(($page - 1) * $itemsPerPage);
-        }
 
         return $q;
     }
@@ -129,31 +126,29 @@ trait ClientQueryScope
      */
     private function fields()
     {
-        if (property_exists($this, 'fillable')) {
+        if (property_exists($this, 'fillable'))
             return array_filter($this->fillable, function ($item) {
                 return strpos($item, "_id") === false;
             });
-        }
+
         return [];
     }
 
     private function filter()
     {
-        if (property_exists($this, 'clientQuery')) {
-            if (array_key_exists('filter', $this->clientQuery)) {
+        if (property_exists($this, 'clientQuery'))
+            if (array_key_exists('filter', $this->clientQuery))
                 return $this->clientQuery['filter'];
-            }
-        }
+
         return [];
     }
 
     private function sorter()
     {
-        if (property_exists($this, 'clientQuery')) {
-            if (array_key_exists('sorter', $this->clientQuery)) {
+        if (property_exists($this, 'clientQuery'))
+            if (array_key_exists('sorter', $this->clientQuery))
                 return $this->clientQuery['sorter'];
-            }
-        }
+
         return [];
     }
 }
