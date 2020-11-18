@@ -1,9 +1,8 @@
 <template>
     <the-simple-table v-if="!mobile" :headers="headers" :items="_form.measurements">
         <template v-slot:no="{ index }">
-            <v-hover
-                v-slot="{ hover }"
-            >
+            <span v-if="readonly">{{ index + 1 }}</span>
+            <v-hover v-else v-slot="{ hover }" >
                 <span v-if="!hover">{{ index + 1 }}</span>
                 <v-icon v-else @click="remove(index)" color="red">
                     mdi-close-circle-outline
@@ -47,6 +46,7 @@
             <tr class="font-weight-bold">
                 <td>
                     <v-icon
+                        v-if="!readonly"
                         @click="add()"
                         :disabled="disableAdd"
                         color="primary"
@@ -58,12 +58,21 @@
             </tr>
         </template>
     </the-simple-table>
+
     <the-data-iterator
         v-else
         :headers="headers"
         :items="_form.measurements"
         @remove="remove"
     >
+        <template #header="{ item, index }">
+            <span class="text-subtitle-1">{{ item.name }}</span>
+            <v-spacer></v-spacer>
+            <v-icon v-if="!readonly" @click="remove(index)" :disabled="disabled" color="red">
+                mdi-close-circle-outline
+            </v-icon>
+        </template>
+
         <template v-slot:no="{ index }">
             {{ index + 1 }}
         </template>
@@ -100,12 +109,14 @@
             ></v-text-field>
         </template>
 
-        <template v-slot:footer-title>
-            <v-btn @click="add()" :disabled="disableAdd" color="primary" block>
-                <v-icon dark>
-                    mdi-plus-circle-outline
-                </v-icon> Measurements
-            </v-btn>
+        <template #footer>
+            <v-list-item>
+                <v-btn v-if="!readonly" @click="add()" :disabled="disableAdd" color="primary" block>
+                    <v-icon dark>
+                        mdi-plus-circle-outline
+                    </v-icon> Measurements
+                </v-btn>
+            </v-list-item>
         </template>
     </the-data-iterator>
 </template>
@@ -126,6 +137,14 @@ export default {
         form: {
             type: Object,
             default: () => {}
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         },
         measurements: {
             type: Array,
@@ -174,7 +193,7 @@ export default {
             let hasUnFilled = this._form.measurements.some((m) => m.id <= 0);
             let maxListReached = this._form.measurements.length == this.measurements.length;
 
-            return hasUnFilled || maxListReached;
+            return this.disabled || hasUnFilled || maxListReached;
         }
     },
     methods: {

@@ -1,11 +1,10 @@
 <template>
     <the-simple-table v-if="!mobile" :headers="headers" :items="_form.materials">
         <template v-slot:no="{ index }">
-            <v-hover
-                v-slot="{ hover }"
-            >
+            <span v-if="readonly">{{ index + 1 }}</span>
+            <v-hover v-else v-slot="{ hover }" >
                 <span v-if="!hover">{{ index + 1 }}</span>
-                <v-icon v-else @click="remove(index)" color="red">
+                <v-icon v-else @click="remove(index)" :disabled="disabled" color="red">
                     mdi-close-circle-outline
                 </v-icon>
             </v-hover>
@@ -59,6 +58,7 @@
             <tr class="font-weight-bold">
                 <td>
                     <v-icon
+                        v-if="!readonly"
                         @click="add()"
                         :disabled="disableAdd"
                         color="primary"
@@ -90,12 +90,20 @@
             </tr>
         </template>
     </the-simple-table>
+
     <the-data-iterator
         v-else
         :headers="headers"
         :items="_form.materials"
-        @remove="remove"
     >
+        <template #header="{ item, index }">
+            <span class="text-subtitle-1">{{ item.name }}</span>
+            <v-spacer></v-spacer>
+            <v-icon v-if="!readonly" @click="remove(index)" :disabled="disabled" color="red">
+                mdi-close-circle-outline
+            </v-icon>
+        </template>
+
         <template v-slot:no="{ index }">
             {{ index + 1 }}
         </template>
@@ -144,16 +152,15 @@
             ></v-text-field>
         </template>
 
-        <template v-slot:footer-title>
-            <v-btn @click="add()" :disabled="disableAdd" color="primary" block>
-                <v-icon dark>
-                    mdi-plus-circle-outline
-                </v-icon> Material
-            </v-btn>
-        </template>
-
-        <template v-slot:footer>
-            <v-list-item>
+        <template #footer>
+            <v-list-item v-if="!readonly">
+                <v-btn @click="add()" :disabled="disableAdd" color="primary" block>
+                    <v-icon dark>
+                        mdi-plus-circle-outline
+                    </v-icon> Material
+                </v-btn>
+            </v-list-item>
+            <v-list-item class="font-weight-bold">
                 <v-list-item-content>Total</v-list-item-content>
                 <v-list-item-content class="align-end justify-end">
                     <v-text-field
@@ -191,6 +198,14 @@ export default {
         form: {
             type: Object,
             default: () => {}
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         },
         matters: {
             type: Array,
@@ -249,7 +264,7 @@ export default {
             let hasUnFilled = this._form.materials.some((m) => m.id <= 0);
             let maxListReached = this._form.materials.length == this.materials.length;
 
-            return hasUnFilled || maxListReached;
+            return this.disabled || hasUnFilled || maxListReached;
         }
     },
     methods: {

@@ -3,11 +3,7 @@
         <template v-slot="{ items }">
             <v-card v-for="(item, index) in items" :key="item.id" class="mb-1">
                 <v-card-title class="align-center">
-                    <span class="text-subtitle-1">{{ item.name }}</span>
-                    <v-spacer></v-spacer>
-                    <v-icon @click="$emit('remove', index)" color="red">
-                        mdi-close-circle-outline
-                    </v-icon>
+                    <slot name="header" :item="item" :index="index"></slot>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
@@ -28,10 +24,6 @@
                 </v-list>
             </v-card>
             <v-card class="mt-1">
-                <v-card-title>
-                    <slot name="footer-title"></slot>
-                </v-card-title>
-                <v-divider></v-divider>
                 <v-list dense>
                     <slot name="footer"></slot>
                 </v-list>

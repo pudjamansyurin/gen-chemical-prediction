@@ -34,6 +34,8 @@
 
             <field-material
                 :form.sync="form"
+                :disabled="disabled"
+                :readonly="readonly"
                 :matters="matters"
                 :materials="materials"
                 class="mb-5"
@@ -41,6 +43,8 @@
 
             <field-measurement
                 :form.sync="form"
+                :disabled="disabled"
+                :readonly="readonly"
                 :measurements="measurements"
                 class="mb-5"
             ></field-measurement>
