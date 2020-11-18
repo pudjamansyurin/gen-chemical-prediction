@@ -83,7 +83,6 @@ class User extends Authenticatable // implements MustVerifyEmail
     //     $this->attributes['password'] = Hash::make($value);
     // }
 
-
     /**
      * Relations
      */

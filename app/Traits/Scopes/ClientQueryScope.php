@@ -2,11 +2,13 @@
 
 namespace App\Traits\Scopes;
 
+use Jenssegers\Agent\Agent;
+
 trait ClientQueryScope
 {
-    /**
-     * Local scopes
-     */
+    public $page = 1;
+    public $itemsPerPage = 10;
+
     public function scopeQueried()
     {
         return [
@@ -43,11 +45,14 @@ trait ClientQueryScope
 
     protected function scopeGetQueried()
     {
-        return $this->withRelation()
+        $q = $this->withRelation()
             ->filtered()
-            ->sortered()
-            ->limited()
-            ->get();
+            ->sortered();
+
+        if ((new Agent())->isDesktop())
+            $q = $q->limited();
+
+        return $q->get();
     }
 
     protected function scopeCountQueried()
@@ -114,8 +119,8 @@ trait ClientQueryScope
     protected function scopeLimited($q)
     {
         // get parameters
-        $page = request('page', 1);
-        $itemsPerPage = request('itemsPerPage', 10);
+        $page = request('page', $this->page);
+        $itemsPerPage = request('itemsPerPage', $this->itemsPerPage);
         // limiting
         if ($itemsPerPage > 0) {
             $q = $q->take($itemsPerPage)->skip(($page - 1) * $itemsPerPage);
