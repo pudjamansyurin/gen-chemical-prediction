@@ -2,8 +2,6 @@
 
 namespace App\Traits\Scopes;
 
-use Jenssegers\Agent\Agent;
-
 trait ClientQueryScope
 {
     public $page = 1;
@@ -45,14 +43,11 @@ trait ClientQueryScope
 
     protected function scopeGetQueried()
     {
-        $q = $this->withRelation()
+        return $this->withRelation()
             ->filtered()
-            ->sortered();
-
-        // if ((new Agent())->isDesktop())
-        $q = $q->limited();
-
-        return $q->get();
+            ->sortered()
+            ->limited()
+            ->get();
     }
 
     protected function scopeCountQueried()
