@@ -36,11 +36,11 @@ class AppServiceProvider extends ServiceProvider
             /* Fix cpanel mysql issue */
             Builder::defaultStringLength(191);
 
-            // /* Fix laravel-mix manifest issue */
-            // $this->app->bind('path.public', function () {
-            //     $domain = env('APP_PROD_DOMAIN');
-            //     return base_path() . "/../{$domain}";
-            // });
+            /* Fix laravel-mix manifest issue */
+            $this->app->bind('path.public', function () {
+                $domain = env('APP_PROD_DOMAIN');
+                return base_path() . "/../{$domain}";
+            });
         }
     }
 }
