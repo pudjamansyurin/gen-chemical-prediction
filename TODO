@@ -11,8 +11,8 @@ Todo:
   ☐ @high use vuetify a-la-carte to minimize assets
   ☐ formula > material form > autocomplete with category should searchable
   ☐ use primary measurements as table comlumn
-  ☐ minimize DRY between TheSimpleTable & TheDataIterator
-  ☐
+  ✔ minimize DRY between TheSimpleTable & TheDataIterator
+  ☐ handle pagination for mobile list view
   ☐
   ☐
   ☐

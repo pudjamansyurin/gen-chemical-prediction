@@ -27,7 +27,7 @@
               </template>
             </v-autocomplete>
         </template>
-        <template v-slot:[`item.type`]="{ item, index }">
+        <template v-slot:[`item.type`]="{ item }">
             {{ getType(item) || '-' }}
         </template>
         <template v-slot:[`item.value`]="{ item, index }">
