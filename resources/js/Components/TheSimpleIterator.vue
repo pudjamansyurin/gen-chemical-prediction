@@ -12,10 +12,10 @@
                             {{ header.text }} :
                         </v-list-item-content>
                         <v-list-item-content
-                            class="align-end justify-end"
+                            class="align-center justify-end"
                         >
                             <slot
-                                :name="header.value"
+                                :name="`item.${header.value}`"
                                 :item="item"
                                 :index="index"
                             ></slot>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import TheSimpleData from './TheSimpleData.vue';
 export default {
     props: {
         headers: {

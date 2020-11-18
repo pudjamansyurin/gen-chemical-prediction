@@ -1,15 +1,6 @@
 <template>
-    <the-simple-table v-if="!mobile" :headers="headers" :items="_form.materials">
-        <template v-slot:no="{ index }">
-            <span v-if="readonly">{{ index + 1 }}</span>
-            <v-hover v-else v-slot="{ hover }" >
-                <span v-if="!hover">{{ index + 1 }}</span>
-                <v-icon v-else @click="remove(index)" :disabled="disabled" color="red">
-                    mdi-close-circle-outline
-                </v-icon>
-            </v-hover>
-        </template>
-        <template v-slot:name="{ item, index }">
+    <the-simple-data :headers="headers" :form="_form" field="materials" :disable-add="disableAdd" :disabled="disabled" :readonly="readonly" @add="add" @remove="remove">
+        <template v-slot:[`item.name`]="{ item, index }">
             <v-autocomplete
                 :value="item.id"
                 @change="change(index, $event)"
@@ -36,10 +27,10 @@
               </template>
             </v-autocomplete>
         </template>
-        <template v-slot:type="{ item, index }">
+        <template v-slot:[`item.type`]="{ item, index }">
             {{ getMatter(item).name || '-' }}
         </template>
-        <template v-slot:value="{ item, index }">
+        <template v-slot:[`item.value`]="{ item, index }">
             <v-text-field
                 v-model.number="item.value"
                 :error-messages="_form.error(`materials.${index}.value`)"
@@ -54,24 +45,9 @@
             ></v-text-field>
         </template>
 
-        <template v-slot:footer>
+        <template v-slot:footer-table>
             <tr class="font-weight-bold">
-                <td>
-                    <v-icon
-                        v-if="!readonly"
-                        @click="add()"
-                        :disabled="disableAdd"
-                        color="primary"
-                    >
-                        mdi-plus-circle-outline
-                    </v-icon>
-                </td>
-                <td>
-                    <span v-if="!!_form.error(`materials`)" class="red--text">
-                        {{ _form.error(`materials`) }}
-                    </span>
-                </td>
-                <td class="text-right" :colspan="headers.length - 3">TOTAL</td>
+                <td class="text-right" :colspan="headers.length - 1">TOTAL</td>
                 <td class="text-right">
                     <v-text-field
                         :value="portionTotal"
@@ -89,77 +65,8 @@
                 </td>
             </tr>
         </template>
-    </the-simple-table>
 
-    <the-simple-iterator
-        v-else
-        :headers="headers"
-        :items="_form.materials"
-    >
-        <template #header="{ item, index }">
-            <span class="text-subtitle-1">{{ item.name }}</span>
-            <v-spacer></v-spacer>
-            <v-icon v-if="!readonly" @click="remove(index)" :disabled="disabled" color="red">
-                mdi-close-circle-outline
-            </v-icon>
-        </template>
-
-        <template v-slot:no="{ index }">
-            {{ index + 1 }}
-        </template>
-        <template v-slot:name="{ item, index }">
-            <v-autocomplete
-                :value="item.id"
-                @change="change(index, $event)"
-                :items="list(item)"
-                :error-messages="_form.error(`materials.${index}.id`)"
-                :success="!!_form.error(`materials.${index}.id`)"
-                item-text="name"
-                item-value="id"
-                hide-details="auto"
-                flat
-                outlined
-                dense
-                return-object
-            >
-              <template v-slot:item="{item}">
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            {{ item.name }}
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            {{ getMatter(item).name }}
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-              </template>
-            </v-autocomplete>
-        </template>
-        <template v-slot:type="{ item, index }">
-            {{ getMatter(item).name || '-' }}
-        </template>
-        <template v-slot:value="{ item, index }">
-            <v-text-field
-                v-model.number="item.value"
-                :error-messages="_form.error(`materials.${index}.value`)"
-                :success="!!_form.error(`materials.${index}.value`)"
-                type="number"
-                prefix="%"
-                hide-details="auto"
-                reverse
-                flat
-                outlined
-                dense
-            ></v-text-field>
-        </template>
-
-        <template #footer>
-            <v-list-item v-if="!readonly">
-                <v-btn @click="add()" :disabled="disableAdd" color="primary" block>
-                    <v-icon dark>
-                        mdi-plus-circle-outline
-                    </v-icon> Material
-                </v-btn>
-            </v-list-item>
+        <template v-slot:footer-iterator>
             <v-list-item class="font-weight-bold">
                 <v-list-item-content>Total</v-list-item-content>
                 <v-list-item-content class="align-end justify-end">
@@ -179,20 +86,18 @@
                 </v-list-item-content>
             </v-list-item>
         </template>
-    </the-simple-iterator>
+    </the-simple-data>
 </template>
 
 <script>
-import CommonMixin from '@/Mixins/CommonMixin'
+import { CommonMixin } from "@/Mixins";
 
-import TheSimpleTable from "@/Components/TheSimpleTable";
-import TheSimpleIterator from "@/Components/TheSimpleIterator";
+import TheSimpleData from "@/Components/TheSimpleData";
 
 export default {
     mixins: [CommonMixin],
     components: {
-        TheSimpleTable,
-        TheSimpleIterator
+        TheSimpleData
     },
     props: {
         form: {
@@ -207,17 +112,18 @@ export default {
             type: Boolean,
             default: false
         },
-        matters: {
+        materials: {
             type: Array,
             default: () => [],
         },
-        materials: {
+        matters: {
             type: Array,
             default: () => [],
         },
     },
     data() {
         return {
+            field: 'materials',
             headers: [
                 {
                     text: "No",
@@ -254,47 +160,51 @@ export default {
                 this.$emit("update:form", value);
             },
         },
+        formField() {
+            return this._form[this.field];
+        },
+        disableAdd() {
+            let hasUnFilled = this.formField.some((m) => m.id <= 0);
+            let maxListReached = this.formField.length == this[this.field].length;
+
+            return this.disabled || hasUnFilled || maxListReached;
+        },
         portionTotal() {
-            return this.form.materials.reduce(
+            return this.formField.reduce(
                 (carry, { value }) => carry + Number(value),
                 0
             );
         },
-        disableAdd() {
-            let hasUnFilled = this._form.materials.some((m) => m.id <= 0);
-            let maxListReached = this._form.materials.length == this.materials.length;
-
-            return this.disabled || hasUnFilled || maxListReached;
-        }
     },
     methods: {
-        getMatter({matter_id}) {
-            return this.matters.find(m => m.id === matter_id) || '';
-        },
-        list({id: materialId}) {
-            let ids = this._form.materials
-                            .filter(m => m.id != materialId)
+        list({id}) {
+            let ids = this._form[this.field]
+                            .filter(m => m.id != id)
                             .map(m => m.id)
 
-            return this.materials.filter((m) => !ids.includes(m.id))
-        },
-        change(idx, {id, matter_id}) {
-            this._form.materials.splice(idx, 1, {
-                ...this._form.materials[idx],
-                id,
-                matter_id
-            })
+            return this[this.field]
+                        .filter((m) => !ids.includes(m.id))
         },
         remove(idx) {
-            this._form.materials.splice(idx, 1);
+            this._form[this.field].splice(idx, 1);
+        },
+        change(idx, el) {
+            this._form[this.field].splice(idx, 1, {
+                ...this._form[this.field][idx],
+                id: el.id,
+                matter_id: el.matter_id
+            })
         },
         add() {
-            this._form.materials.push({
+            this._form[this.field].push({
                 id: -1,
                 value: null,
                 matter_id : -1,
             })
-        }
+        },
+        getMatter({matter_id}) {
+            return this.matters.find(m => m.id === matter_id) || '';
+        },
     },
     watch: {
         '_form.materials.length' : {

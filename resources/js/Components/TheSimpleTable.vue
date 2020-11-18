@@ -21,7 +21,7 @@
                         :class="`text-${header.align}`"
                     >
                         <slot
-                            :name="header.value"
+                            :name="`item.${header.value}`"
                             :item="item"
                             :index="index"
                         ></slot>
