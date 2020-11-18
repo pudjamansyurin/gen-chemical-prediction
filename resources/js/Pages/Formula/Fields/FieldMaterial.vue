@@ -91,7 +91,7 @@
         </template>
     </the-simple-table>
 
-    <the-data-iterator
+    <the-simple-iterator
         v-else
         :headers="headers"
         :items="_form.materials"
@@ -179,20 +179,20 @@
                 </v-list-item-content>
             </v-list-item>
         </template>
-    </the-data-iterator>
+    </the-simple-iterator>
 </template>
 
 <script>
 import CommonMixin from '@/Mixins/CommonMixin'
 
 import TheSimpleTable from "@/Components/TheSimpleTable";
-import TheDataIterator from "@/Components/TheDataIterator";
+import TheSimpleIterator from "@/Components/TheSimpleIterator";
 
 export default {
     mixins: [CommonMixin],
     components: {
         TheSimpleTable,
-        TheDataIterator
+        TheSimpleIterator
     },
     props: {
         form: {
