@@ -13,7 +13,7 @@ Todo:
   ☐ use primary measurements as table comlumn
   ✔ minimize DRY between TheSimpleTable & TheDataIterator
   ☐ handle pagination for mobile list view
-  ☐
+  ☐ handle role relationship properly
   ☐
   ☐
   ☐

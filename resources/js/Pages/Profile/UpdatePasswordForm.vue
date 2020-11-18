@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
+        <v-col cols="12" sm="4" :class="{ 'white--text': darker }">
             <div class="text-h6">
                 Update Password
                 <v-btn @click="showPassword = !showPassword" icon>
@@ -19,13 +19,14 @@
                 @submit.prevent="updatePassword"
                 :disabled="form.processing"
             >
-                <v-card :loading="form.processing" :dark="dark">
+                <v-card :loading="form.processing" :dark="darker">
                     <v-card-text>
                         <v-text-field
                             v-model="form.current_password"
                             :type="passwordState.type"
                             :error-messages="form.error('current_password')"
                             :success="!!form.error('current_password')"
+                            :dense="denser"
                             label="Current Password"
                             hint="Your current password"
                             autocomplete="off"
@@ -39,6 +40,7 @@
                             :type="passwordState.type"
                             :error-messages="form.error('password')"
                             :success="!!form.error('password')"
+                            :dense="denser"
                             label="New Password"
                             hint="Your new password"
                             autocomplete="off"
@@ -54,6 +56,7 @@
                                 form.error('password_confirmation')
                             "
                             :success="!!form.error('password_confirmation')"
+                            :dense="denser"
                             label="New Password Confirmation"
                             hint="Fill again the new password"
                             autocomplete="off"
@@ -87,10 +90,10 @@
 </template>
 
 <script>
-import { CommonMixin, PasswordMixin } from "@/Mixins";
+import { PasswordMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, PasswordMixin],
+    mixins: [PasswordMixin],
     data() {
         return {
             form: this.$inertia.form(

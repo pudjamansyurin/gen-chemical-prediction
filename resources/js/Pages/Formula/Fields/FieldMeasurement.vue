@@ -47,12 +47,10 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-import ModelFormFieldMixin from "@/Mixins/Model/ModelFormFieldMixin";
-
+import {ModelFieldMixin} from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, ModelFormFieldMixin],
+    mixins: [ModelFieldMixin],
     props: {
         measurements: {
             type: Array,
@@ -106,7 +104,7 @@ export default {
         },
         getType(el) {
             if (el.primary) return 'Primary';
-            if (el.primary === 0) return 'Non-Primary';
+            if (el.primary === 0) return 'Secondary';
         },
     },
     watch: {

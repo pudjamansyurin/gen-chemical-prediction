@@ -2,6 +2,7 @@
     <fragment>
         <v-app-bar
             :collapse-on-scroll="!(selected.length > 0 || searchBox || !mobile)"
+            :dense="denser"
             color="primary"
             dark
             app
@@ -27,7 +28,7 @@
                     @click:append="setSearchBox(false)"
                     :append-icon="searchBoxIcon"
                     :autofocus="mobile"
-                    :dark="dark"
+                    :dark="darker"
                     label="Search"
                     dense
                     flat
@@ -90,13 +91,11 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import { debounce } from "lodash";
 
 import { ls, bool } from "@/Utils";
-import { CommonMixin } from "@/Mixins";
 import { TOGGLE_DRAWER } from "@/Store/app/mutation-types";
 
 import AppTopMenu from "@/Components/AppTopMenu";
 
 export default {
-    mixins: [CommonMixin],
     props: {
         options: {
             type: Object,
@@ -126,7 +125,7 @@ export default {
         };
     },
     computed: {
-        ...mapState("app", ["title", "dark", "dense"]),
+        ...mapState("app", ["title"]),
         crud() {
             return !!this.options.page;
         },

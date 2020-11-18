@@ -3,7 +3,7 @@
         @input="SET_DRAWER"
         :value="drawer || $vuetify.breakpoint.lgAndUp"
         :mini-variant="mini"
-        :dark="dark"
+        :dark="darker"
         app
     >
         <v-list class="py-0">
@@ -11,8 +11,7 @@
                 v-if="$page.profile.id > -1"
                 @click="goto('profile.show')"
                 :input-value="active('profile.show')"
-                :dark="dark"
-                color="green"
+                color="red"
                 link
                 two-line
             >
@@ -69,7 +68,7 @@
                     v-else-if="item.children"
                     :key="index"
                     v-model="item.model"
-                    color="primary"
+                    color="red"
                 >
                     <template #activator>
                         <v-list-item-action>
@@ -95,7 +94,7 @@
                         :key="i"
                         @click="goto(child.to)"
                         :input-value="active(child.to)"
-                        :dark="dark"
+                        :dark="darker"
                         link
                     >
                         <v-list-item-action>
@@ -120,10 +119,9 @@
                 <v-list-item
                     v-else
                     :key="index"
-                    :dark="dark"
                     @click="goto(item.to)"
                     :input-value="active(item.to)"
-                    color="primary"
+                    color="red"
                     link
                 >
                     <v-list-item-action>
@@ -152,10 +150,10 @@
 import { mapState, mapMutations } from "vuex";
 
 import { SET_DRAWER } from "@/Store/app/mutation-types";
-import { CommonMixin, NavigationMixin } from "@/Mixins";
+import { NavigationMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, NavigationMixin],
+    mixins: [NavigationMixin],
     computed: {
         ...mapState("app", ["drawer"]),
         mini() {

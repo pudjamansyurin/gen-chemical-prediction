@@ -3,12 +3,12 @@ import isWebview from "is-ua-webview";
 
 export default {
     computed: {
-        ...mapState("app", ["dark", "dense"]),
+        ...mapState("app", ["darker", "denser"]),
         mobile() {
             return this.$vuetify.breakpoint.smAndDown;
         },
         webview() {
-            return isWebview(window.navigator.userAgent);
+            return isWebview(navigator.userAgent);
         }
     }
 };

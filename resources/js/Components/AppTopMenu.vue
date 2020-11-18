@@ -6,15 +6,15 @@
             </v-btn>
         </template>
 
-        <v-card :dark="dark">
+        <v-card :dark="darker">
             <v-list class="py-0" dense>
-                <v-list-item @click="TOGGLE_DARK">
+                <v-list-item @click="TOGGLE_DARKER">
                     <v-list-item-icon>
                         <v-icon>{{ darkIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>
-                            {{ dark ? "Lighter" : "Darker" }}
+                            {{ darker ? "Lighter" : "Darker" }}
                         </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
@@ -36,19 +36,17 @@
                     <v-divider></v-divider>
                 </template>
 
-                <template v-if="!mobile">
-                    <v-list-item @click="TOGGLE_DENSE">
-                        <v-list-item-icon>
-                            <v-icon>{{ denseIcon }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                {{ dense ? "Bigger" : "Smaller" }}
-                            </v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                </template>
+                <v-list-item @click="TOGGLE_DENSER">
+                    <v-list-item-icon>
+                        <v-icon>{{ denseIcon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ denser ? "Bigger" : "Smaller" }}
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-divider></v-divider>
 
                 <v-list-item @click="logout()">
                     <v-list-item-icon>
@@ -66,21 +64,21 @@
 <script>
 import { mapMutations } from "vuex";
 
-import { TOGGLE_DENSE, TOGGLE_DARK } from "@/Store/app/mutation-types";
-import { CommonMixin, NavigationMixin, FullscreenMixin } from "@/Mixins";
+import { TOGGLE_DENSER, TOGGLE_DARKER } from "@/Store/app/mutation-types";
+import { NavigationMixin, FullscreenMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, NavigationMixin, FullscreenMixin],
+    mixins: [NavigationMixin, FullscreenMixin],
     computed: {
         darkIcon() {
-            return this.dark ? "mdi-brightness-1" : "mdi-brightness-3";
+            return this.darker ? "mdi-brightness-1" : "mdi-brightness-3";
         },
         denseIcon() {
-            return this.dense ? "mdi-table" : "mdi-table-large";
+            return this.denser ? "mdi-table" : "mdi-table-large";
         },
     },
     methods: {
-        ...mapMutations("app", [TOGGLE_DENSE, TOGGLE_DARK]),
+        ...mapMutations("app", [TOGGLE_DENSER, TOGGLE_DARKER]),
     },
 };
 </script>

@@ -10,21 +10,19 @@
         :loading="fetching"
     >
         <template v-slot:[`item.name`]="{ item }">
-            <v-chip @click="edit(item)" :color="chip(item)" :small="dense" dark>
+            <v-chip @click="edit(item)" :color="chip(item)" :small="denser" dark>
                 {{ item.name }}
             </v-chip>
         </template>
         <template v-slot:[`item.required`]="{ item }">
-            <v-icon :color="item.required ? 'primary' : 'red'">
-                {{ item.required ? "mdi-check" : "mdi-window-close" }}
-            </v-icon>
+            {{ item.required ? "Required" : "Optional" }}
         </template>
         <template v-slot:[`item.updated_at`]="{ item }">
             {{ item.updated_at | moment("from") }}
         </template>
 
         <template #card="{ item }">
-            <v-btn :color="chip(item)" outlined absolute right small tile top>
+            <v-btn :color="chip(item)" absolute right small tile top>
                 {{ item.required ? "Required" : "Optional" }}
             </v-btn>
 
@@ -44,16 +42,15 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import { ModelListMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, ModelListMixin],
+    mixins: [ModelListMixin],
     data() {
         return {
             headers: [
                 { text: "Name", value: "name" },
-                { text: "Required", value: "required", align: "center" },
+                { text: "Type", value: "required" },
                 {
                     text: "Material",
                     value: "materials_count",

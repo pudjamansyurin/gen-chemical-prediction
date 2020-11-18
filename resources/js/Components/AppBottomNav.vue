@@ -1,5 +1,5 @@
 <template>
-    <v-bottom-navigation :dark="dark" color="primary" app>
+    <v-bottom-navigation :dark="darker" color="primary" app>
         <v-btn
             v-for="(item, index) in items"
             :key="index"
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import { CommonMixin, NavigationMixin } from "@/Mixins";
+import { NavigationMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, NavigationMixin],
+    mixins: [NavigationMixin],
     computed: {
         items() {
             return this.navs

@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
+        <v-col cols="12" sm="4" :class="{ 'white--text': darker }">
             <div class="text-h6">
                 Profile Information
                 <v-chip
@@ -19,12 +19,13 @@
         </v-col>
         <v-col cols="12" sm="8">
             <v-form @submit.prevent="updateProfile" :disabled="form.processing">
-                <v-card :loading="form.processing" :dark="dark">
+                <v-card :loading="form.processing" :dark="darker">
                     <v-card-text>
                         <v-text-field
                             v-model="form.name"
                             :error-messages="form.error('name')"
                             :success="!!form.error('name')"
+                            :dense="denser"
                             label="Name"
                             type="text"
                             hint="Your profile name"
@@ -39,6 +40,7 @@
                             :append-icon="
                                 profile.verified ? 'mdi-check-decagram' : ''
                             "
+                            :dense="denser"
                             label="E-mail"
                             type="email"
                             hint="Your recovery email"
@@ -48,6 +50,7 @@
 
                         <v-text-field
                             :value="form.role.name"
+                            :dense="denser"
                             label="Role"
                             hint="Your current role"
                             readonly
@@ -80,10 +83,7 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     props: ["profile"],
     data() {
         return {

@@ -12,9 +12,11 @@
                 :error-messages="form.error('name')"
                 :success="!!form.error('name')"
                 :autofocus="!mobile"
+                :dense="denser"
                 label="Formula name"
                 type="text"
                 hint="This should be unique name"
+                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -22,10 +24,12 @@
                 v-model="form.note"
                 :error-messages="form.error('note')"
                 :success="!!form.error('note')"
+                :dense="denser"
                 label="Formula note"
                 type="text"
                 hint="Just for documentation"
                 row-height="2"
+                persistent-hint
                 outlined
                 auto-grow
                 clearable
@@ -60,14 +64,13 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
 import FieldMaterial from './Fields/FieldMaterial'
 import FieldMeasurement from './Fields/FieldMeasurement'
 
 export default {
-    mixins: [CommonMixin, ModelFormMixin],
+    mixins: [ModelFormMixin],
     components: {
         FieldMaterial,
         FieldMeasurement

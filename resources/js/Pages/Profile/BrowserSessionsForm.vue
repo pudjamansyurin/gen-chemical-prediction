@@ -1,7 +1,7 @@
 <template>
     <fragment>
         <v-row>
-            <v-col cols="12" sm="4" :class="{ 'white--text': dark }">
+            <v-col cols="12" sm="4" :class="{ 'white--text': darker }">
                 <div class="text-h6">Browser Sessions</div>
                 <div class="text-caption">
                     Manage and logout your active sessions on other browsers and
@@ -9,7 +9,7 @@
                 </div>
             </v-col>
             <v-col cols="12" sm="8">
-                <v-card :loading="form.processing" :dark="dark">
+                <v-card :loading="form.processing" :dark="darker">
                     <v-card-text>
                         <browser-sessions-list
                             :sessions="sessions"
@@ -58,6 +58,7 @@
                     :error-messages="form.error('password')"
                     :success="!!form.error('password')"
                     :disabled="form.processing"
+                    :dense="denser"
                     @click:append="showPassword = !showPassword"
                     @keyup.enter.native="logoutOtherBrowserSessions"
                     label="Current password"
@@ -73,13 +74,13 @@
 </template>
 
 <script>
-import { CommonMixin, PasswordMixin } from "@/Mixins";
+import { PasswordMixin } from "@/Mixins";
 
 import TheDialogConfirmation from "@/Components/TheDialogConfirmation";
 import BrowserSessionsList from "./BrowserSessionsList";
 
 export default {
-    mixins: [CommonMixin, PasswordMixin],
+    mixins: [PasswordMixin],
     components: {
         TheDialogConfirmation,
         BrowserSessionsList,

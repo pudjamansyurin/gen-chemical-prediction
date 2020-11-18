@@ -90,11 +90,10 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-import ModelFormFieldMixin from "@/Mixins/Model/ModelFormFieldMixin";
+import {ModelFieldMixin} from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, ModelFormFieldMixin],
+    mixins: [ModelFieldMixin],
     props: {
         materials: {
             type: Array,

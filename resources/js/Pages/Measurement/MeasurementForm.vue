@@ -12,9 +12,11 @@
                 :error-messages="form.error('name')"
                 :success="!!form.error('name')"
                 :autofocus="!mobile"
+                :dense="denser"
                 label="Measurement name"
                 type="text"
                 hint="This should be unique name"
+                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -22,8 +24,10 @@
                 v-model="form.primary"
                 :error-messages="form.error('primary')"
                 :success="!!form.error('primary')"
+                :dense="denser"
                 label="Primary measurement?"
                 hint="This rule is used when measure formula"
+                persistent-hint
                 outlined
             >
             </v-checkbox>
@@ -39,11 +43,10 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, ModelFormMixin],
+    mixins: [ModelFormMixin],
 };
 </script>
 

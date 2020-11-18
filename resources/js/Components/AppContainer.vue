@@ -1,5 +1,5 @@
 <template>
-    <v-main :class="dark ? 'black' : 'grey lighten-3'">
+    <v-main :class="darker ? 'black' : 'grey lighten-3'">
         <v-container fluid>
             <slot></slot>
 
@@ -9,11 +9,9 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import AppOverlayIndicator from "@/Components/AppOverlayIndicator";
 
 export default {
-    mixins: [CommonMixin],
     components: {
         AppOverlayIndicator,
     },

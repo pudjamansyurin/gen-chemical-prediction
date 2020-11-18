@@ -1,12 +1,12 @@
 <template>
     <fragment>
-        <v-skeleton-loader v-if="!mobile" :dark="dark" type="table">
+        <v-skeleton-loader v-if="!mobile" :dark="darker" type="table">
         </v-skeleton-loader>
         <v-skeleton-loader
             v-else
             v-for="n in 10"
             :key="n"
-            :dark="dark"
+            :dark="darker"
             type="article"
             class="my-3"
         ></v-skeleton-loader>
@@ -14,11 +14,7 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
-export default {
-    mixins: [CommonMixin],
-};
+export default {};
 </script>
 
 <style>

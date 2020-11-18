@@ -3,7 +3,7 @@
         :value="value"
         @input="$emit('input', $event)"
         :fullscreen="mobile"
-        :dark="dark"
+        :dark="darker"
         max-width="500"
         persistent
         scrollable
@@ -37,10 +37,7 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     props: {
         value: {
             type: Boolean,

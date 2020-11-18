@@ -4,7 +4,7 @@
         v-model="dialogFullscreen"
         max-width="290"
     >
-        <v-card :dark="dark">
+        <v-card :dark="darker">
             <v-card-title class="headline"> Use fullscreen? </v-card-title>
             <v-card-text>
                 You are using small device screen, we can help you navigate
@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import { CommonMixin, FullscreenMixin } from "@/Mixins";
+import { FullscreenMixin } from "@/Mixins";
 
 export default {
-    mixins: [CommonMixin, FullscreenMixin],
+    mixins: [FullscreenMixin],
 };
 </script>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MaterialRequest;
 use App\Http\Resources\MaterialItem;
+use App\Http\Resources\MatterItem;
 use App\Models\Material;
 use App\Models\Matter;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class MaterialController extends Controller
         return Inertia::render('Material/Index', [
             'items' => MaterialItem::collection($materials),
             'total' => $total,
-            'matters' => Matter::getAsList()
+            'matters' => MatterItem::collection(Matter::all()),
         ]);
     }
 

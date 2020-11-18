@@ -8,10 +8,7 @@
 <script>
 import { mapGetters } from "vuex";
 
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     computed: {
         ...mapGetters("app", ["isLoading"]),
     },

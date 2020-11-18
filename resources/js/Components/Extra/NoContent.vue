@@ -1,14 +1,11 @@
 <template>
-    <v-alert :dark="dark" type="info" border="left" outlined>
+    <v-alert :dark="darker" type="info" border="left" outlined>
         <span>{{ text }}</span>
     </v-alert>
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     props: {
         search: {
             type: String,

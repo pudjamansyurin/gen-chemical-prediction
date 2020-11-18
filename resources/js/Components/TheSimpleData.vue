@@ -83,13 +83,10 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
 import TheSimpleTable from "@/Components/TheSimpleTable";
 import TheSimpleIterator from "@/Components/TheSimpleIterator";
 
 export default {
-    mixins: [CommonMixin],
     components: {
         TheSimpleTable,
         TheSimpleIterator

@@ -4,7 +4,7 @@
         @input="$emit('input', $event)"
         :fullscreen="mobile || fullscreen"
         :max-width="width"
-        :dark="dark"
+        :dark="darker"
         persistent
         scrollable
     >
@@ -46,7 +46,7 @@
                     v-if="tabs.length > 0"
                     :value="tab"
                     @input="$emit('update:tab', $event)"
-                    :dark="dark"
+                    :dark="darker"
                     touchless
                 >
                     <v-tab-item v-for="item in tabs" :key="item">
@@ -80,10 +80,7 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     props: {
         value: {
             type: Boolean,

@@ -46,15 +46,12 @@
 <script>
 import { isEqual } from "lodash";
 
-import { CommonMixin } from "@/Mixins";
-
 import TheDataCard from "@/Components/TheDataCard";
 import TheDataTable from "@/Components/TheDataTable";
 // import TheSkeletonLoader from "@/Components/TheSkeletonLoader";
 import NoContent from "@/Components/Extra/NoContent";
 
 export default {
-    mixins: [CommonMixin],
     props: {
         selected: {
             type: Array,

@@ -14,13 +14,13 @@ export default {
     [mutations.TOGGLE_FULLSCREEN](state) {
         state.fullscreen = !state.fullscreen;
     },
-    [mutations.TOGGLE_DENSE](state) {
-        state.dense = !state.dense;
-        ls.set("dense", state.dense);
+    [mutations.TOGGLE_DENSER](state) {
+        state.denser = !state.denser;
+        ls.set("denser", state.denser);
     },
-    [mutations.TOGGLE_DARK](state) {
-        state.dark = !state.dark;
-        ls.set("dark", state.dark);
+    [mutations.TOGGLE_DARKER](state) {
+        state.darker = !state.darker;
+        ls.set("darker", state.darker);
     },
     [mutations.TOGGLE_DRAWER](state) {
         state.drawer = !state.drawer;
@@ -33,10 +33,7 @@ export default {
         state.size = { width, height };
     },
     [mutations.SET_MESSAGE](state, { text, type }) {
-        state.message = {
-            text,
-            type
-        };
+        state.message = { text, type };
     }
     // [mutations.SET_PROFILE](state, data) {
     //     state.profile = data;

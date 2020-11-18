@@ -8,8 +8,8 @@
         :items="items"
         :server-items-length="total"
         :loading="loading"
-        :dense="dense"
-        :dark="dark"
+        :dense="denser"
+        :dark="darker"
         :footer-props="{
             itemsPerPageText: 'Rows',
         }"
@@ -36,10 +36,7 @@
 import { mapMutations } from "vuex";
 import { get } from "lodash";
 
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     props: {
         value: {
             type: Array,

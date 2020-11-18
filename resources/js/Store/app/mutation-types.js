@@ -1,8 +1,8 @@
 export const START_LOADING = "START_LOADING";
 export const STOP_LOADING = "STOP_LOADING";
 
-export const TOGGLE_DARK = "TOGGLE_DARK";
-export const TOGGLE_DENSE = "TOGGLE_DENSE";
+export const TOGGLE_DARKER = "TOGGLE_DARKER";
+export const TOGGLE_DENSER = "TOGGLE_DENSER";
 export const TOGGLE_DRAWER = "TOGGLE_DRAWER";
 export const TOGGLE_FULLSCREEN = "TOGGLE_FULLSCREEN";
 

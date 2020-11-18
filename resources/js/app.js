@@ -7,12 +7,15 @@ import { InertiaForm } from "laravel-jetstream";
 
 import store from "@/Store";
 import vuetify from "@/Plugins";
+import CommonMixin from "@/Mixins/CommonMixin";
 import { APP_DEBUG } from "@/Config/config";
 
-Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 // Vue.use(PortalVue);
+
+Vue.mixin({ methods: { route } });
+Vue.mixin(CommonMixin);
 
 Vue.config.productionTip = APP_DEBUG;
 const app = document.getElementById("app");

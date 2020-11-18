@@ -5,13 +5,13 @@
                 v-longclick="() => toggleSelect(item)"
                 @click="selected.length > 0 && toggleSelect(item)"
                 :key="item.id"
-                :dark="dark"
+                :dark="darker"
                 tile
             >
                 <v-progress-linear
                     v-if="selectedIndex(item) > -1"
-                    :value="100"
-                    :dark="dark"
+                    :dark="darker"
+                    value="100"
                     color="primary"
                 >
                 </v-progress-linear>
@@ -25,10 +25,7 @@
 <script>
 import { mapState } from "vuex";
 
-import { CommonMixin } from "@/Mixins";
-
 export default {
-    mixins: [CommonMixin],
     props: {
         value: {
             type: Array,

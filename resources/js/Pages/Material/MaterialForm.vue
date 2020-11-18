@@ -12,9 +12,11 @@
                 :error-messages="form.error('name')"
                 :success="!!form.error('name')"
                 :autofocus="!mobile"
+                :dense="denser"
                 label="Material name"
                 type="text"
                 hint="This should be unique name"
+                persistent-hint
                 outlined
             ></v-text-field>
 
@@ -23,14 +25,25 @@
                 :items="matters"
                 :error-messages="form.error('matter_id')"
                 :success="!!form.error('matter_id')"
-                :attach="mobile"
+                :dense="denser"
                 item-text="name"
                 item-value="id"
                 label="Matter"
                 hint="Category for this material"
-                chips
+                persistent-hint
                 outlined
-            ></v-autocomplete>
+            >
+                <template v-slot:item="{item}">
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ item.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ item.required ? 'Required' : 'Optional' }}
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                </template>
+            </v-autocomplete>
 
             <v-btn
                 v-if="!readonly"
@@ -43,11 +56,10 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import { ModelFormMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, ModelFormMixin],
+    mixins: [ModelFormMixin],
     props: {
         matters: {
             type: Array,

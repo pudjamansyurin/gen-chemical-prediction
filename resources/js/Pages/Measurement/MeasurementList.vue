@@ -10,22 +10,20 @@
         :loading="fetching"
     >
         <template v-slot:[`item.name`]="{ item }">
-            <v-chip @click="edit(item)" :color="chip(item)" :small="dense" dark>
+            <v-chip @click="edit(item)" :color="chip(item)" :small="denser" dark>
                 {{ item.name }}
             </v-chip>
         </template>
         <template v-slot:[`item.primary`]="{ item }">
-            <v-icon :color="item.primary ? 'primary' : 'red'">
-                {{ item.primary ? "mdi-check" : "mdi-window-close" }}
-            </v-icon>
+            {{ item.primary ? "Primary" : "Secondary" }}
         </template>
         <template v-slot:[`item.updated_at`]="{ item }">
             {{ item.updated_at | moment("from") }}
         </template>
 
         <template #card="{ item }">
-            <v-btn :color="chip(item)" outlined absolute right small tile top>
-                {{ item.primary ? "Required" : "Optional" }}
+            <v-btn :color="chip(item)" absolute right small tile top>
+            {{ item.primary ? "Primary" : "Secondary" }}
             </v-btn>
 
             <v-card-text @click="edit(item)">
@@ -44,16 +42,15 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/Mixins";
 import { ModelListMixin } from "@/Mixins/Model";
 
 export default {
-    mixins: [CommonMixin, ModelListMixin],
+    mixins: [ModelListMixin],
     data() {
         return {
             headers: [
                 { text: "Name", value: "name" },
-                { text: "Primary", value: "primary", align: "center" },
+                { text: "Type", value: "primary" },
                 {
                     text: "Formula",
                     value: "formulas_count",
