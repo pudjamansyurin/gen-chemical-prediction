@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         /* Production condition */
         if (App::environment('production')) {
             /* Fix cpanel mysql issue */
-            Schema::defaultStringLength(191);
+            Builder::defaultStringLength(191);
 
             // /* Fix laravel-mix manifest issue */
             // $this->app->bind('path.public', function () {
