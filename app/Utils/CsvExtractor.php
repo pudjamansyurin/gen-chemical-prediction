@@ -16,7 +16,6 @@ class CsvExtractor
     private $primaryMeasurements = [
         'KV 40',
         'KV 100',
-        'VI'
     ];
 
     private $header = [];
