@@ -147,6 +147,7 @@ export default {
             this._form[this.field].push({
                 id: -1,
                 value: null,
+                name: "",
                 matter_id: -1
             })
         },
@@ -154,6 +155,7 @@ export default {
             this._form[this.field].splice(idx, 1, {
                 ...this._form[this.field][idx],
                 id: el.id,
+                name: el.name,
                 matter_id: el.matter_id
             })
         },
