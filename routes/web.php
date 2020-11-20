@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormulaController;
+use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MatterController;
 use App\Http\Controllers\MeasurementController;
@@ -26,6 +27,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    // Route::get('/learner', LearnerController::class);
 
     Route::apiResource('matter', MatterController::class);
     Route::apiResource('material', MaterialController::class);
