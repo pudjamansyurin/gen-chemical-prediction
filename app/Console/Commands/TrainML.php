@@ -13,8 +13,12 @@ use Rubix\ML\CrossValidation\Metrics\RSquared;
 use Rubix\ML\CrossValidation\Reports\ErrorAnalysis;
 use Rubix\ML\Datasets\Labeled;
 use Rubix\ML\Pipeline;
+use Rubix\ML\Regressors\Adaline;
+use Rubix\ML\Regressors\ExtraTreeRegressor;
+use Rubix\ML\Regressors\GradientBoost;
 use Rubix\ML\Regressors\KDNeighborsRegressor;
 use Rubix\ML\Regressors\KNNRegressor;
+use Rubix\ML\Regressors\RadiusNeighborsRegressor;
 use Rubix\ML\Regressors\RegressionTree;
 use Rubix\ML\Regressors\Ridge;
 use Rubix\ML\Regressors\SVR;
@@ -118,6 +122,12 @@ class TrainML extends Command
 
         // $estimator = new BootstrapAggregator($estimator, 300, 0.2);
         $estimator = new CommitteeMachine([
+            new Adaline(),
+            new ExtraTreeRegressor(),
+            new GradientBoost(),
+            new KDNeighborsRegressor(),
+            new KNNRegressor(),
+            new RadiusNeighborsRegressor(),
             new RegressionTree(),
             new Ridge()
         ]);
@@ -140,18 +150,9 @@ class TrainML extends Command
 
         $metric = new RSquared();
         $score = $metric->score($predictions, $testing->labels());
-        // dd($score);
-
-        $validator = new KFold(5);
+        $validator = new KFold(10);
         $score = $validator->test($estimator, $dataset, $metric);
         // dd($score);
-
-
-        // dd($training);
-        // $this->table(array_keys($training))
-
-        // $description = $training->describe();
-        // $this->table(array_keys($description[0]), iterator_to_array($description));
 
         return 0;
     }
