@@ -5,10 +5,21 @@ namespace App\Console\Commands;
 use App\Models\Material;
 use App\Models\Measurement;
 use Illuminate\Console\Command;
+use Rubix\ML\BootstrapAggregator;
+use Rubix\ML\CommitteeMachine;
+use Rubix\ML\CrossValidation\KFold;
 use Rubix\ML\CrossValidation\Metrics\Accuracy;
+use Rubix\ML\CrossValidation\Metrics\RSquared;
+use Rubix\ML\CrossValidation\Reports\ErrorAnalysis;
 use Rubix\ML\Datasets\Labeled;
+use Rubix\ML\Pipeline;
 use Rubix\ML\Regressors\KDNeighborsRegressor;
 use Rubix\ML\Regressors\KNNRegressor;
+use Rubix\ML\Regressors\RegressionTree;
+use Rubix\ML\Regressors\Ridge;
+use Rubix\ML\Regressors\SVR;
+use Rubix\ML\Transformers\L2Normalizer;
+use Rubix\ML\Transformers\MinMaxNormalizer;
 
 class TrainML extends Command
 {
@@ -46,7 +57,6 @@ class TrainML extends Command
         $bases = collect(['CV 1103']);
         $target = 'KV 40';
 
-        $materials = Material::all();
         $target = Measurement::where('name', $target)->first();
 
         $q = $target->formulas()
@@ -63,46 +73,81 @@ class TrainML extends Command
         });
         $formulas = $q->get();
 
-        $dataset = $formulas->map(function($formula) use($materials) {
-            $sample = $materials->keyBy('id')
-                ->map(function($el) use ($formula) {
-                    $exist = $formula->materials->firstWhere('id', $el->id);
-                    return $exist ? $exist->pivot->value : 0;
-                });
+        $data = $formulas
+            ->pipe(function($items) {
+                $features = $items
+                                ->pluck('materials')
+                                ->map(function($item) {
+                                    return $item->pluck('id');
+                                })
+                                ->flatten()
+                                ->unique()
+                                ->values()
+                                ->sort();
 
-            return $sample;
-            // $label = $formula->measurements->first()->pivot->value;
-            // return $sample->push($label);
-        })
-        // ->pipe(function($collection) {
-        //     $keys = $collection->keys()->filter(function($val, $key) use($collection) {
-        //         return $collection->sum($key) > 0;
-        //     });
+                $samples = $items
+                            ->pluck('materials')
+                            ->map(function($item) {
+                                return $item->pluck('pivot.value', 'id');
+                            })
+                            ->map(function($item) use($features) {
+                                return $features->mapWithKeys(function($feature) use($item) {
+                                    return [$feature => $item->get($feature, 0)];
+                                });
+                            });
 
-        //     return $collection->map(function($item) use($keys) {
-        //         return $item->only($keys);
-        //     });
-        // })
-        ->toArray();
+                $labels = $items
+                            ->pluck('measurements.0.pivot.value');
 
-        dd($dataset);
+                return (object) [
+                    'features' => $features->all(),
+                    'samples' => $samples->toArray(),
+                    'labels' => $labels->all()
+                ];
+            });
 
         $this->info("Loading to memory...");
-        $dataset = Labeled::fromIterator($dataset);
-        [$training, $testing] = $dataset->stratifiedSplit(0.8);
+        $dataset = new Labeled($data->samples, $data->labels);
+        // $this->table($data->features, $data->samples);
+        // $this->table($data->features, $dataset->samples());
+        // dd($dataset->describe());
+        // dd($dataset->describeLabels());
+        [$training, $testing] = $dataset->randomize()->stratifiedSplit(0.8);
 
         $this->info("Training...");
-        $estimator = new KDNeighborsRegressor();
+
+        // $estimator = new BootstrapAggregator($estimator, 300, 0.2);
+        $estimator = new CommitteeMachine([
+            new RegressionTree(),
+            new Ridge()
+        ]);
+
+        $estimator = new Pipeline([
+            new L2Normalizer()
+        ], $estimator);
+
         $estimator->train($training);
+        // dd($estimator->trained());
+        // dd($estimator->experts());
+        // dd($estimator->featureImportances());
 
         $this->info("Predicting...");
         $predictions = $estimator->predict($testing);
 
-        $metric = new Accuracy();
-        $score = $metric->score($predictions, $testing->labels());
-        $this->info("Score: {$score}");
+        $report = new ErrorAnalysis();
+        $results = $report->generate($predictions, $testing->labels());
+        dd($results);
 
-        dd($training);
+        $metric = new RSquared();
+        $score = $metric->score($predictions, $testing->labels());
+        // dd($score);
+
+        $validator = new KFold(5);
+        $score = $validator->test($estimator, $dataset, $metric);
+        // dd($score);
+
+
+        // dd($training);
         // $this->table(array_keys($training))
 
         // $description = $training->describe();
