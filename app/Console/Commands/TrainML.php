@@ -9,7 +9,10 @@ use Rubix\ML\BootstrapAggregator;
 use Rubix\ML\CommitteeMachine;
 use Rubix\ML\CrossValidation\KFold;
 use Rubix\ML\CrossValidation\Metrics\Accuracy;
+use Rubix\ML\CrossValidation\Metrics\MeanAbsoluteError;
+use Rubix\ML\CrossValidation\Metrics\MeanSquaredError;
 use Rubix\ML\CrossValidation\Metrics\RSquared;
+use Rubix\ML\CrossValidation\Metrics\SMAPE;
 use Rubix\ML\CrossValidation\Reports\ErrorAnalysis;
 use Rubix\ML\Datasets\Labeled;
 use Rubix\ML\Pipeline;
@@ -116,11 +119,9 @@ class TrainML extends Command
         // $this->table($data->features, $dataset->samples());
         // dd($dataset->describe());
         // dd($dataset->describeLabels());
-        [$training, $testing] = $dataset->randomize()->stratifiedSplit(0.8);
 
-        $this->info("Training...");
-
-        // $estimator = new BootstrapAggregator($estimator, 300, 0.2);
+        // $estimator = new ExtraTreeRegressor();
+        // $estimator = new BootstrapAggregator($estimator, 10, 0.5);
         $estimator = new CommitteeMachine([
             new Adaline(),
             new ExtraTreeRegressor(),
@@ -136,6 +137,15 @@ class TrainML extends Command
             new L2Normalizer()
         ], $estimator);
 
+        $this->info("Validating...");
+        $validator = new KFold(10);
+        $score = $validator->test($estimator, $dataset, new SMAPE());
+        dd($score);
+
+        $this->info("Splitting...");
+        [$training, $testing] = $dataset->randomize()->stratifiedSplit(0.8);
+
+        $this->info("Training...");
         $estimator->train($training);
         // dd($estimator->trained());
         // dd($estimator->experts());
@@ -148,10 +158,8 @@ class TrainML extends Command
         $results = $report->generate($predictions, $testing->labels());
         dd($results);
 
-        $metric = new RSquared();
-        $score = $metric->score($predictions, $testing->labels());
-        $validator = new KFold(10);
-        $score = $validator->test($estimator, $dataset, $metric);
+        // $metric = new MeanAbsoluteError();
+        // $score = $metric->score($predictions, $testing->labels());
         // dd($score);
 
         return 0;
