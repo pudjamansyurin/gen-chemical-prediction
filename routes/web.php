@@ -26,8 +26,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
-    // Route::get('/learner', LearnerController::class);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/learner', [LearnerController::class, 'index'])->name('learner.index');
+    Route::post('/learner', [LearnerController::class, 'dataset'])->name('learner.dataset');
 
     Route::apiResource('matter', MatterController::class);
     Route::apiResource('material', MaterialController::class);

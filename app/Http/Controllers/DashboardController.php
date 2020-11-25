@@ -12,9 +12,8 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function index()
     {
-        // Response
-        return Inertia::render('Dashboard/Show', []);
+        return Inertia::render('Dashboard', []);
     }
 }

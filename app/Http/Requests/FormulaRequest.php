@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use App\Models\Material;
 use App\Models\Matter;
-use App\Traits\Validators\ExtendedValidator;
+use App\Traits\Validators\ValidatorExtension;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 class FormulaRequest extends FormRequest
 {
-    use ExtendedValidator;
+    use ValidatorExtension;
 
     protected $errorBag = 'formula_form';
 

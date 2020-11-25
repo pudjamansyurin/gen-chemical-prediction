@@ -10,6 +10,13 @@ export const menu = [
         bottomNav: true
     },
     {
+        text: "Learner",
+        to: "learner.index",
+        icon: "mdi-robot-industrial",
+        roles: "*",
+        bottomNav: true
+    },
+    {
         text: "Formula",
         to: "formula.index",
         icon: "mdi-dna",

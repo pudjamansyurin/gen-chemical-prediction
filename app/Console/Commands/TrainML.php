@@ -68,83 +68,99 @@ class TrainML extends Command
      */
     public function handle()
     {
+        $this->info("Loading...");
         $formulas = $this->getFormulas('KV 40', ['CV 1103']);
 
         $data = $this->makeData($formulas);
         // $this->table($data->features, $data->samples);
 
-        $this->info("Loading...");
-        $dataset = (new Labeled($data->samples, $data->labels))
-                        // ->apply(new NumericStringConverter())
-                        // ->apply(new L2Normalizer())
-                        ->randomize();
+        $dataset = new Labeled($data->samples, $data->labels);
         // $this->table($data->features, $dataset->samples());
         // dd($dataset->describe());
         // dd($dataset->describeLabels());
         // dd($dataset->numRows(), $dataset->numColumns());
 
-        $estimator = new ExtraTreeRegressor();
-        $estimator = new BootstrapAggregator($estimator, 100, 0.5);
-        // $estimator = new CommitteeMachine([
-        //     new DummyRegressor(),
-        //     new Adaline(),
-            //     new ExtraTreeRegressor(),        // 5.74
-            //     new GradientBoost(),             // 8.07
-            //     new KDNeighborsRegressor(),      // 8.85
-            //     new KNNRegressor(),              // 6.28
-        //     new MLPRegressor(),
-            //     new RadiusNeighborsRegressor(),  // 8.46
-            //     new RegressionTree(),            // 7.14
-            //     new Ridge()                      // 6.79
-        // ]);
-        // $estimator->setLogger(new Screen());
+        $estimators = [
+            'Adaline' =>                    new Adaline(),
+            'ExtraTreeRegressor' =>         new ExtraTreeRegressor(),        // 5.74
+            'GradientBoost' =>              new GradientBoost(),             // 8.07
+            'KDNeighborsRegressor' =>       new KDNeighborsRegressor(),      // 8.85
+            'KNNRegressor' =>               new KNNRegressor(),              // 6.28
+            'MLPRegressor' =>               new MLPRegressor(),
+            'RadiusNeighborsRegressor' =>   new RadiusNeighborsRegressor(),  // 8.46
+            'RegressionTree' =>             new RegressionTree(),            // 7.14
+            'Ridge' =>                      new Ridge()                      // 6.79
+        ];
+        $results = [];
 
-        $estimator = new Pipeline([
-            new NumericStringConverter(),
-            new L2Normalizer()
-        ], $estimator);
+        $this->info("Splitting...");
+        [$training, $testing] = $dataset->randomize()->stratifiedSplit(0.8);
 
-        $this->info("Validating...");
-        $validator = new KFold(10);
-        $score = $validator->test($estimator, $dataset, new MeanAbsoluteError());
-        dd($score);
+        foreach ($estimators as $key => $estimator) {
+            $this->info("Algorithm: {$key}");
+            $estimator = $estimator;
+            $estimator = new BootstrapAggregator($estimator, 100, 0.5);
+            // $estimator->setLogger(new Screen());
 
-        $this->info("Training...");
-        [$training, $testing] = $dataset->stratifiedSplit(0.8);
-        $estimator->train($training);
-        // dd($estimator->trained());
-        // dd($estimator->experts());
-        // dd($estimator->featureImportances());
-        // dd($estimator->steps());
+            $estimator = new Pipeline([
+                new NumericStringConverter(),
+                new L2Normalizer()
+            ], $estimator);
 
-        $this->info("Cross-validating...");
-        $predictions = $estimator->predict($testing);
+            // $this->info("Validating...");
+            // $validator = new KFold(10);
+            // $score = $validator->test($estimator, $dataset, new MeanAbsoluteError());
+            // dd($score);
 
-        $report = new ErrorAnalysis();
-        $results = $report->generate($predictions, $testing->labels());
-        dd($results);
+            $this->info("Training...");
+            $estimator->train($training);
 
-        // $metric = new MeanAbsoluteError();
-        // $score = $metric->score($predictions, $testing->labels());
-        // dd($score);
+            if (!$estimator->trained()) {
+                $this->error('Training failed.');
+                return 0;
+            }
+
+            // dd($estimator->trained());
+            // dd($estimator->experts());
+            // dd($estimator->featureImportances());
+            // dd($estimator->steps());
+
+            $this->info("Cross-validating...");
+            $predictions = $estimator->predict($testing);
+
+            $report = new ErrorAnalysis();
+            $result = $report->generate($predictions, $testing->labels());
+
+            $results[$key] = array_merge(
+                ['algorithm' => $key],
+                iterator_to_array($result)
+            );
+
+            // $metric = new MeanAbsoluteError();
+            // $score = $metric->score($predictions, $testing->labels());
+            // dd($score);
+        }
+
+        $this->table(array_keys(reset($results)), $results);
 
         return 0;
     }
 
-    private function getFormulas($targetName, $baseNames) {
+    private function getFormulas($targetName, $baseNames)
+    {
         $target = Measurement::where('name', $targetName)->first();
         $bases = collect($baseNames);
 
         $q = $target->formulas()
             ->with([
                 'materials',
-                'measurements' => function($q) use ($target) {
+                'measurements' => function ($q) use ($target) {
                     $q->where('name', $target->name);
                 },
             ]);
 
-        $bases->each(function($base) use(&$q) {
-            $q->whereHas('materials', function($q) use($base) {
+        $bases->each(function ($base) use (&$q) {
+            $q->whereHas('materials', function ($q) use ($base) {
                 $q->where('name', $base);
             });
         });
@@ -152,36 +168,37 @@ class TrainML extends Command
         return $q->get();
     }
 
-    private function makeData($formulas) {
-        return $formulas->pipe(function($items) {
-                $features = $items
-                                ->pluck('materials')
-                                ->map(function($item) {
-                                    return $item->pluck('name');
-                                })
-                                ->flatten()
-                                ->unique()
-                                ->values();
+    private function makeData($formulas)
+    {
+        return $formulas->pipe(function ($items) {
+            $features = $items
+                ->pluck('materials')
+                ->map(function ($item) {
+                    return $item->pluck('name');
+                })
+                ->flatten()
+                ->unique()
+                ->values();
 
-                $samples = $items
-                            ->pluck('materials')
-                            ->map(function($item) {
-                                return $item->pluck('pivot.value', 'name');
-                            })
-                            ->map(function($item) use($features) {
-                                return $features->mapWithKeys(function($feature) use($item) {
-                                    return [$feature => $item->get($feature, 0)];
-                                });
-                            });
+            $samples = $items
+                ->pluck('materials')
+                ->map(function ($item) {
+                    return $item->pluck('pivot.value', 'name');
+                })
+                ->map(function ($item) use ($features) {
+                    return $features->mapWithKeys(function ($feature) use ($item) {
+                        return [$feature => $item->get($feature, 0)];
+                    });
+                });
 
-                $labels = $items
-                            ->pluck('measurements.0.pivot.value', 'name');
+            $labels = $items
+                ->pluck('measurements.0.pivot.value', 'name');
 
-                return (object) [
-                    'features' => $features->all(),
-                    'samples' => $samples->toArray(),
-                    'labels' => $labels->all()
-                ];
-            });
+            return (object) [
+                'features' => $features->all(),
+                'samples' => $samples->toArray(),
+                'labels' => $labels->all()
+            ];
+        });
     }
 }

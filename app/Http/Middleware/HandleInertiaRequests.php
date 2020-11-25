@@ -49,6 +49,10 @@ class HandleInertiaRequests extends Middleware
                 return Session::get('status');
             },
 
+            'flash' => function () {
+                return Session::get('flash');
+            },
+
             'profile' => function () use ($request) {
                 if ($user = $request->user()) {
                     return new UserItem($user->loadRelation());

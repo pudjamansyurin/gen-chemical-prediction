@@ -1,5 +1,5 @@
 <template>
-    <v-simple-table dense>
+    <v-simple-table :height="height" :fixed-header="!!height" dense>
         <template #default>
             <thead>
                 <tr>
@@ -24,7 +24,9 @@
                             :name="`item.${header.value}`"
                             :item="item"
                             :index="index"
-                        ></slot>
+                        >
+                            {{ item[header.value] }}
+                        </slot>
                     </td>
                 </tr>
                 <slot name="footer"></slot>
@@ -44,6 +46,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        height: {
+            type: [Number, String],
+            default: null
+        }
     },
 };
 </script>

@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Traits\Scopes\ClientQueryScope;
-use App\Traits\Scopes\ExtendedScope;
+use App\Traits\Scopes\ModelExtension;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Measurement extends Model
 {
     use HasFactory;
-    use ClientQueryScope, ExtendedScope;
+    use ClientQueryScope, ModelExtension;
 
     protected $client_relations = ['user:id,name'];
     protected $client_details = ['formulas'];
