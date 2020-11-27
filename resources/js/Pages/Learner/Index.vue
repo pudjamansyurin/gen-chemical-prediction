@@ -9,9 +9,17 @@
                     <small>{{ step.subtitle }}</small>
                 </v-stepper-step>
                 <v-stepper-content :key="`content.${idx}`" :step="(idx+1)">
-                    <learner-dataset v-if="step.title == 'DATASET'" :stepper.sync="stepper" :materials="materials" :measurements="measurements">
+                    <learner-dataset
+                        v-if="step.title == 'DATASET'"
+                        :stepper.sync="stepper"
+                        :materials="materials"
+                        :measurements="measurements"
+                    >
                     </learner-dataset>
-                    <learner-train v-else-if="step.title == 'TRAIN'" :stepper.sync="stepper" :flash="flash">
+                    <learner-train
+                        v-else-if="step.title == 'TRAIN'"
+                        :stepper.sync="stepper"
+                    >
                     </learner-train>
                     <template v-else>
                         <v-card
