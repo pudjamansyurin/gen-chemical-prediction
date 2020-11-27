@@ -2,10 +2,36 @@
     <v-form @submit.prevent="save" :disabled="form.processing">
         <v-card class="py-2">
             <v-autocomplete
-                v-model="form.materials"
+                v-model="form.measurement_id"
+                :items="measurements"
+                :error-messages="form.error(`measurement_id`)"
+                :success="!!form.error(`measurement_id`)"
+                :dense="denser"
+                item-text="name"
+                item-value="id"
+                label="Target"
+                hint="The target measurement to predict"
+                persistent-hint
+                outlined
+                chips
+            >
+                <template v-slot:item="{item}">
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ item.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ getType(item) }}
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                </template>
+            </v-autocomplete>
+
+            <v-autocomplete
+                v-model="form.required_materials"
                 :items="materials"
-                :error-messages="form.error(`materials`)"
-                :success="!!form.error(`materials`)"
+                :error-messages="form.error(`required_materials`)"
+                :success="!!form.error(`required_materials`)"
                 :dense="denser"
                 item-text="name"
                 item-value="id"
@@ -31,18 +57,21 @@
             </v-autocomplete>
 
             <v-autocomplete
-                v-model="form.measurement_id"
-                :items="measurements"
-                :error-messages="form.error(`measurement_id`)"
-                :success="!!form.error(`measurement_id`)"
+                v-model="form.excluded_materials"
+                :items="materials"
+                :error-messages="form.error(`excluded_materials`)"
+                :success="!!form.error(`excluded_materials`)"
                 :dense="denser"
                 item-text="name"
                 item-value="id"
-                label="Target"
-                hint="The target measurement to predict"
+                label="Excluded materials"
+                hint="Do not use formula that contains these materials"
                 persistent-hint
                 outlined
                 chips
+                deletable-chips
+                multiple
+                return-object
             >
                 <template v-slot:item="{item}">
                     <v-list-item-content>
@@ -50,7 +79,7 @@
                             {{ item.name }}
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ getType(item) }}
+                            {{ item.matter.name }}
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </template>
@@ -85,11 +114,12 @@ export default {
         return {
             form: this.$inertia.form(
                 {
-                    materials: [],
-                    measurement_id: -1
+                    measurement_id: -1,
+                    required_materials: [],
+                    excluded_materials: [],
                 },
                 {
-                    bag: `learner_form`,
+                    bag: `learner_dataset`,
                     resetOnSuccess: false
                 }
             )

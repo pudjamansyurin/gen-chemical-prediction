@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LearnerDatasetRequest extends FormRequest
 {
-    protected $errorBag = 'learner_form';
+    protected $errorBag = 'learner_dataset';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -26,20 +26,30 @@ class LearnerDatasetRequest extends FormRequest
     public function rules()
     {
         return [
-            'materials' => [
+            'measurement_id' => [
+                'required',
+                'integer',
+                'exists:measurements,id'
+            ],
+            'requred_materials' => [
                 'sometimes',
                 'array'
             ],
-            'materials.*.id' => [
+            'required_materials.*.id' => [
                 'required',
                 'integer',
                 'distinct',
                 'exists:materials,id'
             ],
-            'measurement_id' => [
+            'excluded_materials' => [
+                'sometimes',
+                'array'
+            ],
+            'excluded_materials.*.id' => [
                 'required',
                 'integer',
-                'exists:measurements,id'
+                'distinct',
+                'exists:materials,id'
             ],
         ];
     }
@@ -47,8 +57,9 @@ class LearnerDatasetRequest extends FormRequest
     public function attributes()
     {
         return [
-            'materials.*.id' => 'material',
             'measurement_id' => 'measurement',
+            'required_materials.*.id' => 'required_material',
+            'excluded_materials.*.id' => 'excluded_material',
         ];
     }
 }

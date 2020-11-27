@@ -6,10 +6,11 @@ use App\Models\Measurement;
 
 trait LearnerExtension
 {
-    private function getFormulas($targetId, $materialIds)
+    private function getFormulas($targetId, $requiredMaterialIds, $excludedMaterialIds)
     {
         $target = Measurement::find($targetId);
-        $materialIds = collect($materialIds);
+        $requiredMaterialIds = collect($requiredMaterialIds);
+        $excludedMaterialIds = collect($excludedMaterialIds);
 
         $q = $target->formulas()
             ->with([
@@ -19,8 +20,14 @@ trait LearnerExtension
                 },
             ]);
 
-        $materialIds->each(function ($materialId) use (&$q) {
+        $requiredMaterialIds->each(function ($materialId) use (&$q) {
             $q->whereHas('materials', function ($q) use ($materialId) {
+                $q->where('material_id', $materialId);
+            });
+        });
+
+        $excludedMaterialIds->each(function ($materialId) use (&$q) {
+            $q->whereDoesntHave('materials', function ($q) use ($materialId) {
                 $q->where('material_id', $materialId);
             });
         });
