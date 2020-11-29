@@ -63,8 +63,9 @@ trait LearnerExtension
 
                 $features = $features->map(function ($feature) use ($samples) {
                     return (object) [
+                        'id' => 'FIX ME',
                         'name' => $feature,
-                        'rows' => $samples->where($feature)->count()
+                        'count' => $samples->where($feature)->count()
                     ];
                 });
 

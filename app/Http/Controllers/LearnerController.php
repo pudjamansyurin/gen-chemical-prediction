@@ -28,10 +28,7 @@ class LearnerController extends Controller
     {
         [$data, $dataset] = $this->getDataset($request);
 
-        $target = Measurement::find($request->measurement_id);
-
         return back()->with('flash', (object) [
-            'target' => $target,
             'shape' => $dataset->shape(),
             'features' => $data->features,
             'dataset' => $dataset->describe()
