@@ -41,8 +41,10 @@ trait LearnerExtension
             ->pipe(function ($formulas) {
                 $features = $formulas
                     ->pluck('materials')
-                    ->map(function ($item) {
-                        return $item->pluck('name');
+                    ->map(function ($items) {
+                        return $items->map(function ($item) {
+                            return (object) $item->only('id', 'name');
+                        });
                     })
                     ->flatten()
                     ->unique()
@@ -56,18 +58,19 @@ trait LearnerExtension
                     ->map(function ($item) use ($features) {
                         return $features
                             ->mapWithKeys(function ($feature) use ($item) {
-                                return [$feature => $item->get($feature, 0)];
+                                return [$feature->id => $item->get($feature->name, 0)];
                             })
                             ->all();
                     });
 
-                $features = $features->map(function ($feature) use ($samples) {
-                    return (object) [
-                        'id' => 'FIX ME',
-                        'name' => $feature,
-                        'count' => $samples->where($feature)->count()
-                    ];
-                });
+                $features = $features
+                    ->map(function ($feature) use ($samples) {
+                        return (object) [
+                            'id' => $feature->id,
+                            'name' => $feature->name,
+                            'count' => $samples->where($feature->id)->count()
+                        ];
+                    });
 
                 $labels = $formulas
                     ->pluck('measurements.0.pivot.value', 'name');

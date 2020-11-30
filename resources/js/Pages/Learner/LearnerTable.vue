@@ -9,10 +9,16 @@
                     <template v-if="header.value == 'no'">
                         <v-hover v-slot="{ hover }">
                             <span v-if="!hover">{{ index + 1 }}</span>
-                            <v-icon v-else @click="$emit('remove', index)" color="red">
+                            <v-icon v-else @click="remove(item, index)" color="red">
                                 mdi-close-circle-outline
                             </v-icon>
                         </v-hover>
+                    </template>
+                    <template v-else-if="header.value == 'column'">
+                        {{ getFeatureName(item) }}
+                    </template>
+                    <template v-else-if="header.value == 'count'">
+                        {{ getFeatureCount(item) }}
                     </template>
                 </slot>
             </template>
@@ -20,8 +26,8 @@
 
         <v-sheet class="my-5">
             <span>Summary: </span>
-            <v-chip small>Used columns: {{flash.shape[1]}}</v-chip>
-            <v-chip small>Used rows: {{flash.shape[0]}}</v-chip>
+            <v-chip small>Used columns: {{ numColumns }}</v-chip>
+            <v-chip small>Used rows: {{ numRows }}</v-chip>
         </v-sheet>
     </fragment>
 </template>
@@ -32,6 +38,16 @@ import { get, keys } from 'lodash';
 import TheSimpleTable from "@/Components/TheSimpleTable";
 
 export default {
+    props: {
+        numRows: {
+            type: Number,
+            default: 0
+        },
+        numColumns: {
+            type: Number,
+            default: 0
+        },
+    },
     components: {
         TheSimpleTable
     },
@@ -53,26 +69,31 @@ export default {
                     text: "Median",
                     value: "median",
                     align: "right",
+                    round: true,
                 },
                 {
                     text: "Max",
                     value: "max",
                     align: "right",
+                    round: true,
                 },
                 {
                     text: "Mean",
                     value: "mean",
                     align: "right",
+                    round: true,
                 },
                 {
                     text: "Variance",
                     value: "variance",
                     align: "right",
+                    round: true,
                 },
                 {
                     text: "Std. Deviation",
                     value: "std_dev",
                     align: "right",
+                    round: true,
                 },
                 {
                     text: "Count",
@@ -80,37 +101,53 @@ export default {
                     align: "right"
                 },
             ],
+            items: [],
         }
     },
-    computed: {
-        flash() {
-            return get(this.$page, 'flash', {
-                shape: [],
-                features: [],
-                dataset: []
-            });
+    methods: {
+        getFeature(item) {
+            return get(this.$page, `flash.features.${item.column}`);
         },
-        items() {
-            return this.flash.dataset.map(data => {
-                let feature = this.flash.features[data.column];
+        getFeatureName(item) {
+            return get(this.getFeature(item), 'name', '');
+        },
+        getFeatureCount(item) {
+            return get(this.getFeature(item), 'count', 0);
+        },
+        parseItems(dataset) {
+            return dataset.map(data => {
+                let feature = this.getFeature(data);
                 let columns = this.headers.map(el => el.value);
 
-                return {
-                    ...keys(data)
+                return keys(data)
                         .filter(key => columns.includes(key))
                         .reduce((carry, key) => {
                             let value = data[key];
+                            let column = this.headers.find(el => el.value == key);
+
                             return {
                                 ...carry,
-                                [key] : isNaN(value) ? value : value.toFixed(2)
+                                [key] : column.round ? value.toFixed(2) : value
                             }
-                        }, {}),
-                    column : get(feature, 'name', 0),
-                    count : get(feature, 'count', 0),
-                };
+                        }, {});
             })
         },
-    }
+        remove(item, index) {
+            let feature = this.getFeature(item);
+
+            this.items.splice(index, 1);
+            this.$emit('remove', feature.id);
+        }
+    },
+    watch: {
+        '$page.flash.dataset': {
+            deep: true,
+            immediate: true,
+            handler(v) {
+                this.items = this.parseItems(v);
+            }
+        }
+    },
 }
 </script>
 

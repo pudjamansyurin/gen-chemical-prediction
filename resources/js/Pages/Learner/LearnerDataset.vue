@@ -86,12 +86,20 @@
                     </template>
                 </v-autocomplete>
 
-                <learner-table v-if="hasDataset">
+                <learner-table
+                    v-if="hasDataset"
+                    :num-rows="numRows"
+                    :num-columns="numColumns"
+                    @remove="onRemove">
                 </learner-table>
             </v-card-text>
 
             <v-card-actions>
                 <v-btn type="submit" color="primary">
+                    {{ filterBtn }}
+                </v-btn>
+
+                <v-btn v-if="canContinue" color="primary">
                     Continue
                 </v-btn>
             </v-card-actions>
@@ -139,8 +147,22 @@ export default {
         }
     },
     computed: {
+        filterBtn() {
+            if (this.hasDataset)
+                return 'RE-FILTER';
+            return 'FILTER';
+        },
         hasDataset() {
             return !!get(this.$page, 'flash.dataset');
+        },
+        numColumns() {
+            return get(this.$page, 'flash.shape.1', 0);
+        },
+        numRows() {
+            return get(this.$page, 'flash.shape.0', 0);
+        },
+        canContinue() {
+            return this.hasDataset && !this.form.hasErrors();
         }
     },
     methods: {
@@ -154,12 +176,12 @@ export default {
         fetch() {
             this.form.post(route('learner.dataset'), {
                 preserveScroll: true,
-                onSuccess: page => {
-                    // if (!this.form.hasErrors())
-                        // this.updateStepper();
-                }
+                onSuccess: page => {}
             });
         },
+        onRemove(featureId) {
+            this.form.excluded_materials.push(featureId);
+        }
     },
 }
 </script>
