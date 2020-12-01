@@ -18,7 +18,10 @@
                         {{ getFeatureName(item) }}
                     </template>
                     <template v-else-if="header.value == 'count'">
-                        {{ getFeatureCount(item) }}
+                        {{ getFeatureNumeric(item, 'count') }}
+                    </template>
+                    <template v-else-if="header.value == 'distinct'">
+                        {{ getFeatureNumeric(item, 'distinct') }}
                     </template>
                 </slot>
             </template>
@@ -100,6 +103,11 @@ export default {
                     round: true,
                 },
                 {
+                    text: "Distinct",
+                    value: "distinct",
+                    align: "right"
+                },
+                {
                     text: "Count",
                     value: "count",
                     align: "right"
@@ -115,8 +123,8 @@ export default {
         getFeatureName(item) {
             return get(this.getFeature(item), 'name', '');
         },
-        getFeatureCount(item) {
-            return get(this.getFeature(item), 'count', 0);
+        getFeatureNumeric(item, prop) {
+            return get(this.getFeature(item), prop, 0);
         },
         readonly(item) {
             let feature = this.getFeature(item);

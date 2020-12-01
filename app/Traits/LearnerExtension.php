@@ -65,9 +65,18 @@ trait LearnerExtension
 
                 $features = $features
                     ->map(function ($feature) use ($samples) {
+                        $relatedSample = $samples
+                            ->pluck($feature->id)
+                            ->filter(function ($v) {
+                                return $v > 0;
+                            });
+
                         return (object) array_merge(
                             (array) $feature,
-                            ['count' => $samples->where($feature->id)->count()]
+                            [
+                                'count' => $relatedSample->count(),
+                                'distinct' => $relatedSample->unique()->count()
+                            ]
                         );
                     });
 
