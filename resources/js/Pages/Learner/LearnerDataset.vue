@@ -43,7 +43,6 @@
                     chips
                     deletable-chips
                     multiple
-                    return-object
                 >
                     <template v-slot:item="{item}">
                         <v-list-item-content>
@@ -72,7 +71,6 @@
                     chips
                     deletable-chips
                     multiple
-                    return-object
                 >
                     <template v-slot:item="{item}">
                         <v-list-item-content>
@@ -88,6 +86,7 @@
 
                 <learner-table
                     v-if="hasDataset"
+                    :required-materials="form.required_materials"
                     :num-rows="numRows"
                     :num-columns="numColumns"
                     @remove="onRemove">
@@ -99,7 +98,7 @@
                     {{ filterBtn }}
                 </v-btn>
 
-                <v-btn v-if="canContinue" color="primary">
+                <v-btn v-if="canContinue" color="primary" text>
                     Continue
                 </v-btn>
             </v-card-actions>
@@ -161,11 +160,22 @@ export default {
         numRows() {
             return get(this.$page, 'flash.shape.0', 0);
         },
+        requiredMaterialsOptions() {
+            return this.materialsOptions(this.form.excluded_materials);
+        },
+        excludedMaterialsOptions() {
+            return this.materialsOptions(this.form.required_materials);
+        },
         canContinue() {
             return this.hasDataset && !this.form.hasErrors();
         }
     },
     methods: {
+        materialsOptions(filter) {
+            return this.materials.filter(el => {
+                return !filter.includes(el.id)
+            });
+        },
         getType(el) {
             if (el.primary) return 'Primary';
             if (el.primary === 0) return 'Secondary';
@@ -180,7 +190,8 @@ export default {
             });
         },
         onRemove(featureId) {
-            this.form.excluded_materials.push(featureId);
+            if (!this.form.excluded_materials.includes(featureId))
+                this.form.excluded_materials.push(featureId);
         }
     },
 }

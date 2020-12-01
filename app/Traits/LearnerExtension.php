@@ -65,11 +65,10 @@ trait LearnerExtension
 
                 $features = $features
                     ->map(function ($feature) use ($samples) {
-                        return (object) [
-                            'id' => $feature->id,
-                            'name' => $feature->name,
-                            'count' => $samples->where($feature->id)->count()
-                        ];
+                        return (object) array_merge(
+                            (array) $feature,
+                            ['count' => $samples->where($feature->id)->count()]
+                        );
                     });
 
                 $labels = $formulas

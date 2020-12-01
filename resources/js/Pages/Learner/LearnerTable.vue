@@ -8,7 +8,7 @@
                 <slot :name="`item.${header.value}`" :item="item" :index="index">
                     <template v-if="header.value == 'no'">
                         <v-hover v-slot="{ hover }">
-                            <span v-if="!hover">{{ index + 1 }}</span>
+                            <span v-if="!hover || readonly(item)">{{ index + 1 }}</span>
                             <v-icon v-else @click="remove(item, index)" color="red">
                                 mdi-close-circle-outline
                             </v-icon>
@@ -47,6 +47,10 @@ export default {
             type: Number,
             default: 0
         },
+        requiredMaterials: {
+            type: Array,
+            default: () => []
+        }
     },
     components: {
         TheSimpleTable
@@ -114,6 +118,17 @@ export default {
         getFeatureCount(item) {
             return get(this.getFeature(item), 'count', 0);
         },
+        readonly(item) {
+            let feature = this.getFeature(item);
+
+            return this.requiredMaterials.includes(feature.id);
+        },
+        remove(item, index) {
+            let feature = this.getFeature(item);
+
+            this.items.splice(index, 1);
+            this.$emit('remove', feature.id);
+        },
         parseItems(dataset) {
             return dataset.map(data => {
                 let feature = this.getFeature(data);
@@ -132,12 +147,6 @@ export default {
                         }, {});
             })
         },
-        remove(item, index) {
-            let feature = this.getFeature(item);
-
-            this.items.splice(index, 1);
-            this.$emit('remove', feature.id);
-        }
     },
     watch: {
         '$page.flash.dataset': {

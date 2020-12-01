@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\Validators\ValidatorExtension;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LearnerDatasetRequest extends FormRequest
 {
+    use ValidatorExtension;
+
     protected $errorBag = 'learner_dataset';
 
     /**
@@ -33,21 +36,13 @@ class LearnerDatasetRequest extends FormRequest
             ],
             'requred_materials' => [
                 'sometimes',
-                'array'
-            ],
-            'required_materials.*.id' => [
-                'required',
-                'integer',
+                'array',
                 'distinct',
                 'exists:materials,id'
             ],
             'excluded_materials' => [
                 'sometimes',
-                'array'
-            ],
-            'excluded_materials.*.id' => [
-                'required',
-                'integer',
+                'array',
                 'distinct',
                 'exists:materials,id'
             ],
@@ -58,8 +53,21 @@ class LearnerDatasetRequest extends FormRequest
     {
         return [
             'measurement_id' => 'measurement',
-            'required_materials.*.id' => 'required_material',
-            'excluded_materials.*.id' => 'excluded_material',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        if (!$validator->fails()) {
+            $validator->after(function ($validator) {
+                $this->validateDistinctTwoArrays($validator, 'required_materials', 'excluded_materials');
+            });
+        }
     }
 }

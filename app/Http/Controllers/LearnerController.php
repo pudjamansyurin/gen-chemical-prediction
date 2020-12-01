@@ -39,8 +39,8 @@ class LearnerController extends Controller
     {
         $formulas = $this->getFormulas(
             $request->measurement_id,
-            collect($request->required_materials)->pluck('id'),
-            collect($request->excluded_materials)->pluck('id')
+            $request->required_materials,
+            $request->excluded_materials
         );
 
         $data = $this->makeData($formulas);

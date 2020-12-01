@@ -4,6 +4,19 @@ namespace App\Traits\Validators;
 
 trait ValidatorExtension
 {
+    private function validateDistinctTwoArrays($validator, $a, $b)
+    {
+        $_a = request($a);
+        $_b = request($b);
+
+        if ($_a && $_b) {
+            $intersect = collect($_a)->intersect($_b)->all();
+
+            if ($intersect)
+                $validator->errors()->add($a, "Can't collided with {$b}");
+        }
+    }
+
     private function validateSum($validator, $array, $field, $value)
     {
         if ($items = request($array)) {
