@@ -1,7 +1,6 @@
 ---
 deployment:
   tasks:
-    - export BACKEND_PATH=/home/genmotor/chemical.garda-energi.com/
-    - export FRONTEND_PATH=/home/genmotor/chemical.garda-energi.com/public/
+    - export BACKEND_PATH=/home/genmotor/chemical.garda-energi.com
     - /bin/rsync -avr --exclude '.git/' --exclude 'public/' . $BACKEND_PATH
-    - /bin/rsync -avr public/ $FRONTEND_PATH
+    - /bin/rsync -avr ./public/ '${BACKEND_PATH}/public'
