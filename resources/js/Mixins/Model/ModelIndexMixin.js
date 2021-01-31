@@ -6,7 +6,7 @@ export default {
     components: {
         AppTopBar
     },
-    props: ["items", "total"],
+    props: ["items", "total", "canCreate"],
     data() {
         return {
             id: -1,

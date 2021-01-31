@@ -9,6 +9,7 @@ use App\Http\Resources\UserItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
@@ -26,11 +27,12 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        [$users, $total] = User::queried();
+        [$items, $total] = User::queried();
 
         return Inertia::render('User/Index', [
-            'items' => UserItem::collection($users),
+            'items' => UserItem::collection($items),
             'total' => $total,
+            'canCreate' => Gate::allows('create', User::class),
             'roles' => Role::all()
         ]);
     }

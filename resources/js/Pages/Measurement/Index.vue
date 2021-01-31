@@ -1,38 +1,38 @@
 <template>
-    <fragment>
-        <app-top-bar
-            :selected.sync="selected"
-            :options.sync="options"
-            :page-title="model.name.toUpperCase()"
-            @create="onCreate"
-            @delete="onDelete"
-            mine-tab
-        >
-        </app-top-bar>
+  <fragment>
+    <app-top-bar
+      :selected.sync="selected"
+      :options.sync="options"
+      :can-create="canCreate"
+      :page-title="model.name.toUpperCase()"
+      @create="onCreate"
+      @delete="onDelete"
+    >
+    </app-top-bar>
 
-        <measurement-list
-            :selected.sync="selected"
-            :options.sync="options"
-            :total="total"
-            :items="items"
-            @edit="onEdit"
-            mine-tab
-        >
-        </measurement-list>
+    <measurement-list
+      :selected.sync="selected"
+      :options.sync="options"
+      :total="total"
+      :items="items"
+      :can-create="canCreate"
+      @edit="onEdit"
+    >
+    </measurement-list>
 
-        <measurement-form
-            v-model="dialogForm"
-            :model="model"
-            :id="id"
-        ></measurement-form>
+    <measurement-form
+      v-model="dialogForm"
+      :model="model"
+      :id="id"
+    ></measurement-form>
 
-        <measurement-delete
-            v-model="dialogDelete"
-            :model="model"
-            :selected.sync="selected"
-        >
-        </measurement-delete>
-    </fragment>
+    <measurement-delete
+      v-model="dialogDelete"
+      :model="model"
+      :selected.sync="selected"
+    >
+    </measurement-delete>
+  </fragment>
 </template>
 
 <script>

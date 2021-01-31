@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EstimatorController;
 use App\Http\Controllers\FormulaController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\MaterialController;
@@ -35,5 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::apiResource('material', MaterialController::class);
     Route::apiResource('measurement', MeasurementController::class);
     Route::apiResource('formula', FormulaController::class);
+    Route::apiResource('estimator', EstimatorController::class)->only(['index', 'show']);
     Route::apiResource('user', UserController::class);
 });

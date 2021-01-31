@@ -39,17 +39,13 @@ class FormulaSeeder extends Seeder
                 $data = [];
                 foreach ($param['materials'] as $key => $value)
                     if ($material = $materials->firstWhere('name', $key))
-                        $data[$material->id] = [
-                            'value' => $value
-                        ];
+                        $data[$material->id] = ['value' => $value];
                 $formula->materials()->attach($data);
 
                 $data = [];
                 foreach ($param['measurements'] as $key => $value)
                     if ($measurement = $measurements->firstWhere('name', $key))
-                        $data[$measurement->id] = [
-                            'value' => $value
-                        ];
+                        $data[$measurement->id] = ['value' => $value];
                 $formula->measurements()->attach($data);
             }
         }

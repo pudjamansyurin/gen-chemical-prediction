@@ -18,6 +18,18 @@ export const User = {
     }
 };
 
+export const Estimator = {
+    name: "estimator",
+    form: {
+        id: -1,
+        name: "",
+        desc: "",
+        steps: null,
+        ranked: null,
+        authorized: null
+    }
+};
+
 export const Matter = {
     name: "matter",
     form: {
@@ -59,45 +71,3 @@ export const Formula = {
         authorized: null
     }
 };
-
-// export const Pack = {
-//     id: -1,
-//     name: "",
-//     packer_id: -1
-// };
-
-// export const Packer = {
-//     id: -1,
-//     name: "",
-//     packs: []
-// };
-
-// export const Package = {
-//     id: -1,
-//     name: "",
-//     unit_id: -1,
-//     capacity: null,
-//     _packers: []
-// };
-
-// export const MaterialRev = {
-//     id: -1,
-//     price: 0,
-//     updated_at: null
-// };
-
-// export const Sale = {
-//     id: -1,
-//     name: "",
-//     filled: null,
-//     rev: {
-//         price: null
-//     },
-//     _products: [
-//         {
-//             package: null,
-//             formula: null,
-//             ratio: 1
-//         }
-//     ]
-// };

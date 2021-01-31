@@ -8,6 +8,7 @@ use App\Http\Resources\MatterItem;
 use App\Models\Material;
 use App\Models\Matter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -22,11 +23,12 @@ class MaterialController extends Controller
     {
         $this->authorize('viewAny', Material::class);
 
-        [$materials, $total] = Material::queried();
+        [$items, $total] = Material::queried();
 
         return Inertia::render('Material/Index', [
-            'items' => MaterialItem::collection($materials),
+            'items' => MaterialItem::collection($items),
             'total' => $total,
+            'canCreate' => Gate::allows('create', Material::class),
             'matters' => MatterItem::collection(Matter::all()),
         ]);
     }

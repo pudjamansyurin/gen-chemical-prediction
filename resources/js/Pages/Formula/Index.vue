@@ -1,41 +1,41 @@
 <template>
-    <fragment>
-        <app-top-bar
-            :selected.sync="selected"
-            :options.sync="options"
-            :page-title="model.name.toUpperCase()"
-            @create="onCreate"
-            @delete="onDelete"
-            mine-tab
-        >
-        </app-top-bar>
+  <fragment>
+    <app-top-bar
+      :selected.sync="selected"
+      :options.sync="options"
+      :can-create="canCreate"
+      :page-title="model.name.toUpperCase()"
+      @create="onCreate"
+      @delete="onDelete"
+    >
+    </app-top-bar>
 
-        <formula-list
-            :selected.sync="selected"
-            :options.sync="options"
-            :total="total"
-            :items="items"
-            @edit="onEdit"
-            mine-tab
-        >
-        </formula-list>
+    <formula-list
+      :selected.sync="selected"
+      :options.sync="options"
+      :total="total"
+      :items="items"
+      :can-create="canCreate"
+      @edit="onEdit"
+    >
+    </formula-list>
 
-        <formula-form
-            v-model="dialogForm"
-            :model="model"
-            :id="id"
-            :matters="matters"
-            :materials="materials"
-            :measurements="measurements"
-        ></formula-form>
+    <formula-form
+      v-model="dialogForm"
+      :model="model"
+      :id="id"
+      :matters="matters"
+      :materials="materials"
+      :measurements="measurements"
+    ></formula-form>
 
-        <formula-delete
-            v-model="dialogDelete"
-            :model="model"
-            :selected.sync="selected"
-        >
-        </formula-delete>
-    </fragment>
+    <formula-delete
+      v-model="dialogDelete"
+      :model="model"
+      :selected.sync="selected"
+    >
+    </formula-delete>
+  </fragment>
 </template>
 
 <script>

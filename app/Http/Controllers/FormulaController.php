@@ -12,6 +12,7 @@ use App\Models\Material;
 use App\Models\Matter;
 use App\Models\Measurement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -26,11 +27,12 @@ class FormulaController extends Controller
     {
         $this->authorize('viewAny', Formula::class);
 
-        [$formulas, $total] = Formula::queried();
+        [$items, $total] = Formula::queried();
 
         return Inertia::render('Formula/Index', [
-            'items' => FormulaItem::collection($formulas),
+            'items' => FormulaItem::collection($items),
             'total' => $total,
+            'canCreate' => Gate::allows('create', Formula::class),
             'matters' => MatterItem::collection(Matter::all()),
             'materials' => MaterialItem::collection(Material::all()),
             'measurements' => MeasurementItem::collection(Measurement::all()),

@@ -1,6 +1,6 @@
 <template>
     <v-form @submit.prevent="fetch" :disabled="form.processing">
-        <v-card class="py-2">
+        <v-card>
             <v-card-text>
                 <v-autocomplete
                     v-model="form.measurement_id"
@@ -16,7 +16,7 @@
                     outlined
                     chips
                 >
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{ item }">
                         <v-list-item-content>
                             <v-list-item-title>
                                 {{ item.name }}
@@ -44,7 +44,7 @@
                     deletable-chips
                     multiple
                 >
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{ item }">
                         <v-list-item-content>
                             <v-list-item-title>
                                 {{ item.name }}
@@ -72,7 +72,7 @@
                     deletable-chips
                     multiple
                 >
-                    <template v-slot:item="{item}">
+                    <template v-slot:item="{ item }">
                         <v-list-item-content>
                             <v-list-item-title>
                                 {{ item.name }}
@@ -89,16 +89,17 @@
                     :required-materials="form.required_materials"
                     :num-rows="numRows"
                     :num-columns="numColumns"
-                    @remove="onRemove">
+                    @remove="onRemove"
+                >
                 </learner-table>
             </v-card-text>
 
             <v-card-actions>
                 <v-btn type="submit" color="primary">
-                    {{ filterBtn }}
+                    <span v-if="hasDataset">RE-</span>FILTER
                 </v-btn>
 
-                <v-btn v-if="canContinue" color="primary" text>
+                <v-btn v-if="canContinue" @click="$emit('continue')" color="primary" text>
                     Continue
                 </v-btn>
             </v-card-actions>
@@ -116,10 +117,6 @@ export default {
         LearnerTable
     },
     props: {
-        stepper: {
-            type: Number,
-            default: 1,
-        },
         materials: {
             type: Array,
             default: () => []
@@ -135,30 +132,24 @@ export default {
                 {
                     measurement_id: -1,
                     required_materials: [],
-                    excluded_materials: [],
+                    excluded_materials: []
                 },
                 {
                     bag: `learner_dataset`,
                     resetOnSuccess: false
                 }
-            ),
-
-        }
+            )
+        };
     },
     computed: {
-        filterBtn() {
-            if (this.hasDataset)
-                return 'RE-FILTER';
-            return 'FILTER';
-        },
         hasDataset() {
-            return !!get(this.$page, 'flash.dataset');
+            return !!get(this.$page, "flash.dataset");
         },
         numColumns() {
-            return get(this.$page, 'flash.shape.1', 0);
+            return get(this.$page, "flash.shape.1", 0);
         },
         numRows() {
-            return get(this.$page, 'flash.shape.0', 0);
+            return get(this.$page, "flash.shape.0", 0);
         },
         requiredMaterialsOptions() {
             return this.materialsOptions(this.form.excluded_materials);
@@ -167,24 +158,21 @@ export default {
             return this.materialsOptions(this.form.required_materials);
         },
         canContinue() {
-            return this.hasDataset && !this.form.hasErrors();
+            return this.hasDataset && this.numRows && !this.form.hasErrors();
         }
     },
     methods: {
         materialsOptions(filter) {
             return this.materials.filter(el => {
-                return !filter.includes(el.id)
+                return !filter.includes(el.id);
             });
         },
         getType(el) {
-            if (el.primary) return 'Primary';
-            if (el.primary === 0) return 'Secondary';
-        },
-        updateStepper() {
-            this.$emit('update:stepper', this.stepper+1);
+            if (el.primary) return "Primary";
+            if (el.primary === 0) return "Secondary";
         },
         fetch() {
-            this.form.post(route('learner.dataset'), {
+            this.form.post(route("learner.dataset"), {
                 preserveScroll: true,
                 onSuccess: page => {}
             });
@@ -193,10 +181,8 @@ export default {
             if (!this.form.excluded_materials.includes(featureId))
                 this.form.excluded_materials.push(featureId);
         }
-    },
-}
+    }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -24,6 +24,7 @@ class RolesAndPermissionSeeder extends Seeder
             'material',
             'measurement',
             'formula',
+            'estimator',
             'user'
         ];
         $actions = [
@@ -34,14 +35,18 @@ class RolesAndPermissionSeeder extends Seeder
         ];
         $roles = [
             'INPUTOR' => [
+                'matter' => ['view'],
                 'material' => ['view', 'create'],
-                'formula' => ['view', 'create']
+                'measurement' => ['view'],
+                'formula' => ['view', 'create'],
+                'estimator' => ['view'],
             ],
             'ADMIN' => [
                 'matter' => '*',
                 'material' => '*',
                 'measurement' => '*',
                 'formula' => '*',
+                'estimator' => ['view'],
                 'user' => '*',
             ],
         ];

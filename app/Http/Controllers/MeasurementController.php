@@ -6,6 +6,7 @@ use App\Http\Requests\MeasurementRequest;
 use App\Http\Resources\MeasurementItem;
 use App\Models\Measurement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -20,11 +21,12 @@ class MeasurementController extends Controller
     {
         $this->authorize('viewAny', Measurement::class);
 
-        [$measurements, $total] = Measurement::queried();
+        [$items, $total] = Measurement::queried();
 
         return Inertia::render('Measurement/Index', [
-            'items' => MeasurementItem::collection($measurements),
+            'items' => MeasurementItem::collection($items),
             'total' => $total,
+            'canCreate' => Gate::allows('create', Measurement::class),
         ]);
     }
 

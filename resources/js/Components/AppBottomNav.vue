@@ -11,24 +11,24 @@
         </v-btn>
     </v-bottom-navigation>
 </template>
-
+ 
 <script>
 import { NavigationMixin } from "@/Mixins";
 
 export default {
     mixins: [NavigationMixin],
-    computed: {
+    computed: { 
         items() {
             return this.navs
                 .filter(({ bottomNav, children }) => !!bottomNav || !!children)
-                .map((el) => {
+                .map(el => {
                     if (el.children) {
                         return el.children.find(({ bottomNav }) => !!bottomNav);
                     }
                     return el;
                 });
-        },
-    },
+        }
+    }
 };
 </script>
 

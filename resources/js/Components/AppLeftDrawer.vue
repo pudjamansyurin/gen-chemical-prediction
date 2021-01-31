@@ -11,7 +11,7 @@
                 v-if="$page.profile.id > -1"
                 @click="goto('profile.show')"
                 :input-value="active('profile.show')"
-                color="red"
+                color="primary"
                 link
                 two-line
             >
@@ -68,7 +68,7 @@
                     v-else-if="item.children"
                     :key="index"
                     v-model="item.model"
-                    color="red"
+                    color="primary"
                 >
                     <template #activator>
                         <v-list-item-action>
@@ -121,7 +121,7 @@
                     :key="index"
                     @click="goto(item.to)"
                     :input-value="active(item.to)"
-                    color="red"
+                    color="primary"
                     link
                 >
                     <v-list-item-action>

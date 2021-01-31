@@ -40,15 +40,21 @@ export const menu = [
                 text: "Matter",
                 to: "matter.index",
                 icon: "mdi-spray",
-                roles: [APP_ROLES.ADMIN]
+                roles: "*"
             },
             {
                 text: "Measurement",
                 to: "measurement.index",
                 icon: "mdi-test-tube",
-                roles: [APP_ROLES.ADMIN]
+                roles: "*"
             }
         ]
+    },
+    {
+        text: "Estimator",
+        to: "estimator.index",
+        icon: "mdi-account-group",
+        roles: "*"
     },
     {
         text: "User",

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             MeasurementSeeder::class,
             FormulaSeeder::class,
+            EstimatorSeeder::class,
         ]);
     }
 }

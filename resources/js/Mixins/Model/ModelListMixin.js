@@ -23,7 +23,7 @@ export default {
             type: Number,
             default: 0
         },
-        mineTab: {
+        canCreate: {
             type: Boolean,
             default: false
         }
@@ -35,7 +35,7 @@ export default {
         };
     },
     created() {
-        if (!this.mineTab) this.ignoredOptions.push("mine");
+        if (!this.canCreate) this.ignoredOptions.push("mine");
     },
     methods: {
         chip(item) {

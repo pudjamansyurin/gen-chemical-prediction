@@ -8,17 +8,18 @@
                     {{ step.title }}
                     <small>{{ step.subtitle }}</small>
                 </v-stepper-step>
-                <v-stepper-content :key="`content.${idx}`" :step="(idx+1)">
+                <v-stepper-content :key="`content.${idx}`" :step="(idx+1)" class="py-2">
                     <learner-dataset
                         v-if="step.title == 'DATASET'"
-                        :stepper.sync="stepper"
                         :materials="materials"
                         :measurements="measurements"
+                        @continue="next"
                     >
                     </learner-dataset>
                     <learner-train
                         v-else-if="step.title == 'TRAIN'"
-                        :stepper.sync="stepper"
+                        @continue="next"
+                        @back="back"
                     >
                     </learner-train>
                     <template v-else>
@@ -89,6 +90,15 @@ export default {
             ],
             stepper: 1,
         };
+    },
+    methods: {
+        next() {
+            this.stepper += 1;
+        },
+        back() {
+            if (this.stepper > 0)
+                this.stepper -= 1;
+        }
     },
 };
 </script>

@@ -14,22 +14,30 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in items" :key="item.id">
-                    <td
-                        v-for="header in headers"
-                        :key="header.value"
-                        :class="`text-${header.align}`"
-                    >
-                        <slot
-                            :name="`item.${header.value}`"
-                            :item="item"
-                            :index="index"
-                        >
-                            {{ item[header.value] }}
-                        </slot>
+                <tr v-if="items.length == 0">
+                    <td :colspan="headers.length">
+                        No related records.
                     </td>
                 </tr>
-                <slot name="footer"></slot>
+                <template v-else>
+                    <tr v-for="(item, index) in items" :key="item.id">
+                        <td
+                            v-for="header in headers"
+                            :key="header.value"
+                            :class="`text-${header.align}`"
+                        >
+                            <slot
+                                :name="`item.${header.value}`"
+                                :item="item"
+                                :index="index"
+                            >
+                                {{ item[header.value] }}
+                            </slot>
+                        </td>
+                    </tr>
+                </template>
+                <slot name="footer">
+                </slot>
             </tbody>
         </template>
     </v-simple-table>
