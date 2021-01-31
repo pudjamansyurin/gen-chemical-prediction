@@ -6,7 +6,7 @@
     :readonly="readonly"
     @submit="save"
   >
-    <v-form @submit.prevent="save" :disabled="disabled || readonly">
+    <v-form @submit.prevent="save" :disabled="disabled" :readonly="readonly">
       <v-text-field
         v-model="form.name"
         :error-messages="form.error('name')"
@@ -25,14 +25,13 @@
         :error-messages="form.error('desc')"
         :success="!!form.error('desc')"
         :dense="denser"
-        label="Estimator desc"
+        label="Estimator description"
         type="text"
         hint="Just for documentation"
         row-height="2"
         persistent-hint
         outlined
         auto-grow
-        clearable
       >
       </v-textarea>
 

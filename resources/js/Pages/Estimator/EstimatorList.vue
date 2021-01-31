@@ -14,8 +14,6 @@
       <v-chip @click="edit(item)" :color="chip(item)" :small="denser" dark>
         {{ item.name }}
       </v-chip>
-      <br />
-      {{ item.desc }}
     </template>
     <template v-slot:[`item.steps`]="{ item }">
       {{ item.steps ? "Yes" : "No" }}
@@ -28,19 +26,22 @@
     </template>
 
     <template #card="{ item }">
-      <!-- <v-btn :color="chip(item)" absolute right small tile top>
-                {{ item.required ? "Required" : "Optional" }}
-            </v-btn> -->
+      <v-btn :color="chip(item)" absolute right small tile top>
+        {{ item.user.name }}
+      </v-btn>
 
       <v-card-text @click="edit(item)">
         <div class="overline">
           {{ item.updated_at | moment("from") }}
         </div>
-        <div class="overline">
+        <!-- <div class="overline">
           {{ item.user.name }}
-        </div>
+        </div> -->
         <div class="subtitle-2 font-weight-bold">
           {{ item.name }}
+        </div>
+        <div class="text-justify">
+          {{ item.desc }}
         </div>
       </v-card-text>
     </template>
@@ -56,7 +57,7 @@ export default {
         return {
             headers: [
                 { text: "Name", value: "name" },
-                // { text: "Desc.", value: "desc" },
+                { text: "Description", value: "desc" },
                 { text: "Steps", value: "steps",  align: "center", },
                 { text: "Ranked", value: "ranked",  align: "center", },
                 { text: "Creator", value: "user.name" },

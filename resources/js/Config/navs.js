@@ -53,7 +53,7 @@ export const menu = [
     {
         text: "Estimator",
         to: "estimator.index",
-        icon: "mdi-account-group",
+        icon: "mdi-robot",
         roles: "*"
     },
     {

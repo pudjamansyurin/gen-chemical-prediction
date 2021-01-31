@@ -21,16 +21,16 @@
 
     <template #card="{ item }">
       <v-btn :color="chip(item)" absolute right small tile top>
-        SOMETHING
+        {{ item.user.name }}
       </v-btn>
 
       <v-card-text @click="edit(item)">
         <div class="overline">
           {{ item.updated_at | moment("from") }}
         </div>
-        <div class="overline">
+        <!-- <div class="overline">
           {{ item.user.name }}
-        </div>
+        </div> -->
         <div class="subtitle-2 font-weight-bold">
           {{ item.name }}
         </div>
