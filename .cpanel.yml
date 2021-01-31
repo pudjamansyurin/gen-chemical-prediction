@@ -6,9 +6,10 @@ deployment:
     # - /bin/rsync -avr --exclude '.git/' --exclude 'public/' . $BACK_END_PATH
     # - /bin/rsync -avr --exclude 'index.php' public/ $FRONT_END_PATH
     - export HOSTING_PATH=/home/genmotor/chemical.garda-energi.com/
+    - /bin/rsync -avr --exclude '.git/' . $HOSTING_PATH
+    - cd $HOSTING_PATH
     - npm install
     - composer install
-    - npm run prod
+    - npm run production-online
     - composer dump-autoload
     - php artisan migrate:fresh --seed
-    - /bin/rsync -avr --exclude '.git/' . $HOSTING_PATH
