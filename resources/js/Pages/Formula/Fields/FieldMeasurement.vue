@@ -1,49 +1,58 @@
 <template>
-    <the-simple-data :headers="headers" :form="_form" field="measurements" :disable-add="disableAdd" :disabled="disabled" :readonly="readonly" @add="add" @remove="remove">
-        <template v-slot:[`item.name`]="{ item, index }">
-            <v-autocomplete
-                :value="item.id"
-                @change="change(index, $event)"
-                :items="list(item)"
-                :error-messages="_form.error(`measurements.${index}.id`)"
-                :success="!!_form.error(`measurements.${index}.id`)"
-                item-text="name"
-                item-value="id"
-                hide-details="auto"
-                flat
-                outlined
-                dense
-                return-object
-            >
-              <template v-slot:item="{item}">
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            {{ item.name }}
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            {{ getType(item) }}
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-              </template>
-            </v-autocomplete>
+  <the-simple-data
+    :headers="headers"
+    :form="_form"
+    field="measurements"
+    :disable-add="disableAdd"
+    :disabled="disabled"
+    :readonly="readonly"
+    @add="add"
+    @remove="remove"
+  >
+    <template v-slot:[`item.name`]="{ item, index }">
+      <v-autocomplete
+        :value="item.id"
+        @change="change(index, $event)"
+        :items="list(item)"
+        :error-messages="_form.error(`measurements.${index}.id`)"
+        :success="!!_form.error(`measurements.${index}.id`)"
+        item-text="name"
+        item-value="id"
+        hide-details="auto"
+        flat
+        outlined
+        dense
+        return-object
+      >
+        <template v-slot:item="{ item }">
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ item.name }}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{ getType(item) }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
         </template>
-        <template v-slot:[`item.type`]="{ item }">
-            {{ getType(item) || '-' }}
-        </template>
-        <template v-slot:[`item.value`]="{ item, index }">
-            <v-text-field
-                v-model.number="item.value"
-                :error-messages="_form.error(`measurements.${index}.value`)"
-                :success="!!_form.error(`measurements.${index}.value`)"
-                type="number"
-                hide-details="auto"
-                reverse
-                flat
-                outlined
-                dense
-            ></v-text-field>
-        </template>
-    </the-simple-data>
+      </v-autocomplete>
+    </template>
+    <template v-slot:[`item.type`]="{ item }">
+      {{ getType(item) || "-" }}
+    </template>
+    <template v-slot:[`item.value`]="{ item, index }">
+      <v-text-field
+        v-model.number="item.value"
+        :error-messages="_form.error(`measurements.${index}.value`)"
+        :success="!!_form.error(`measurements.${index}.value`)"
+        type="number"
+        hide-details="auto"
+        reverse
+        flat
+        outlined
+        dense
+      ></v-text-field>
+    </template>
+  </the-simple-data>
 </template>
 
 <script>

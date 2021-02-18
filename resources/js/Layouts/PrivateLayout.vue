@@ -1,16 +1,15 @@
 <template>
-    <v-app v-resize="onResize">
-        <app-left-drawer></app-left-drawer>
-        <app-bottom-nav v-if="mobile"></app-bottom-nav>
+  <v-app v-resize="onResize">
+    <app-left-drawer></app-left-drawer>
+    <app-bottom-nav v-if="mobile"></app-bottom-nav>
 
-        <app-container>
-            <slot></slot>
-        </app-container>
+    <app-container>
+      <slot></slot>
+    </app-container>
 
-        <the-snack-bar></the-snack-bar>
-        <fullscreen-confirmation></fullscreen-confirmation>
-        <!-- <portal-target name="modal"> </portal-target> -->
-    </v-app>
+    <the-snack-bar></the-snack-bar>
+    <fullscreen-confirmation></fullscreen-confirmation>
+  </v-app>
 </template>
 
 <script>

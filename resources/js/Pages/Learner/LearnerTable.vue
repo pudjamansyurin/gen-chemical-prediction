@@ -1,38 +1,38 @@
 <template>
-    <fragment>
-        <the-simple-table :headers="headers" :items="items" height="200">
-            <template
-                v-for="header in headers"
-                v-slot:[`item.${header.value}`]="{ item, index }"
-            >
-                <slot :name="`item.${header.value}`" :item="item" :index="index">
-                    <template v-if="header.value == 'no'">
-                        <v-hover v-slot="{ hover }">
-                            <span v-if="!hover || readonly(item)">{{ index + 1 }}</span>
-                            <v-icon v-else @click="remove(item, index)" color="red">
-                                mdi-close-circle-outline
-                            </v-icon>
-                        </v-hover>
-                    </template>
-                    <template v-else-if="header.value == 'column'">
-                        {{ getFeatureName(item) }}
-                    </template>
-                    <template v-else-if="header.value == 'count'">
-                        {{ getFeatureNumeric(item, 'count') }}
-                    </template>
-                    <template v-else-if="header.value == 'distinct'">
-                        {{ getFeatureNumeric(item, 'distinct') }}
-                    </template>
-                </slot>
-            </template>
-        </the-simple-table>
+  <fragment>
+    <the-simple-table :headers="headers" :items="items" height="200">
+      <template
+        v-for="header in headers"
+        v-slot:[`item.${header.value}`]="{ item, index }"
+      >
+        <slot :name="`item.${header.value}`" :item="item" :index="index">
+          <template v-if="header.value == 'no'">
+            <v-hover v-slot="{ hover }">
+              <span v-if="!hover || readonly(item)">{{ index + 1 }}</span>
+              <v-icon v-else @click="remove(item, index)" color="red">
+                mdi-close-circle-outline
+              </v-icon>
+            </v-hover>
+          </template>
+          <template v-else-if="header.value == 'column'">
+            {{ getFeatureName(item) }}
+          </template>
+          <template v-else-if="header.value == 'count'">
+            {{ getFeatureNumeric(item, "count") }}
+          </template>
+          <template v-else-if="header.value == 'distinct'">
+            {{ getFeatureNumeric(item, "distinct") }}
+          </template>
+        </slot>
+      </template>
+    </the-simple-table>
 
-        <v-sheet class="my-5">
-            <span>Summary: </span>
-            <v-chip small>Used columns: {{ numColumns }}</v-chip>
-            <v-chip small>Used rows: {{ numRows }}</v-chip>
-        </v-sheet>
-    </fragment>
+    <v-sheet class="my-5">
+      <span>Summary: </span>
+      <v-chip small>Used columns: {{ numColumns }}</v-chip>
+      <v-chip small>Used rows: {{ numRows }}</v-chip>
+    </v-sheet>
+  </fragment>
 </template>
 
 <script>
@@ -139,7 +139,7 @@ export default {
         },
         parseItems(dataset) {
             return dataset.map(data => {
-                let feature = this.getFeature(data);
+                // let feature = this.getFeature(data);
                 let columns = this.headers.map(el => el.value);
 
                 return keys(data)
@@ -169,5 +169,4 @@ export default {
 </script>
 
 <style>
-
 </style>
