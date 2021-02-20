@@ -1,49 +1,44 @@
 <template>
-    <fragment>
-        <app-top-bar page-title="Machine Learning"></app-top-bar>
+  <fragment>
+    <app-top-bar page-title="Machine Learning"></app-top-bar>
 
-        <v-stepper v-model="stepper" vertical>
-            <template v-for="(step, idx) in steps">
-                <v-stepper-step :key="`step.${idx}`" :complete="stepper > (idx+1)" :step="(idx+1)">
-                    {{ step.title }}
-                    <small>{{ step.subtitle }}</small>
-                </v-stepper-step>
-                <v-stepper-content :key="`content.${idx}`" :step="(idx+1)" class="py-2">
-                    <learner-dataset
-                        v-if="step.title == 'DATASET'"
-                        :materials="materials"
-                        :measurements="measurements"
-                        @continue="next"
-                    >
-                    </learner-dataset>
-                    <learner-train
-                        v-else-if="step.title == 'TRAIN'"
-                        @continue="next"
-                        @back="back"
-                    >
-                    </learner-train>
-                    <template v-else>
-                        <v-card
-                            color="grey lighten-1"
-                            class="mb-12"
-                            height="200px"
-                        ></v-card>
-                        <v-btn
-                            @click="stepper = (idx+2)"
-                            color="primary"
-                        >
-                            Continue
-                        </v-btn>
-                        <v-btn
-                            @click="stepper = (idx)"
-                            text>
-                            Cancel
-                        </v-btn>
-                    </template>
-                </v-stepper-content>
-            </template>
-        </v-stepper>
-    </fragment>
+    <v-stepper v-model="stepper" :dark="darker" vertical>
+      <template v-for="(step, idx) in steps">
+        <v-stepper-step
+          :key="`step.${idx}`"
+          :complete="stepper > idx + 1"
+          :step="idx + 1"
+        >
+          {{ step.title }}
+          <small>{{ step.subtitle }}</small>
+        </v-stepper-step>
+        <v-stepper-content :key="`content.${idx}`" :step="idx + 1" class="py-2">
+          <learner-dataset
+            v-if="step.title == 'DATASET'"
+            :materials="materials"
+            :measurements="measurements"
+            @continue="next"
+          >
+          </learner-dataset>
+          <learner-train
+            v-else-if="step.title == 'TRAIN'"
+            @continue="next"
+            @back="back"
+          >
+          </learner-train>
+          <template v-else>
+            <v-card
+              color="grey lighten-1"
+              class="mb-12"
+              height="200px"
+            ></v-card>
+            <v-btn @click="stepper = idx + 2" color="primary"> Continue </v-btn>
+            <v-btn @click="stepper = idx" text> Cancel </v-btn>
+          </template>
+        </v-stepper-content>
+      </template>
+    </v-stepper>
+  </fragment>
 </template>
 
 <script>

@@ -43,6 +43,9 @@
         </v-btn>
       </template>
 
+      <v-icon v-if="!searchBox || !mobile" @click="TOGGLE_DARKER">
+        {{ darkIcon }}
+      </v-icon>
       <app-top-menu></app-top-menu>
 
       <template #extension v-if="canCreate">
@@ -84,7 +87,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import { debounce } from "lodash";
 
 import { ls, bool } from "@/Utils";
-import { TOGGLE_DRAWER } from "@/Store/app/mutation-types";
+import { TOGGLE_DRAWER, TOGGLE_DARKER } from "@/Store/app/mutation-types";
 
 import AppTopMenu from "@/Components/AppTopMenu";
 
@@ -142,9 +145,12 @@ export default {
                 this.updateOptions({ mine: bool(value) });
             },
         },
+        darkIcon() {
+            return this.darker ? "mdi-lightbulb-on" : "mdi-lightbulb-off";
+        },
     },
     methods: {
-        ...mapMutations("app", [TOGGLE_DRAWER]),
+        ...mapMutations("app", [TOGGLE_DRAWER, TOGGLE_DARKER]),
         setSearchBox(state) {
             if (!state && this.search) this.search = "";
             this.searchBox = state;
