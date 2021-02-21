@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Material;
 use App\Models\Matter;
 use App\Models\User;
-use App\Utils\CsvExtractor;
+use App\Utils\CsvUtil;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
@@ -19,7 +19,7 @@ class MaterialSeeder extends Seeder
      */
     public function run()
     {
-        $data = (new CsvExtractor())->getMaterials();
+        $data = (new CsvUtil())->getMaterials();
 
         // $user = User::role('ADMIN')->first();
         $matters = Matter::all();

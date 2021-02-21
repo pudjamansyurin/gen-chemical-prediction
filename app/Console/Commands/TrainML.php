@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Material;
 use App\Models\Measurement;
 use Illuminate\Console\Command;
+use App\Traits\LearnerExtension;
+use App\Utils\CsvUtil;
 use Rubix\ML\BootstrapAggregator;
 use Rubix\ML\CommitteeMachine;
 use Rubix\ML\CrossValidation\HoldOut;
@@ -37,6 +39,8 @@ use Rubix\ML\Transformers\NumericStringConverter;
 
 class TrainML extends Command
 {
+    use LearnerExtension;
+
     /**
      * The name and signature of the console command.
      *
@@ -69,7 +73,16 @@ class TrainML extends Command
     public function handle()
     {
         $this->info("Loading...");
-        $formulas = $this->getFormulas('KV 40', ['CV 1103']);
+
+        $target = 'KV 40';
+        $required = ['CV 1103'];
+        $excluded = [];
+
+        $formulas = $this->getFormulas(
+            Measurement::where('name', $target)->first()->id,
+            Material::whereIn('name', $required)->get()->pluck('id'),
+            Material::whereIn('name', $excluded)->get()->pluck('id'),
+        );
 
         $data = $this->makeData($formulas);
         // $this->table($data->features, $data->samples);
@@ -81,12 +94,12 @@ class TrainML extends Command
         // dd($dataset->numRows(), $dataset->numColumns());
 
         $estimators = [
-            'Adaline' =>                    new Adaline(),
+            // 'Adaline' =>                    new Adaline(),
             'ExtraTreeRegressor' =>         new ExtraTreeRegressor(),        // 5.74
             'GradientBoost' =>              new GradientBoost(),             // 8.07
             'KDNeighborsRegressor' =>       new KDNeighborsRegressor(),      // 8.85
             'KNNRegressor' =>               new KNNRegressor(),              // 6.28
-            'MLPRegressor' =>               new MLPRegressor(),
+            // 'MLPRegressor' =>               new MLPRegressor(),
             'RadiusNeighborsRegressor' =>   new RadiusNeighborsRegressor(),  // 8.46
             'RegressionTree' =>             new RegressionTree(),            // 7.14
             'Ridge' =>                      new Ridge()                      // 6.79
@@ -98,7 +111,6 @@ class TrainML extends Command
 
         foreach ($estimators as $key => $estimator) {
             $this->info("Algorithm: {$key}");
-            $estimator = $estimator;
             $estimator = new BootstrapAggregator($estimator, 100, 0.5);
             // $estimator->setLogger(new Screen());
 
@@ -142,63 +154,8 @@ class TrainML extends Command
         }
 
         $this->table(array_keys(reset($results)), $results);
+        (new CsvUtil())->write(array_keys(reset($results)), $results);
 
         return 0;
-    }
-
-    private function getFormulas($targetName, $baseNames)
-    {
-        $target = Measurement::where('name', $targetName)->first();
-        $bases = collect($baseNames);
-
-        $q = $target->formulas()
-            ->with([
-                'materials',
-                'measurements' => function ($q) use ($target) {
-                    $q->where('name', $target->name);
-                },
-            ]);
-
-        $bases->each(function ($base) use (&$q) {
-            $q->whereHas('materials', function ($q) use ($base) {
-                $q->where('name', $base);
-            });
-        });
-
-        return $q->get();
-    }
-
-    private function makeData($formulas)
-    {
-        return $formulas->pipe(function ($items) {
-            $features = $items
-                ->pluck('materials')
-                ->map(function ($item) {
-                    return $item->pluck('name');
-                })
-                ->flatten()
-                ->unique()
-                ->values();
-
-            $samples = $items
-                ->pluck('materials')
-                ->map(function ($item) {
-                    return $item->pluck('pivot.value', 'name');
-                })
-                ->map(function ($item) use ($features) {
-                    return $features->mapWithKeys(function ($feature) use ($item) {
-                        return [$feature => $item->get($feature, 0)];
-                    });
-                });
-
-            $labels = $items
-                ->pluck('measurements.0.pivot.value', 'name');
-
-            return (object) [
-                'features' => $features->all(),
-                'samples' => $samples->toArray(),
-                'labels' => $labels->all()
-            ];
-        });
     }
 }

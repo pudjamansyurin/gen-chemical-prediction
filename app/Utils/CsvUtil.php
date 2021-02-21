@@ -3,8 +3,9 @@
 namespace App\Utils;
 
 use League\Csv\Reader;
+use League\Csv\Writer;
 
-class CsvExtractor
+class CsvUtil
 {
     private $termNumber = 'No';
     private $termEntry = 'Entry';
@@ -21,18 +22,25 @@ class CsvExtractor
     private $header = [];
     private $records = [];
 
-    public function __construct($file = 'database/seeders/csv/Viskositas.csv')
+    public function __construct()
     {
-        $this->load($file);
+        $this->read();
     }
 
-    private function load($file)
+    private function read()
     {
-        $reader = Reader::createFromPath(base_path($file), 'r');
+        $reader = Reader::createFromPath('database/seeders/csv/Viskositas.csv', 'r');
         $reader->setHeaderOffset(2);
 
         $this->header = $reader->getHeader();
         $this->records = $reader->getRecords();
+    }
+
+    public function write($header, $data)
+    {
+        $csv = Writer::createFromPath('database/seeders/csv/results.csv', 'w+');
+        $csv->insertOne($header);
+        $csv->insertAll($data);
     }
 
     public function getFormulas()

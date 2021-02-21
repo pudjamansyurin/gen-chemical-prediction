@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Measurement;
 use App\Models\User;
-use App\Utils\CsvExtractor;
+use App\Utils\CsvUtil;
 use Illuminate\Database\Seeder;
 
 class MeasurementSeeder extends Seeder
@@ -17,7 +17,7 @@ class MeasurementSeeder extends Seeder
      */
     public function run()
     {
-        $data = (new CsvExtractor())->getMeasurements();
+        $data = (new CsvUtil())->getMeasurements();
 
         $user = User::role('ADMIN')->first();
 
